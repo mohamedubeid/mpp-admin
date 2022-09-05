@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title><%= metaData.title %></title>
+  <meta name="description" content="<%= metaData.description %>" />
+  <meta name="keywords" content="<%= metaData.keywords %>" />
+
+  <meta name="robots" content="noindex, follow" />
+  <!-- <meta name="description" content="" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.png" />
+
+  <!-- CSS
+    ============================================ -->
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/assets/css/vendor/bootstrap.min.css" />
+  <link rel="stylesheet" href="/assets/css/vendor/font-awesome.css" />
+  <link rel="stylesheet" href="/assets/css/vendor/slick.css" />
+  <link rel="stylesheet" href="/assets/css/vendor/slick-theme.css" />
+  <link rel="stylesheet" href="/assets/css/vendor/base.css" />
+  <link rel="stylesheet" href="/assets/css/plugins/plugins.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <link href="https://vjs.zencdn.net/7.18.1/video-js.css" rel="stylesheet" />
+
+  
+
+  <!-- USE OUR APP SECTION LINK -->
+  <link rel="stylesheet" href="https://cdn.lineicons.com/2.0/LineIcons.css">
+</head>
+
+<body style="overflow: visible;">
+  <div class="main-wrapper">
+    <div class="mouse-cursor cursor-outer"></div>
+    <div class="mouse-cursor cursor-inner"></div>
+
+    <!-- Switcher -->
+
+
+    <!-- Start Header -->
+    <header class="header axil-header header-light header-sticky"
+      style="position: sticky; top: 0px; box-shadow: 0 5px 5px -5px #333;">
+      <div class="header-wrap">
+        <div class="row justify-content-between align-items-center">
+          <div class="col-xl-3 col-lg-3 col-md-4 col-sm-3 col-12">
+            <div class="logo">
+              <a href="/">
+                <img class="dark-logo" src="/assets/images/logo/logo-black.png" alt="logo" />
+                <img class="light-logo" src="/assets/images/logo/logo-white2.png" alt="logo" />
+              </a>
+            </div>
+          </div>
+
+          <div class="col-xl-6 d-none d-xl-block">
+            <div class="mainmenu-wrapper">
+              <nav class="mainmenu-nav">
+                <!-- Start Mainmanu Nav -->
+                <ul class="mainmenu">
+                  <li class="menu-item-has-children">
+                    <a href="/watches">Watches</a>
+                  </li>
+                  <li class="menu-item-has-children">
+                    <a href="/jewelry">Jewellery</a>
+                  </li>
+                  <li class="menu-item-has-children">
+                    <a href="/news">News</a>
+                    <ul class="axil-submenu">
+                      <% for(let category of newsCategories) { %>
+                        <li>
+                          <a class="hover-flip-item-wrapper" href="/news/c/<%= category.url_slug %>">
+                            <span class="hover-flip-item">
+                              <span data-text="<%= category.title %>"><%= category.title %></span>
+                            </span>
+                          </a>
+                        </li>
+                      <% } %>
+
+                    </ul>
+                  </li>
+
+                  <li class="menu-item-has-children">
+                    <a href="/celebrities">Celebrities</a>
+                  </li>
+
+                  <li class="menu-item-has-children">
+                    <a href="/tv">TV</a>
+                    <ul class="axil-submenu">
+                      <li>
+                        <a class="hover-flip-item-wrapper" href="/tv">
+                          <span class="hover-flip-item">
+                            <span data-text="Television">Television</span>
+                          </span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="hover-flip-item-wrapper" href="/photoshoot">
+                          <span class="hover-flip-item">
+                            <span data-text="PhotoShoot">PhotoShoot</span>
+                          </span>
+                        </a>
+                      </li>
+                      <li>
+                        <a class="hover-flip-item-wrapper" href="/lifestyle">
+                          <span class="hover-flip-item">
+                            <span data-text="Lifestyle">Lifestyle</span>
+                          </span>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li><a href="/events">Events</a></li>
+                </ul>
+                <!-- End Mainmanu Nav -->
+              </nav>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-8 col-md-8 col-sm-9 col-12">
+            <div class="header-search text-end d-flex align-items-center">
+              <form class="header-search-form d-sm-block d-none" method="get" action="/search">
+                <div class="axil-search form-group">
+                  <button type="submit" class="search-button">
+                    <i class="fal fa-search"></i>
+                  </button>
+                  <input type="text" class="form-control" placeholder="Search" name="query" />
+                </div>
+              </form>
+              <div class="mobile-search-wrapper d-sm-none d-block">
+                <button class="search-button-toggle">
+                  <i class="fal fa-search"></i>
+                </button>
+                <form class="header-search-form" method="get" action="/search">
+                  <div class="axil-search form-group">
+                    <button type="submit" class="search-button">
+                      <i class="fal fa-search"></i>
+                    </button>
+                    <input type="text" class="form-control" placeholder="Search" name="query"/>
+                  </div>
+                </form>
+              </div>
+              <ul class="metabar-block">
+
+                <li class="icon">
+                  <a href="/ar/"><b>ع</b></a>
+                </li>
+              </ul>
+              <!-- Start Hamburger Menu  -->
+              <div class="hamburger-menu d-block d-xl-none">
+                <div class="hamburger-inner">
+                  <div class="icon"><i class="fal fa-bars"></i></div>
+                </div>
+              </div>
+              <!-- End Hamburger Menu  -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Start Header -->
+
+    <!-- Start Mobile Menu Area  -->
+    <div class="popup-mobilemenu-area">
+      <div class="inner">
+        <div class="mobile-menu-top">
+          <div class="logo">
+            <a href="/">
+              <img class="dark-logo" src="/assets/images/logo/logo-black.png" alt="Logo Images" />
+              <img class="light-logo" src="/assets/images/logo/logo-white2.png" alt="Logo Images" />
+            </a>
+          </div>
+          <div class="mobile-close">
+            <div class="icon">
+              <i class="fal fa-times"></i>
+            </div>
+          </div>
+        </div>
+        <ul class="mainmenu">
+          <li><a href="/watches">Watches</a></li>
+          <li><a href="/jewelry">Jewellery</a></li>
+          <li class="menu-item-has-children">
+            <a href="#">News</a>
+            <ul class="axil-submenu">
+              <% for(let category of newsCategories) { %>
+                <li><a href="/news/c/<%= category.url_slug %>"><%= category.title %></a></li>
+              <% } %>
+            </ul>
+          </li>
+          <li><a href="/celebrities">Celebrities</a></li>
+          <li class="menu-item-has-children">
+            <a href="#">TV</a>
+            <ul class="axil-submenu">
+              <li><a href="/tv">TV</a></li>
+              <li><a href="/photoshoot">Photoshoot</a></li>
+              <li><a href="/lifestyle">Lifestyle</a></li>
+              <li>
+            </ul>
+          </li>
+          <li><a href="/events">Events</a></li>
+        </ul>
+      </div>
+    </div>
+    <!-- End Mobile Menu Area  -->
+
+    <!-- Start Banner Area -->
+    <h1 class="d-none">Home Default Blog</h1>
+    <div class="slider-area bg-color-grey">
+      <div class="axil-slide slider-style-1">
+        <div class="container">
+          <div class="row">
+
+            <div class="col-lg-12">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Banner Area -->
+
+    <%- body %>
+
+    <!-- Start Maintanence Area  -->
+  <div class="maintanence-area" id="subscribe-form">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="order-2 order-lg-1 col-lg-6 mt_md--40 mt_sm--40"></div>
+        <div class="order-1 order-lg-2 col-lg-5 offset-lg-1">
+          <div class="content">
+            <div class="logo">
+              <a href="/">
+                <img
+                  class="dark-logo"
+                  src="/assets/images/logo/logo-white2.png"
+                  alt="Logo Images"
+                />
+                <img
+                  class="light-logo"
+                  src="/assets/images/logo/logo-white2.png"
+                  alt="Logo Images"
+                />
+              </a>
+            </div>
+            <h3 style="color: white;">Subscribe to our weekly newsletter</h3>
+            <div class="inner d-flex align-items-center flex-wrap">
+              <h5 class="follow-title mb--0 mr--20">Follow Us</h5>
+              <ul
+                class="social-icon color-tertiary md-size justify-content-start"
+              >
+              <li>
+                <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i class="fab fa-instagram"></i></a>
+              </li>
+              <li>
+                <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i class="fab fa-facebook-f"></i></a>
+              </li>
+              <li>
+                <a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i class="fab fa-twitter"></i></a>
+              </li>
+              </ul>
+            </div>
+            <form action="/subscribe" class="subscription-form" method="post">
+
+              <input type="hidden" name="language_id" value="1">
+              
+              <div class="form-group">
+                <input type="text" name="full_name" placeholder="Enter your full name here"/>
+              </div>
+              
+              <div class="form-group">
+                <input type="text" name="email" placeholder="Enter your email here"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="company_name" placeholder="Enter your company name here"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="country" placeholder="Enter your country here"/>
+              </div>
+
+              <div class="form-group">
+                <input type="text" name="city" placeholder="Enter your city here"/>
+                <button class="axil-button button-rounded">
+                  <span>Subscribe</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Maintanence Area  -->
+
+    <!-- Start Footer Area  -->
+    <div class="axil-footer-area axil-footer-style-1 footer-variation-2" 
+      style="box-shadow: 0 -3.5px 3.5px -3.5px #333; background-color: white;">
+      <!-- Start Footer Top Area  -->
+      <div class="footer-top">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-4 col-md-4">
+              <div class="logo">
+                <a href="/">
+                  <img class="dark-logo" src="/assets/images/logo/logo-black.png" alt="Logo Images" />
+                  <img class="white-logo" src="/assets/images/logo/logo-white2.png" alt="Logo Images" />
+                </a>
+              </div>
+            </div>
+
+            <div class="col-lg-8 col-md-8">
+              <!-- Start Post List  -->
+              <div class="d-flex justify-content-start mt_sm--15 justify-content-md-end align-items-center flex-wrap">
+                <h5 class="follow-title mb--0 mr--20">Follow Us</h5>
+                <ul class="social-icon color-tertiary md-size justify-content-start">
+                  <li>
+                    <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i class="fab fa-instagram"></i></a>
+                  </li>
+                  <li>
+                    <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i class="fab fa-facebook-f"></i></a>
+                  </li>
+                  <li>
+                    <a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i class="fab fa-twitter"></i></a>
+                  </li>
+                </ul>
+              </div>
+              <!-- End Post List  -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Footer Top Area  -->
+
+      <div class="footer-mainmenu">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+              <div class="footer-widget">
+                <h2 class="title"><a href="/watches">WATCHES</a></h2>
+                <div class="inner">
+                  <ul class="ft-menu-list">
+                    <li><a href="/watches/c/van-cleef---arpels">Van Cleef & Arpels</a></li>
+                    <li><a href="/watches/c/panerai">Panerai</a></li>
+                    <li><a href="/watches/c/tag-heuer">TAG Heuer</a></li>
+                    <li><a href="/watches/c/aerowatch">Aerowatch</a></li>
+                    <li><a href="/watches/c/carl-f--bucherer">Carl F. Bucherer</a></li>
+                    <li><a href="/watches/c/vacheron-constantin-1">Vacheron Constantin</a></li>
+                    <li><a href="/watches/c/audemars-piguet">Audemars Piguet</a></li>
+                    <li><a href="/watches/c/louis-moinet">Louis Moinet</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+              <div class="footer-widget">
+                <h2 class="title"><a href="/jewelry">JEWELLERY</a></h2>
+                <div class="inner">
+                  <ul class="ft-menu-list">
+                    <li><a href="/jewelry/c/akillis">AKILLIS</a></li>
+                    <li><a href="/jewelry/c/bvlgari">BVLGARI</a></li>
+                    <li><a href="/jewelry/c/messika">MESSIKA</a></li>
+                    <li><a href="/jewelry/c/chaumet">Chaumet</a></li>
+                    <li><a href="/jewelry/c/mouawad">Mouawad</a></li>
+                    <li><a href="/jewelry/c/damas">Damas</a></li>
+                    <li><a href="/jewelry/c/van-cleef---arpels">Van Cleef & Arpels</a></li>
+                    <li><a href="/jewelry/c/versace">Versace</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+              <div class="footer-widget">
+                <h2 class="title"><a href="/news">NEWS</a></h2>
+                <div class="inner">
+                  <ul class="ft-menu-list">
+                    <% for(let category of newsCategories) { %>
+                      <li><a href="/news/c/<%= category.url_slug %>"><%= category.title %></a></li>
+                    <% } %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+              <div class="footer-widget">
+                <div class="inner">
+                  <h2 class="title"></h2>
+                  <h5><a href="/lifestyle">
+                      LIFESTYLE </a></h5>
+                  <h5><a href="/events">
+                      EVENTS </a></h5>
+                  <h5><a href="/celebrities">
+                      CELEBRITIES </a></h5>
+                  <h5><a href="/photoshoot">
+                      PHOTOSHOOT </a></h5>
+                  <h5><a href="/tv">
+                      TV </a></h5>
+                  <h5><a href="/contact-us">
+                      Contact Us </a></h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Copyright Area  -->
+      <div class="copyright-area">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-9 col-md-8">
+              <div class="copyright-left">
+                <ul class="mainmenu justify-content-start">
+                  <li>
+                    <a class="hover-flip-item-wrapper" href="/privacy-policy">
+                      <span class="hover-flip-item">
+                        <span data-text="Privacy Policy">Privacy Policy</span>
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="hover-flip-item-wrapper" href="/terms-of-use">
+                      <span class="hover-flip-item">
+                        <span data-text="Terms of Use">Terms of Use</span>
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="hover-flip-item-wrapper" href="/contact-us">
+                      <span class="hover-flip-item">
+                        <span data-text="Contact Us">Contact Us</span>
+                      </span>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="hover-flip-item-wrapper" href="#">
+                      <span class="hover-flip-item">
+                        <span data-text="Advertise with Us">Advertise with Us</span>
+                      </span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-4">
+              <div class="copyright-right text-start text-md-end mt_sm--20">
+                <p class="b3">COPYRIGHT © 2022 MPP-ME LLC - ALL RIGHTS RESERVED</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End Copyright Area  -->
+    </div>
+    <!-- End Footer Area  -->
+
+    <!-- Start Back To Top  -->
+    <a id="backto-top"></a>
+    <!-- End Back To Top  -->
+  </div>
+
+  <!-- JS
+============================================ -->
+  <!-- Modernizer JS -->
+  <script src="/assets/js/vendor/modernizr.min.js"></script>
+  <!-- jQuery JS -->
+  <script src="/assets/js/vendor/jquery.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="/assets/js/vendor/bootstrap.min.js"></script>
+  <script src="/assets/js/vendor/slick.min.js"></script>
+  <script src="/assets/js/vendor/tweenmax.min.js"></script>
+  <script src="/assets/js/vendor/js.cookie.js"></script>
+  <script src="/assets/js/vendor/jquery.style.switcher.js"></script>
+  <script src="https://vjs.zencdn.net/7.18.1/video.min.js"></script>
+
+  <!-- Main JS -->
+  <script src="/assets/js/main.js"></script>
+  <script>
+    var video = document.getElementById("myVideo");
+    var btn = document.getElementById("myBtn");
+
+    function myFunction() {
+      if (video.paused) {
+        video.play();
+        btn.innerHTML = "Pause";
+      } else {
+        video.pause();
+        btn.innerHTML = "Play";
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<div class="post-single-wrapper axil-section-gap bg-color-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-1">
+                <!-- Start Banner Area -->
+                <div class="banner banner-single-post post-formate post-layout pb--40">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <!-- Start Single Slide  -->
+                                <div class="content-block">
+                                    <!-- Start Post Content  -->
+                                    <div class="post-content">
+                                        <div class="post-cat">
+                                            <div class="post-cat-list">
+                                                <a class="hover-flip-item-wrapper" href="#">
+                                                    <span class="hover-flip-item">
+                                                        <span data-text="FEATURED POST"><%= post.title %></span>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <h1 class="title"><%= post.title %></h1>
+                                    </div>
+                                    <!-- End Post Content  -->
+                                </div>
+                                <!-- End Single Slide  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Banner Area -->
+                <!-- Start Blog Details  -->
+                <div class="axil-post-details">
+                    <figure class="wp-block-image alignwide text-center">
+
+                            <video
+                                id="my-video"
+                                class="video-js"
+                                controls
+                                preload="auto"
+                                data-setup="{}"
+                            >
+                                <source src="/uploads/<%= uploadsFolderPath %>/<%= post.videoname %>" type="video/mp4" />
+                                <p class="vjs-no-js">
+                                To view this video please enable JavaScript, and consider upgrading to a
+                                web browser that supports HTML5 video
+                                </p>
+                            </video>
+                    </figure>
+                    
+                    <%- post.description %>
+
+                    <div class="tagcloud">
+                        <% for (let category of categories) { %>
+                            <a href="/<%= pathname %>/c/<%= category.url_slug %>" class="tag-item"><%= category.title %></a>
+                        <% } %>
+                    </div>
+                </div>
+                <!-- End Blog Details  -->
+            </div>
+        </div>
+    </div>
+</div>

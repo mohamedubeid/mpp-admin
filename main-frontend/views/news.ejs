@@ -1,0 +1,296 @@
+<!-- Start Banner Area -->
+<h1 class="d-none"><%= newsPosts[0].title %></h1>
+<div class="slider-area bg-color-grey">
+  <div class="axil-slide slider-style-1">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="slider-activation axil-slick-arrow mb--30">
+            <!-- Start Single Slide  -->
+            <div class="content-block">
+              <!-- Start Post Thumbnail  -->
+              <div class="post-thumbnail">
+                <a href="/news/details/<%= newsPosts[0].classified_slug %>">
+                  <img
+                    src="/uploads/banners/<%= newsPosts[0].banner_image %>"
+                    alt="Post Images"
+                  />
+                </a>
+              </div>
+              <!-- End Post Thumbnail  -->
+
+              <!-- Start Post Content  -->
+              <div class="post-content">
+                <div class="post-cat">
+                  <div class="post-cat-list">
+                    <a class="hover-flip-item-wrapper" href="#">
+                      <span class="hover-flip-item">
+                        <span data-text="NEWS">NEWS</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <h2 class="title">
+                  <a href="/news/details/<%= newsPosts[0].classified_slug %>"
+                    ><%= newsPosts[0].title %></a
+                  >
+                </h2>
+                <!-- Post Meta  -->
+                <div class="post-meta-wrapper with-button">
+                  <div class="post-meta">
+                    <div class="content">
+                      <ul class="post-meta-list">
+                        <li><%= newsPosts[0].created_date_time %></li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div class="read-more-button cerchio">
+                    <a
+                      class="axil-button button-rounded hover-flip-item-wrapper"
+                      href="/news/details/<%= newsPosts[0].classified_slug %>"
+                    >
+                      <span class="hover-flip-item">
+                        <span data-text="Read Post">Read Post</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- End Post Content  -->
+            </div>
+            <!-- End Single Slide  -->
+
+            <!-- Start Single Slide  -->
+            <div class="content-block">
+              <!-- Start Post Thumbnail  -->
+              <div class="post-thumbnail">
+                <a href="/news/details/<%= newsPosts[1].classified_slug %>">
+                  <img
+                    src="/uploads/banners/<%= newsPosts[1].banner_image %>"
+                    alt="Post Images"
+                  />
+                </a>
+              </div>
+              <!-- End Post Thumbnail  -->
+              <!-- Start Post Content  -->
+              <div class="post-content">
+                <div class="post-cat">
+                  <div class="post-cat-list">
+                    <a class="hover-flip-item-wrapper" href="#">
+                      <span class="hover-flip-item">
+                        <span data-text="NEWS">NEWS</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <h2 class="title">
+                  <a href="/news/details/<%= newsPosts[1].classified_slug %>"
+                    ><%= newsPosts[1].title %></a
+                  >
+                </h2>
+
+                <!-- Post Meta  -->
+                <div class="post-meta-wrapper with-button">
+                  <div class="post-meta">
+                    <div class="content">
+                      <ul class="post-meta-list">
+                        <li><%= newsPosts[1].created_date_time %></li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="read-more-button cerchio">
+                    <a
+                      class="axil-button button-rounded hover-flip-item-wrapper"
+                      href="/news/details/<%= newsPosts[1].classified_slug %>"
+                    >
+                      <span class="hover-flip-item">
+                        <span data-text="Read Post">Read Post</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <!-- End Post Content  -->
+            </div>
+            <!-- End Single Slide  -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Banner Area -->
+
+<!-- Start Post List Wrapper  -->
+<div class="axil-post-list-area axil-section-gap mt--30">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-xl-8">
+        <% for(let newsPost of newsPosts.slice(2)) { %>
+        <!-- Start Post List  -->
+        <div class="content-block post-list-view mt--30">
+          <div class="post-thumbnail">
+            <a href="/news/details/<%= newsPost.classified_slug %>">
+              <img
+                src="/uploads/banners/<%= newsPost.banner_image %>"
+                alt="Post Images"
+              />
+            </a>
+          </div>
+          <div class="post-content">
+            <div class="post-cat">
+              <div class="post-cat-list">
+                <a class="hover-flip-item-wrapper" href="#">
+                  <span class="hover-flip-item">
+                    <span data-text="NEWS">NEWS</span>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <h4 class="title">
+              <a href="/news/details/<%= newsPost.classified_slug %>"><%= newsPost.title %></a>
+            </h4>
+            <div class="post-meta-wrapper">
+              <div class="post-meta">
+                <div class="content">
+                  <ul class="post-meta-list">
+                    <li><%= newsPost.created_date_time %></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Post List  -->
+        <% } %>
+
+        <!-- Pagination Start -->
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center pagination-lg">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <% for(let page of pagination) { %> <% if (currentPage == page) { %>
+            <li class="page-item <%= 'active' %>">
+              <a class="page-link" href="/news?page=<%= page %>"
+                ><%= page %></a
+              >
+            </li>
+            <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="/news?page=<%= page %>"
+                ><%= page %></a
+              >
+            </li>
+            <% } %> <% } %>
+            <li class="page-item disabled">
+              <a class="page-link" href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- Pagination End -->
+      </div>
+      <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
+        <!-- Start Sidebar Area  -->
+        <div class="sidebar-inner">
+          
+
+          <!-- Start Single Widget  -->
+          <div class="axil-single-widget widget widget_postlist mb--30">
+            <h5 class="widget-title">Popular on AWJ</h5>
+            <!-- Start Post List  -->
+            <div class="post-medium-block">
+
+              <% for(let post of popularPosts) { %>
+                <!-- Start Single Post  -->
+                <div class="content-block post-medium mb--20">
+                  <div class="post-thumbnail">
+                    <a href="/<%= post.URLPath %>/details/<%= post.classified_slug %>">
+                      <img
+                        src="/uploads/<%= post.uploadsDirName %>/<%= post.banner_image %>"
+                        alt="Post Images"
+                      />
+                    </a>
+                  </div>
+                  <div class="post-content">
+                    <h6 class="title">
+                      <a href="/<%= post.URLPath %>/details/<%= post.classified_slug %>">
+                        <%= post.title %>
+                      </a>
+                    </h6>
+                    <div class="post-meta">
+                      <ul class="post-meta-list">
+                        <li><%= post.created_date_time %></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Single Post  -->
+                <% } %>
+              
+            </div>
+            <!-- End Post List  -->
+          </div>
+          <!-- End Single Widget  -->
+
+          <!-- Start Single Widget  -->
+          <div class="axil-single-widget widget widget_social mb--30">
+            <h5 class="widget-title">Stay In Touch</h5>
+            <!-- Start Post List  -->
+            <ul class="social-icon md-size justify-content-center">
+              <li>
+                <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i class="fab fa-facebook-f"></i></a>
+              </li>
+              <li>
+                <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i class="fab fa-instagram"></i></a>
+              </li>
+              <li>
+                <a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i class="fab fa-twitter"></i></a>
+              </li>
+            </ul>
+            <!-- End Post List  -->
+          </div>
+          <!-- End Single Widget  -->
+
+          <!-- Start Single Widget  -->
+          <div class="axil-single-widget widget widget_postlist mb--30">
+            <h5 class="widget-title">Recent Post</h5>
+            <!-- Start Post List  -->
+            <div class="post-medium-block">
+              
+              <% for(let newsPost of firstThreeNewsPosts) { %>
+                <!-- Start Single Post  -->
+                <div class="content-block post-medium mb--20">
+                  <div class="post-content">
+                    <h6 class="title">
+                      <a href="/news/details/<%= newsPost.classified_slug %>"><%= newsPost.title %></a>
+                    </h6>
+                    <div class="post-meta">
+                      <ul class="post-meta-list">
+                        <li><%= newsPost.created_date_time %></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Single Post  -->
+                <% } %>
+
+            </div>
+            <!-- End Post List  -->
+          </div>
+          <!-- End Single Widget  -->
+        </div>
+        <!-- End Sidebar Area  -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Post List Wrapper  -->
