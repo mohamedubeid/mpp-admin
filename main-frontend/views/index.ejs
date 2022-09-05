@@ -1,0 +1,1339 @@
+<script>
+
+  window.onload = () => {
+    localStorage.setItem("popup_was_shown", true)
+    if (params.success) {
+      alert(params.success)
+    } else if (params.error) {
+      alert(params.error)
+    }
+  }
+</script>
+
+<!-- Start Subscribe Area  -->
+<div class="subscribe-popup" id="subscribe-popup">
+  <div class="subscribe-popup-inner">
+    <div class="close-popup">
+      <i class="fal fa-times"></i>
+    </div>
+    <div class="row no-gutters pop-up-newsletter">
+      <div class="col-lg-6">
+        <div class="img-container">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="newsletter-widget weekly-newsletter">
+          <div class="newsletter-content">
+            <div class="newsletter-icon">
+              <i class="feather icon-send"></i>
+            </div>
+            <div class="section-title">
+              <h4 class="axil-title mb--20">Subscribe to our newsletter</h4>
+              <p class="mb--30 b2">Sign up for our newsletter and be the first to know about our latest news
+                and upcoming events.</p>
+            </div>
+            <a href="/#subscribe-form" class="axil-button button-rounded close-button"><span>Subscribe</span></a>
+            <div class="form-group">
+            </div>
+            <p class="mb--0 primary-color b2 close-button">No, Thanks</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Subscribe Area -->
+
+<!-- Start Featured Area  -->
+<div class="axil-featured-post axil-section-gap bg-color-grey">
+
+  <div class="container">
+    <div class="col-lg-12">
+      <ul class="axil-tab-button nav nav-tabs mt--20" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="grid-one" data-bs-toggle="tab" href="#gridone" role="tab"
+            aria-controls="grid-one" aria-selected="true">Watches</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="grid-two" data-bs-toggle="tab" href="#gridtwo" role="tab" aria-controls="grid-two"
+            aria-selected="false">Jewellery</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="grid-three" data-bs-toggle="tab" href="#gridthree" role="tab"
+            aria-controls="grid-three" aria-selected="false">Celebrities</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="grid-four" data-bs-toggle="tab" href="#gridfour" role="tab" aria-controls="grid-four"
+            aria-selected="false">TV</a>
+        </li>
+      </ul>
+      <div class="grid-tab-content tab-content mt--10">
+        <div class="single-post-grid tab-pane fade show active" id="gridone" role="tabpanel">
+          <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-12 col-12">
+              <!-- Start Post Grid  -->
+              <div class="content-block post-grid post-grid-large mt--30 sticky-tag">
+                <div class="post-thumbnail">
+                  <a href="/watches/details/<%= watchPosts[0].classified_slug%>">
+                    <img src="uploads/watches/<%= watchPosts[0].banner_image%>" alt="Post Images" />
+                  </a>
+                </div>
+                <div class="post-grid-content">
+                  <div class="post-content">
+                    <div class="post-cat">
+                      <div class="post-cat-list">
+                        <a class="hover-flip-item-wrapper" href="#">
+                          <span class="hover-flip-item">
+                            <span data-text="WATCHES">WATCHES</span>
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                    <h3 class="title">
+                      <a href="/watches/details/<%= watchPosts[0].classified_slug%>">
+                        <%= watchPosts[0].title%>
+                      </a>
+                    </h3>
+                    <div class="post-meta-wrapper">
+                      <div class="post-meta">
+                        <div class="content">
+                          <ul class="post-meta-list">
+                            <li>
+                              <%= watchPosts[0].created_date_time%>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <ul class="social-share-transparent justify-content-end">
+                        <li><a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i
+                              class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                              class="fab fa-instagram"></i></a></li>
+                        <li><a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i
+                              class="fab fa-twitter"></i></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Start Post Grid  -->
+            </div>
+
+            <div class="col-xl-5 col-lg-5 col-md-12 col-12">
+              <div class="row">
+
+                <% for(let watchPost of watchPosts.slice(1)) { %>
+                  <!-- Start Post Grid  -->
+                  <div class="content-block post-grid mt--30">
+                    <div class="post-thumbnail">
+                      <a href="/watches/details/<%= watchPost.classified_slug%>">
+                        <img src="uploads/watches/<%= watchPost.banner_image %>" alt="Post Images" />
+                      </a>
+                    </div>
+                    <div class="post-grid-content">
+                      <div class="post-content">
+                        <div class="post-cat">
+                          <div class="post-cat-list">
+                            <a class="hover-flip-item-wrapper" href="/watches">
+                              <span class="hover-flip-item">
+                                <span data-text="WATCHES">WATCHES</span>
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                        <h5 class="title">
+                          <a href="/watches/details/<%= watchPost.classified_slug%>">
+                            <%= watchPost.title %>
+                          </a>
+                        </h5>
+                        <div class="post-meta">
+                          <div class="content">
+                            <ul class="post-meta-list">
+                              <li>
+                                <%= watchPost.created_date_time %>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Post Grid  -->
+                  <% } %>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="single-post-grid tab-pane fade" id="gridtwo" role="tabpanel">
+          <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-12 col-12">
+              <!-- Start Post Grid  -->
+              <div class="content-block post-grid post-grid-large mt--30 sticky-tag">
+                <div class="post-thumbnail">
+                  <a href="/jewelry/details/<%= jewelryPosts[0].classified_slug%>">
+                    <img src="uploads/jewelry/<%= jewelryPosts[0].banner_image%>" alt="Post Images" />
+                  </a>
+                </div>
+                <div class="post-grid-content">
+                  <div class="post-content">
+                    <div class="post-cat">
+                      <div class="post-cat-list">
+                        <a class="hover-flip-item-wrapper" href="#">
+                          <span class="hover-flip-item">
+                            <span data-text="JEWELLERY">JEWELLERY</span>
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                    <h3 class="title">
+                      <a href="/jewelry/details/<%= jewelryPosts[0].classified_slug%>">
+                        <%= jewelryPosts[0].title%>
+                      </a>
+                    </h3>
+                    <div class="post-meta-wrapper">
+                      <div class="post-meta">
+                        <div class="content">
+                          <ul class="post-meta-list">
+                            <li>
+                              <%= jewelryPosts[0].created_date_time%>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <ul class="social-share-transparent justify-content-end">
+                        <li><a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i
+                              class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                              class="fab fa-instagram"></i></a></li>
+                        <li><a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i
+                              class="fab fa-twitter"></i></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Start Post Grid  -->
+            </div>
+
+            <div class="col-xl-5 col-lg-5 col-md-12 col-12">
+              <div class="row">
+
+                <% for(let jewelryPost of jewelryPosts.slice(1)) { %>
+                  <!-- Start Post Grid  -->
+                  <div class="content-block post-grid mt--30">
+                    <div class="post-thumbnail">
+                      <a href="/jewelry/details/<%= jewelryPost.classified_slug%>">
+                        <img src="uploads/jewelry/<%= jewelryPost.banner_image %>" alt="Post Images" />
+                      </a>
+                    </div>
+                    <div class="post-grid-content">
+                      <div class="post-content">
+                        <div class="post-cat">
+                          <div class="post-cat-list">
+                            <a class="hover-flip-item-wrapper" href="/jewelry">
+                              <span class="hover-flip-item">
+                                <span data-text="JEWELLERY">JEWELLERY</span>
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                        <h5 class="title">
+                          <a href="/jewelry/details/<%= jewelryPost.classified_slug%>">
+                            <%= jewelryPost.title %>
+                          </a>
+                        </h5>
+                        <div class="post-meta">
+                          <div class="content">
+                            <ul class="post-meta-list">
+                              <li>
+                                <%= jewelryPost.created_date_time %>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Post Grid  -->
+                  <% } %>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="single-post-grid tab-pane fade" id="gridthree" role="tabpanel">
+          <div class="row">
+            <div class="col-xl-7 col-lg-7 col-md-12 col-12">
+              <!-- Start Post Grid  -->
+              <div class="content-block post-grid post-grid-large mt--30 sticky-tag">
+                <div class="post-thumbnail">
+                  <a href="/celebrities/details/<%= celebrityPosts[0].classified_slug%>">
+                    <img src="/uploads/celebrity/<%= celebrityPosts[0].banner_image%>" alt="Post Images" />
+                  </a>
+                </div>
+                <div class="post-grid-content">
+                  <div class="post-content">
+                    <div class="post-cat">
+                      <div class="post-cat-list">
+                        <a class="hover-flip-item-wrapper" href="#">
+                          <span class="hover-flip-item">
+                            <span data-text="CELEBRITIES">CELEBRITIES</span>
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                    <h3 class="title">
+                      <a href="/celebrities/details/<%= celebrityPosts[0].classified_slug%>">
+                        <%= celebrityPosts[0].title%>
+                      </a>
+                    </h3>
+                    <div class="post-meta-wrapper">
+                      <div class="post-meta">
+                        <div class="content">
+                          <ul class="post-meta-list">
+                            <li>
+                              <%= celebrityPosts[0].created_date_time%>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <ul class="social-share-transparent justify-content-end">
+                        <li><a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i
+                              class="fab fa-facebook-f"></i></a></li>
+                        <li><a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                              class="fab fa-instagram"></i></a></li>
+                        <li><a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i
+                              class="fab fa-twitter"></i></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Start Post Grid  -->
+            </div>
+
+            <div class="col-xl-5 col-lg-5 col-md-12 col-12">
+              <div class="row">
+
+                <% for(let celebrityPost of celebrityPosts.slice(1)) { %>
+                  <!-- Start Post Grid  -->
+                  <div class="content-block post-grid mt--30">
+                    <div class="post-thumbnail">
+                      <a href="/celebrities/details/<%= celebrityPost.classified_slug%>">
+                        <img src="/uploads/celebrity/<%= celebrityPost.banner_image %>" alt="Post Images" />
+                      </a>
+                    </div>
+                    <div class="post-grid-content">
+                      <div class="post-content">
+                        <div class="post-cat">
+                          <div class="post-cat-list">
+                            <a class="hover-flip-item-wrapper" href="/celebrities">
+                              <span class="hover-flip-item">
+                                <span data-text="CELEBRITIES">CELEBRITIES</span>
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                        <h5 class="title">
+                          <a href="/celebrities/details/<%= celebrityPost.classified_slug%>">
+                            <%= celebrityPost.title %>
+                          </a>
+                        </h5>
+                        <div class="post-meta">
+                          <div class="content">
+                            <ul class="post-meta-list">
+                              <li>
+                                <%= celebrityPost.created_date_time %>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Post Grid  -->
+                  <% } %>
+              </div>
+            </div>
+          </div>
+          </div>
+
+
+          <div class="single-post-grid tab-pane fade" id="gridfour" role="tabpanel">
+            <div class="row">
+              <div class="col-xl-7 col-lg-7 col-md-12 col-12">
+                <!-- Start Post Grid  -->
+                <div class="content-block post-grid post-grid-large mt--30 sticky-tag">
+                  <div class="post-thumbnail">
+                    <a href="/tv/details/<%= tvPosts[0].classified_slug%>">
+                      <img src="/uploads/tv/<%= tvPosts[0].banner_image%>" alt="Post Images" />
+                    </a>
+                  </div>
+                  <div class="post-grid-content">
+                    <div class="post-content">
+                      <div class="post-cat">
+                        <div class="post-cat-list">
+                          <a class="hover-flip-item-wrapper" href="#">
+                            <span class="hover-flip-item">
+                              <span data-text="TV">TV</span>
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+                      <h3 class="title">
+                        <a href="/tv/details/<%= tvPosts[0].classified_slug%>">
+                          <%= tvPosts[0].title%>
+                        </a>
+                      </h3>
+                      <div class="post-meta-wrapper">
+                        <div class="post-meta">
+                          <div class="content">
+                            <ul class="post-meta-list">
+                              <li>
+                                <%= tvPosts[0].created_date_time%>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <ul class="social-share-transparent justify-content-end">
+                          <li><a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i
+                                class="fab fa-facebook-f"></i></a></li>
+                          <li><a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                                class="fab fa-instagram"></i></a></li>
+                          <li><a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i
+                                class="fab fa-twitter"></i></a></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Start Post Grid  -->
+              </div>
+
+              <div class="col-xl-5 col-lg-5 col-md-12 col-12">
+                <div class="row">
+
+                  <% for(let tvPost of tvPosts.slice(1)) { %>
+                    <!-- Start Post Grid  -->
+                    <div class="content-block post-grid mt--30">
+                      <div class="post-thumbnail">
+                        <a href="/tv/details/<%= tvPost.classified_slug%>">
+                          <img src="uploads/tv/<%= tvPost.banner_image %>" alt="Post Images" />
+                        </a>
+                      </div>
+                      <div class="post-grid-content">
+                        <div class="post-content">
+                          <div class="post-cat">
+                            <div class="post-cat-list">
+                              <a class="hover-flip-item-wrapper" href="/tv">
+                                <span class="hover-flip-item">
+                                  <span data-text="TV">TV</span>
+                                </span>
+                              </a>
+                            </div>
+                          </div>
+                          <h5 class="title">
+                            <a href="/tv/details/<%= tvPost.classified_slug%>">
+                              <%= tvPost.title %>
+                            </a>
+                          </h5>
+                          <div class="post-meta">
+                            <div class="content">
+                              <ul class="post-meta-list">
+                                <li>
+                                  <%= tvPost.created_date_time %>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End Post Grid  -->
+                    <% } %>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <!-- End Featured Area  -->
+
+  <!-- Start Tab Area  -->
+  <div class="axil-tab-area axil-section-gap bg-color-white">
+    <div class="wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="axil-banner">
+              <div class="thumbnail">
+                <a href="#">
+                  <img class="w-100" src="/assets/images/add-banner/banner-03.png" alt="Banner Images"
+                    style="border-radius: 15px" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Tab Area  -->
+
+  <!-- Start Categories List  -->
+  <div class="axil-categories-list axil-section-gap bg-color-grey">
+    <div class="container">
+      <div class="row align-items-center mb--30">
+        <div class="col-lg-6 col-md-8 col-sm-8 col-12">
+          <div class="section-title">
+            <h2 class="title">Arabian Watches & Jewellery</h2>
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-4 col-sm-4 col-12">
+          <div class="see-all-topics text-start text-sm-end mt_mobile--20">
+            <!-- <a class="axil-link-button" href="#">See All Topics</a> -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <!-- Start List Wrapper  -->
+          <div class="list-categories d-flex flex-wrap">
+            <!-- Start Single Category  -->
+            <div class="single-cat">
+              <div class="inner">
+                <a href="/watches">
+                  <div class="thumbnail">
+                    <img src="/assets/images/post-images/post-sm-08.png" alt="post categories images" />
+                  </div>
+                  <div class="content">
+                    <h5 class="title">Watches</h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <!-- End Single Category  -->
+
+            <!-- Start Single Category  -->
+            <div class="single-cat">
+              <div class="inner">
+                <a href="/jewelry">
+                  <div class="thumbnail">
+                    <img src="/assets/images/post-images/post-sm-02.jpg" alt="post categories images" />
+                  </div>
+                  <div class="content">
+                    <h5 class="title">Jewellery</h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <!-- End Single Category  -->
+
+            <!-- Start Single Category  -->
+            <div class="single-cat">
+              <div class="inner">
+                <a href="/celebrities">
+                  <div class="thumbnail">
+                    <img src="/assets/images/post-images/post-sm-10.png" alt="post categories images" />
+                  </div>
+                  <div class="content">
+                    <h5 class="title">Celebrities</h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <!-- End Single Category  -->
+
+            <!-- Start Single Category  -->
+            <div class="single-cat">
+              <div class="inner">
+                <a href="/news">
+                  <div class="thumbnail">
+                    <img src="/assets/images/post-images/post-sm-04.jpg" alt="post categories images" />
+                  </div>
+                  <div class="content">
+                    <h5 class="title">News</h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <!-- End Single Category  -->
+
+            <!-- Start Single Category  -->
+            <div class="single-cat">
+              <div class="inner">
+                <a href="/lifestyle">
+                  <div class="thumbnail">
+                    <img src="/assets/images/post-images/post-sm-05.jpg" alt="post categories images" />
+                  </div>
+                  <div class="content">
+                    <h5 class="title">Lifestyle</h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <!-- End Single Category  -->
+
+            <!-- Start Single Category  -->
+            <div class="single-cat">
+              <div class="inner">
+                <a href="/tv">
+                  <div class="thumbnail">
+                    <img src="/assets/images/post-images/post-sm-06.jpg" alt="post categories images" />
+                  </div>
+                  <div class="content">
+                    <h5 class="title">TV</h5>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <!-- End Single Category  -->
+          </div>
+          <!-- Start List Wrapper  -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Start Categories List  -->
+
+  <!-- Start Trending Post Area  -->
+  <div class="axil-trending-post-area axil-section-gap bg-color-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-title">
+            <h2 class="title">Most Popular</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <!-- Start Axil Tab Button  -->
+          <ul class="axil-tab-button nav nav-tabs mt--20" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link active" id="trend-one" data-bs-toggle="tab" href="#trendone" role="tab"
+                aria-controls="trend-one" aria-selected="true">News</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="trend-two" data-bs-toggle="tab" href="#trendtwo" role="tab"
+                aria-controls="trend-two" aria-selected="false">Lifestyle</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="trend-three" data-bs-toggle="tab" href="#trendthree" role="tab"
+                aria-controls="trend-three" aria-selected="false">Magazine</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" id="trend-four" data-bs-toggle="tab" href="#trendfour" role="tab"
+                aria-controls="trend-four" aria-selected="false">Events</a>
+            </li>
+          </ul>
+          <!-- End Axil Tab Button  -->
+          <!-- Start Axil Tab Content  -->
+          <div class="tab-content">
+            <!-- Single Tab Content  -->
+            <div class="row trend-tab-content tab-pane fade show active" id="trendone" role="tabpanel"
+              aria-labelledby="trend-one">
+              <div class="col-lg-8">
+                <% for(let i=0; i < newsPosts.length; i++) { %>
+                  <!-- Start Single Post  -->
+                  <div class="content-block trend-post post-order-list axil-control">
+                    <div class="post-inner">
+                      <!-- <span class="post-order-list"> <%= i+1 %> </span> -->
+                      <div class="post-content">
+                        <div class="post-cat">
+                          <div class="post-cat-list">
+                            <a class="hover-flip-item-wrapper" href="/news/details/<%= newsPosts[i].classified_slug %>">
+                              <span class="hover-flip-item">
+                                <span data-text="<%= newsPosts[i].title %>">
+                                  <%= newsPosts[i].title %>
+                                </span>
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                        <h3 class="title">
+                          <a href="/news/details/<%= newsPosts[i].classified_slug %>">
+                            <%= newsPosts[i].title %>
+                          </a>
+                        </h3>
+                      </div>
+                    </div>
+                    <div class="post-thumbnail">
+                      <a href="/news/details/<%= newsPosts[i].classified_slug %>">
+                        <img src="uploads/banners/<%= newsPosts[i].banner_image %>" alt="Post Images" />
+                      </a>
+                    </div>
+                  </div>
+                  <!-- End Single Post  -->
+                  <% } %>
+              </div>
+            </div>
+
+            <!-- Single Tab Content  -->
+
+            <!-- Single Tab Content  -->
+            <div class="row trend-tab-content tab-pane fade" id="trendtwo" role="tabpanel" aria-labelledby="trend-two">
+              <div class="col-lg-8">
+                <% for(let i=0; i < lifestylePosts.length; i++) { %>
+                  <!-- Start Single Post  -->
+                  <div class="content-block trend-post post-order-list axil-control">
+                    <div class="post-inner">
+                      <!-- <span class="post-order-list">
+                        <%= i+1 %>
+                      </span> -->
+                      <div class="post-content">
+                        <div class="post-cat">
+                          <div class="post-cat-list">
+                            <a class="hover-flip-item-wrapper"
+                              href="/lifestyle/details/<%= lifestylePosts[i].classified_slug %>">
+                              <span class="hover-flip-item">
+                                <span data-text="<%= lifestylePosts[i].title %>">
+                                  <%= lifestylePosts[i].title %>
+                                </span>
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                        <h3 class="title">
+                          <a href="/lifestyle/details/<%= lifestylePosts[i].classified_slug %>">
+                            <%= lifestylePosts[i].title %>
+                          </a>
+                        </h3>
+                        <div class="post-meta-wrapper">
+                          <div class="post-meta">
+                            <div class="content">
+                              <ul class="post-meta-list">
+                                <li>
+                                  <%= lifestylePosts[i].created_date_time %>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <ul class="social-share-transparent justify-content-end">
+                            <li>
+                              <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i
+                                  class="fab fa-facebook-f"></i></a>
+                            </li>
+                            <li>
+                              <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                                  class="fab fa-instagram"></i></a>
+                            </li>
+                            <li>
+                              <a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i
+                                  class="fab fa-twitter"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="post-thumbnail">
+                      <a href="/lifestyle/details/<%= lifestylePosts[i].classified_slug %>">
+                        <img src="uploads/events/<%= lifestylePosts[i].banner_image %>" alt="Post Images" />
+                      </a>
+                    </div>
+                  </div>
+                  <!-- End Single Post  -->
+                  <% } %>
+              </div>
+            </div>
+            <!-- Single Tab Content  -->
+
+            <!-- Single Tab Content  -->
+            <div class="row trend-tab-content tab-pane fade" id="trendthree" role="tabpanel"
+              aria-labelledby="trend-two">
+              <div class="col-lg-8">
+                <% for(let i=0; i < magazinePosts.length-2; i++) { %>
+                  <!-- Start Single Post  -->
+                  <div class="content-block trend-post post-order-list axil-control">
+                    <div class="post-inner">
+                      <!-- <span class="post-order-list">
+                        <%= i+1 %>
+                      </span> -->
+                      <div class="post-content">
+                        <div class="post-cat">
+                          <div class="post-cat-list">
+                            <a class="hover-flip-item-wrapper"
+                              href="/magazine/details/<%= magazinePosts[i].classified_slug %>">
+                              <span class="hover-flip-item">
+                                <span data-text="<%= magazinePosts[i].title %>">
+                                  <%= magazinePosts[i].title %>
+                                </span>
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                        <h3 class="title">
+                          <a href="/magazine/details/<%= magazinePosts[i].classified_slug %>">
+                            <%= magazinePosts[i].title %>
+                          </a>
+                        </h3>
+                        <div class="post-meta-wrapper">
+                          <div class="post-meta">
+                            <div class="content">
+                              <ul class="post-meta-list">
+                                <li>
+                                  <%= magazinePosts[i].created_date_time %>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <ul class="social-share-transparent justify-content-end">
+                            <li>
+                              <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i
+                                  class="fab fa-facebook-f"></i></a>
+                            </li>
+                            <li>
+                              <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                                  class="fab fa-instagram"></i></a>
+                            </li>
+                            <li>
+                              <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                                  class="fab fa-twitter"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="post-thumbnail">
+                      <a href="/magazine/details/<%= magazinePosts[i].classified_slug %>">
+                        <img src="uploads/magazines/<%= magazinePosts[i].banner_image %>" alt="Post Images" />
+                      </a>
+                    </div>
+                  </div>
+                  <!-- End Single Post  -->
+                  <% } %>
+              </div>
+            </div>
+            <!-- Single Tab Content  -->
+
+            <!-- Single Tab Content  -->
+            <div class="row trend-tab-content tab-pane fade" id="trendfour" role="tabpanel" aria-labelledby="trend-two">
+              <div class="col-lg-8">
+                <% for(let i=0; i < eventPosts.length; i++) { %>
+                  <!-- Start Single Post  -->
+                  <div class="content-block trend-post post-order-list axil-control">
+                    <div class="post-inner">
+                      <!-- <span class="post-order-list">
+                        <%= i+1 %>
+                      </span> -->
+                      <div class="post-content">
+                        <div class="post-cat">
+                          <div class="post-cat-list">
+                            <a class="hover-flip-item-wrapper"
+                              href="/events/details/<%= eventPosts[i].classified_slug %>">
+                              <span class="hover-flip-item">
+                                <span data-text="<%= eventPosts[i].title %>">
+                                  <%= eventPosts[i].title %>
+                                </span>
+                              </span>
+                            </a>
+                          </div>
+                        </div>
+                        <h3 class="title">
+                          <a href="/events/details/<%= eventPosts[i].classified_slug %>">
+                            <%= eventPosts[i].title %>
+                          </a>
+                        </h3>
+                        <div class="post-meta-wrapper">
+                          <div class="post-meta">
+                            <div class="content">
+                              <ul class="post-meta-list">
+                                <li>
+                                  <%= eventPosts[i].created_date_time %>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                          <ul class="social-share-transparent justify-content-end">
+                            <li>
+                              <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i
+                                  class="fab fa-facebook-f"></i></a>
+                            </li>
+                            <li>
+                              <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                                  class="fab fa-instagram"></i></a>
+                            </li>
+                            <li>
+                              <a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i
+                                  class="fab fa-twitter"></i></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="post-thumbnail">
+                      <a href="/events/details/<%= eventPosts[i].classified_slug %>">
+                        <img src="uploads/events/<%= eventPosts[i].banner_image %>" alt="Post Images" />
+                      </a>
+                    </div>
+                  </div>
+                  <!-- End Single Post  -->
+                  <% } %>
+              </div>
+            </div>
+            <!-- Single Tab Content  -->
+          </div>
+          <!-- End Axil Tab Content  -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Trending Post Area  -->
+
+  <!-- Start Post Grid Area  -->
+  <div class="axil-post-grid-area axil-section-gap bg-color-grey">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="axil-social-wrapper bg-color-white radius">
+            <ul class="social-with-text">
+              <li class="instagram">
+                <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i
+                    class="fab fa-instagram"></i><span>Instagram</span></a>
+              </li>
+              <li class="facebook">
+                <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i
+                    class="fab fa-facebook-f"></i><span>Facebook</span></a>
+              </li>
+              <li class="twitter">
+                <a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i
+                    class="fab fa-twitter"></i><span>Twitter</span></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- End Post Grid Area  -->
+
+  <!-- Start Post List Wrapper  -->
+  <div class="axil-post-list-area post-listview-visible-color axil-section-gap bg-color-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-xl-8">
+          <div class="axil-banner"></div>
+
+          <!-- Start Post List  -->
+          <div class="content-block post-list-view axil-control is-active mt--30">
+            <div class="post-thumbnail">
+              <a href="/events/details/<%= eventPosts[0].classified_slug %>">
+                <img src="/uploads/events/<%= eventPosts[0].banner_image %>" alt="Post Images" />
+              </a>
+            </div>
+            <div class="post-content row align-items-center">
+              <div class="post-cat">
+                <div class="post-cat-list">
+                  <a class="hover-flip-item-wrapper" href="/events/details/<%= eventPosts[0].classified_slug %>">
+                    <span class="hover-flip-item">
+                      <span data-text="EVENT">EVENT</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <h4 class="title">
+                <a href="/events/details/<%= eventPosts[0].classified_slug %>">
+                  <%= eventPosts[0].title %>
+                </a>
+              </h4>
+              <div class="post-meta-wrapper">
+                <div class="post-meta">
+                  <div class="content">
+                    <ul class="post-meta-list">
+                      <li>
+                        <%= eventPosts[0].created_date_time %>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-block post-list-view axil-control is-active mt--30">
+            <div class="post-thumbnail">
+              <a href="/magazine/details/<%= magazinePosts[4].classified_slug %>">
+                <img src="/uploads/magazine/<%= magazinePosts[4].banner_image %>" alt="Post Images" />
+              </a>
+            </div>
+            <div class="post-content row align-items-center">
+              <div class="post-cat">
+                <div class="post-cat-list">
+                  <a class="hover-flip-item-wrapper" href="/magazine/details/<%= magazinePosts[4].classified_slug %>">
+                    <span class="hover-flip-item">
+                      <span data-text="MAGAZINE">MAGAZINE</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <h4 class="title">
+                <a href="/magazine/details/<%= magazinePosts[4].classified_slug %>">
+                  <%= magazinePosts[4].title %>
+                </a>
+              </h4>
+              <div class="post-meta-wrapper">
+                <div class="post-meta">
+                  <div class="content">
+                    <ul class="post-meta-list">
+                      <li>
+                        <%= magazinePosts[4].created_date_time %>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-block post-list-view axil-control is-active mt--30">
+            <div class="post-thumbnail">
+              <a href="/magazine/details/<%= magazinePosts[5].classified_slug %>">
+                <img src="/uploads/magazine/<%= magazinePosts[5].banner_image %>" alt="Post Images" />
+              </a>
+            </div>
+            <div class="post-content row align-items-center">
+              <div class="post-cat">
+                <div class="post-cat-list">
+                  <a class="hover-flip-item-wrapper" href="/magazine/details/<%= magazinePosts[5].classified_slug %>">
+                    <span class="hover-flip-item">
+                      <span data-text="MAGAZINE">MAGAZINE</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <h4 class="title">
+                <a href="/magazine/details/<%= magazinePosts[5].classified_slug %>">
+                  <%= magazinePosts[5].title %>
+                </a>
+              </h4>
+              <div class="post-meta-wrapper">
+                <div class="post-meta">
+                  <div class="content">
+                    <ul class="post-meta-list">
+                      <li>
+                        <%= magazinePosts[5].created_date_time %>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Post List  -->
+
+          <!-- End Post List  -->
+
+          <!-- Start Post List  -->
+
+          <!-- End Post List  -->
+
+          <!-- Start Post List  -->
+
+          <!-- End Post List  -->
+        </div>
+        <div class="col-lg-4 col-xl-4 mt_md--40 mt_sm--40">
+          <!-- Start Sidebar Area  -->
+          <div class="sidebar-inner">
+            <!-- Start Single Widget  -->
+
+            <!-- End Single Widget  -->
+
+            <!-- Start Single Widget  -->
+            <div class="axil-single-widget widget widget_search mb--30">
+              <h5 class="widget-title">Search</h5>
+              <form action="#">
+                <div class="axil-search form-group">
+                  <button type="submit" class="search-button">
+                    <i class="fal fa-search"></i>
+                  </button>
+                  <input type="text" class="form-control" placeholder="Search" />
+                </div>
+              </form>
+            </div>
+            <!-- End Single Widget  -->
+
+            <!-- Start Single Widget  -->
+            <div class="axil-single-widget widget widget_postlist mb--30">
+              <h5 class="widget-title">Popular on Arabian Watches & Jewellery</h5>
+              <!-- Start Post List  -->
+              <div class="post-medium-block">
+                <!-- Start Single Post  -->
+
+                <% for(let post of popularPosts) { %>
+                  <div class="content-block post-medium mb--20">
+                    <div class="post-thumbnail">
+                      <a href="/<%= post.URLPath %>/details/<%= post.classified_slug %>">
+                        <img src="/uploads/<%= post.uploadsDirName %>/<%= post.banner_image %>" alt="Post Images" />
+                      </a>
+                    </div>
+                    <div class="post-content">
+                      <h6 class="title">
+                        <a href="/<%= post.URLPath %>/details/<%= post.classified_slug %>">
+                          <%= post.title %>
+                        </a>
+                      </h6>
+                      <div class="post-meta">
+                        <ul class="post-meta-list">
+                          <li>
+                            <%= post.created_date_time %>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- End Single Post  -->
+
+                  <% } %>
+              </div>
+              <!-- End Post List  -->
+            </div>
+            <!-- End Single Widget  -->
+
+            <!-- Start Single Widget  -->
+            <div class="axil-single-widget widget widget_social mb--30">
+              <h5 class="widget-title">Stay In Touch</h5>
+              <!-- Start Post List  -->
+              <ul class="social-icon md-size justify-content-center">
+                <li>
+                  <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i class="fab fa-facebook-f"></i></a>
+                </li>
+                <li>
+                  <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i class="fab fa-instagram"></i></a>
+                </li>
+                <li>
+                  <a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i class="fab fa-twitter"></i></a>
+                </li>
+              </ul>
+              <!-- End Post List  -->
+            </div>
+            <!-- End Single Widget  -->
+
+            <!-- Start Single Widget  -->
+
+            <!-- End Single Widget  -->
+          </div>
+          <!-- End Sidebar Area  -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Post List Wrapper  -->
+
+
+  <!-- Start USE OUR APP  -->
+  <div class="axil-post-grid-area axil-section-gap bg-color-grey">
+    <div class="container">
+      <div class="row ">
+
+        <div class="col-lg-6">
+          <h2 class="title">USE OUR APP NOW!</h2>
+          <br>
+          <h5> AWJ news APP is now avaliable on both IOS and Andriod devices.</h5>
+          <br>
+
+          <div class="d-flex">
+
+
+            <a class="axil-button button-rounded hover-flip-item-wrapper"
+              href="<%= socialMediaLinks.appleLink.setting.value %>" style="margin-right: 10px">
+              <span class="hover-flip-item lni lni-apple mr-2">
+                <span data-text="Download for IOS">
+                  Download for IOS
+                </span>
+              </span>
+            </a>
+            <a class="axil-button button-rounded hover-flip-item-wrapper"
+              href="<%= socialMediaLinks.androidLink.setting.value %>">
+              <span class="hover-flip-item lni lni-play-store mr-2">
+                <span data-text="Download for Andriod">
+                  Download for Android
+                </span>
+              </span>
+            </a>
+
+          </div>
+        </div>
+
+        <div class="col-lg-6 text-lg-right text-center mt-5 mt-lg-0">
+          <div class="banner-phone-image"> <img class="app-download" src="./assets/images/others/Iphone-X.png">
+          </div>
+        </div>
+
+
+
+
+      </div>
+    </div>
+  </div>
+  <!-- End Use Our App -->
+
+  <!-- Start Video Area  -->
+  <div class="axil-video-post-area axil-section-gap bg-color-black">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="section-title">
+            <h2 class="title">AWJ TV</h2>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-md-6 col-12">
+          <!-- Start Post List  -->
+          <div class="content-block post-default image-rounded mt--30">
+            <div class="post-thumbnail">
+              <a href="/photoshoot/details/<%= photoshootPosts[0].classified_slug %>">
+                <img src="/uploads/photoshoot/<%= photoshootPosts[0].banner_image %>" alt="Post Images" />
+              </a>
+            </div>
+            <div class="post-content">
+              <div class="post-cat">
+                <div class="post-cat-list">
+                  <a class="hover-flip-item-wrapper" href="#">
+                    <span class="hover-flip-item">
+                      <span data-text="PhotoShoot">PhotoShoot</span>
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <h3 class="title">
+                <a href="/photoshoot/details/<%= photoshootPosts[0].classified_slug %>">
+                  <%= photoshootPosts[0].title%>
+                </a>
+              </h3>
+              <div class="post-meta-wrapper">
+                <div class="post-meta">
+                  <div class="content">
+                    <ul class="post-meta-list">
+                      <li>
+                        <%= photoshootPosts[0].created_date_time %>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <ul class="social-share-transparent justify-content-end">
+                  <li>
+                    <a href="<%= socialMediaLinks.facebookLink.setting.value %>"><i class="fab fa-facebook-f"></i></a>
+                  </li>
+                  <li>
+                    <a href="<%= socialMediaLinks.instagramLink.setting.value %>"><i class="fab fa-instagram"></i></a>
+                  </li>
+                  <li>
+                    <a href="<%= socialMediaLinks.twitterLink.setting.value %>"><i class="fab fa-twitter"></i></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- End Post List  -->
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-md-6 col-12">
+          <div class="row">
+            <% for(let photoshootPost of photoshootPosts.slice(1)) { %>
+              <!-- Start Post List  -->
+              <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+                <div class="content-block post-default image-rounded mt--30">
+                  <div class="post-thumbnail">
+                    <a href="/photoshoot/details/<%= photoshootPost.classified_slug %>">
+                      <img src="/uploads/photoshoot/<%= photoshootPost.banner_image %>" alt="Post Images" />
+                    </a>
+                  </div>
+                  <div class="post-content">
+                    <div class="post-cat">
+                      <div class="post-cat-list">
+                        <a class="hover-flip-item-wrapper" href="#">
+                          <span class="hover-flip-item">
+                            <span data-text="PHOTOSHOOT">PHOTOSHOOT</span>
+                          </span>
+                        </a>
+                      </div>
+                    </div>
+                    <h5 class="title">
+                      <a href="/photoshoot/details/<%= photoshootPost.classified_slug %>">
+                        <%= photoshootPost.title %>
+                      </a>
+                    </h5>
+                  </div>
+                </div>
+              </div>
+              <% } %>
+                <!-- End Post List  -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Video Area  -->
+
+  <!-- Start Instagram Area  -->
+  <!-- <div class="axil-instagram-area axil-section-gap bg-color-grey">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-title">
+                            <h2 class="title">Instagram</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt--30">
+                    <div class="col-lg-12">
+                        <ul class="instagram-post-list">
+                            <li class="single-post">
+                                <a href="#">
+                                    <img src="/assets/images/small-images/instagram-md-01.jpg" alt="Instagram Images">
+                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
+                                </a>
+                            </li>
+                            <li class="single-post">
+                                <a href="#">
+                                    <img src="/assets/images/small-images/instagram-md-02.jpg" alt="Instagram Images">
+                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
+                                </a>
+                            </li>
+                            <li class="single-post">
+                                <a href="#">
+                                    <img src="/assets/images/small-images/instagram-md-03.jpg" alt="Instagram Images">
+                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
+                                </a>
+                            </li>
+                            <li class="single-post">
+                                <a href="#">
+                                    <img src="/assets/images/small-images/instagram-md-04.jpg" alt="Instagram Images">
+                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
+                                </a>
+                            </li>
+                            <li class="single-post">
+                                <a href="#">
+                                    <img src="/assets/images/small-images/instagram-md-05.jpg" alt="Instagram Images">
+                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
+                                </a>
+                            </li>
+                            <li class="single-post">
+                                <a href="#">
+                                    <img src="/assets/images/small-images/instagram-md-06.jpg" alt="Instagram Images">
+                                    <span class="instagram-button"><i class="fab fa-instagram"></i></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+  <!-- End Instagram Area  -->
