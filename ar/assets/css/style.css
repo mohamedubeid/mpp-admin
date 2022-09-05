@@ -14181,7 +14181,38 @@ body.active-dark-mode .axil-single-widget.widget_categories {
 /*-------------------------
     Slick Slider   
 --------------------------*/
-
+.axil-post-details, .axil-post-details *{
+  direction: ltr;
+}
+.my-video-dimensions{
+  height: 400px;
+}
+.banner.banner-single-post.post-formate.post-standard.alignwide .container{
+  margin-top: 30px;
+}
+.banner.banner-single-post.post-formate.post-standard.alignwide .container .row{
+  justify-content: center;
+}
+.banner-single-post.post-formate .content-block .post-thumbnail img{
+  border-radius: 10px;
+}
+@media (min-width: 992px){
+  .banner.banner-single-post.post-formate.post-standard.alignwide .container{
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
+@media (min-width: 768px){
+  .banner.banner-single-post.post-formate.post-standard.alignwide .container h1{
+    font-size: 30px;
+  }
+}
+@media (max-width: 991.9px){
+  .banner.banner-single-post.post-formate.post-standard.alignwide .container{
+    margin-right: 10px;
+    margin-left: 0;
+  }
+}
 .slide-arrow.slick-arrow{
   transform: rotate(180deg);
 }
