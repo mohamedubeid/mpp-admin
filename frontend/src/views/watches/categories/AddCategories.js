@@ -44,7 +44,8 @@ const AddCategories = () => {
     }
   }, [quill]);
   
-  function handleAddCategory() {
+  function handleAddCategory(event) {
+    event.preventDefault()
     const data = {
       title: title,
       slug: slug,
@@ -58,7 +59,7 @@ const AddCategories = () => {
     watchesService.postWatchCategory(data).then((result) => {
       console.log(result.data)
       if(result) navigate("/watches/categories")
-    })
+    }).catch((err) => alert(err))
   }
 
   return (
@@ -154,7 +155,7 @@ const AddCategories = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="English"
+                    name="lang"
                     id="IsActive"
                     value="eng"
                     label="English"
@@ -163,7 +164,7 @@ const AddCategories = () => {
                   />
                   <CFormCheck
                     type="radio"
-                    name="Arabic"
+                    name="lang"
                     id="IsActive"
                     value="ar"
                     label="Arabic"
