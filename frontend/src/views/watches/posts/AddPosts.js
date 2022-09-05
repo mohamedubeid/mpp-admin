@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   CButton,
@@ -15,6 +15,7 @@ import {
   CInputGroupText,
   CFormTextarea,
   CFormFeedback,
+  
   CRow,
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
@@ -24,7 +25,8 @@ import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css';
 
 const AddPosts = () => {
-  const [parentList, setParentList] = useState([])
+  const [categories, setCategories] = useState([])
+  const [category, setCategoy] = useState([])
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
@@ -52,12 +54,12 @@ const AddPosts = () => {
   }, [quill]);
    
   function handleAddPost(event) {
-    event.preventDefault();
+    event.preventDefault()
     const formData = new FormData();
-		formData.append('categories', parentList);
+		formData.append('categories', category);
 		formData.append('banner_image', bannerImage);
 		formData.append('title', title);
-		formData.append('slug', slug);
+		formData.append('slug', slug);  
 		formData.append('writter_name', writerName);
 		formData.append('writter_position', writerPosition);
 		formData.append('writter_image', writerImage);
@@ -86,11 +88,27 @@ const AddPosts = () => {
     // }
     console.log(formData)
     watchesService.postWatchPost(formData).then((result) => {
-      console.log(result)
       if(result) navigate("/watches/posts")
     }).catch((err) => alert(err))
   }
-  
+
+  function updateParentsData() {
+    watchesService.getAllWatchCategories().then((result) => {
+      //setParentList(result.data.cmspages)
+      const listt  = []
+      listt.push("0 None")
+      const dataa = result.data.categories
+      for(const key in dataa){
+        listt.push(dataa[key].id+" "+dataa[key].title)
+      }
+      console.log(listt)
+      setCategories(listt)
+    })
+  }
+
+  useEffect(() => {
+    updateParentsData()
+  }, [])
     
   return (
     <CRow>
@@ -101,6 +119,23 @@ const AddPosts = () => {
           </CCardHeader>
           <CCardBody>
             <CForm validated={true} className="row g-3">
+              <CCol md={12}>
+                <CFormLabel htmlFor="inputEmail4">Select Category</CFormLabel>
+                <CFormSelect 
+                onChange={(e) => {
+                  let array = [];
+                  let categ = e.target.value;
+                  console.log(categ);
+                  let categSplit = categ.split(/(\s+)/);
+                  array.push(categSplit[2]);
+                  console.log(array);
+                  setCategoy(array);
+                  console.log(category);
+                }}
+                options={categories} 
+                aria-label="Default select example">      
+                </CFormSelect>
+              </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
                 <CFormInput type="text" id="title" onChange={(e) => setTitle(e.target.value)} invalid required/>
@@ -122,8 +157,7 @@ const AddPosts = () => {
                 <CFormInput
                   type="file"
                   id="formFile"
-                  invalid
-                  required
+                  invalid required
                   onChange={(e) => setBannerImage(e.target.files[0])}
                 />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
@@ -142,8 +176,7 @@ const AddPosts = () => {
                 <CFormInput
                   type="text"
                   id="inputEmail4"
-                  invalid
-                  required
+                  invalid required
                   onChange={(e) => setWriterName(e.target.value)}
                 />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
@@ -153,8 +186,7 @@ const AddPosts = () => {
                 <CFormInput
                   type="text"
                   id="inputPassword4"
-                  invalid
-                  required
+                  invalid required
                   onChange={(e) => setWriterPosition(e.target.value)}
                 />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
@@ -164,8 +196,7 @@ const AddPosts = () => {
                 <CFormInput
                   type="file"
                   id="formFile"
-                  invalid
-                  required
+                  invalid required
                   onChange={(e) => setWriterImage(e.target.files[0])}
                 />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
@@ -186,8 +217,7 @@ const AddPosts = () => {
                 <CFormTextarea
                   id="metaTitle"
                   rows="3"
-                  invalid
-                  required
+                  invalid required
                   onChange={(e) => setMetaTitle(e.target.value)}
                 ></CFormTextarea>
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
@@ -197,8 +227,7 @@ const AddPosts = () => {
                 <CFormTextarea
                   id="metaKeywords"
                   rows="3"
-                  invalid
-                  required
+                  invalid required
                   onChange={(e) => setMetaKeywords(e.target.value)}
                 ></CFormTextarea>
                 <CFormFeedback invalid>This field is required!</CFormFeedback>

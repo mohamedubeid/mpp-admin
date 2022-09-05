@@ -7,7 +7,7 @@ const authenticate = require('../middleware/jwt');
 const utils = require('../utils/utils');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        return cb(null, './uploads/magazines');
+        return cb(null, './uploads/photoshoot');
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);

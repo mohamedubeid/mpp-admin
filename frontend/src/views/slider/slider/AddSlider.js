@@ -11,6 +11,7 @@ import {
   CFormLabel,
   CFormSelect,
   CInputGroup,
+  CFormFeedback,
   CInputGroupText,
   CFormTextarea,
   CRow,
@@ -27,23 +28,34 @@ const AddSlider = () => {
   const [link, setLink] = useState('')
   const [description, setDescription] = useState('')
   const [bannerImage, setBannerImage] = useState(null)
+  const [lang, setLang] = useState(1)
   const [isActive, setIsActive] = useState("0")
 
   const navigate = useNavigate()
 
-  function handleAddSlider() {
-     const data = {
-      title: title,
-      short_description: shortDescription,
-      link: link,
-      description: description,
-      banner_image: bannerImage,
-      language_id: 1,
-      isActive: isActive,
-    }
-    slidersService.postSliders(data).then((result) => {
+  function handleAddSlider(event) {
+    event.preventDefault();
+    const formData = new FormData();
+		formData.append('banner_image', bannerImage);
+		formData.append('title', title);
+		formData.append('link', link);
+		formData.append('description', description);
+		formData.append('short_description', shortDescription);
+		formData.append('language_id', lang);
+		formData.append('is_active', isActive);
+    //  const data = {
+    //   title: title,
+    //   short_description: shortDescription,
+    //   link: link,
+    //   description: description,
+    //   banner_image: bannerImage,
+    //   language_id: 1,
+    //   isActive: isActive,
+    // }
+    slidersService.postSliders(formData).then((result) => {
       if(result) navigate("/slider/slider-list")
-    })
+      console.log(result.data.error)
+    }).catch((err) => alert(err))
   }
 
   return (
@@ -54,10 +66,11 @@ const AddSlider = () => {
             <strong>Add</strong> <small>Slider Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+                <CFormInput type="text" id="title" onChange={(e) => setTitle(e.target.value)} invalid required/>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Short Description</CFormLabel>
@@ -76,8 +89,11 @@ const AddSlider = () => {
                 <CFormInput
                   type="file"
                   id="formFile"
+                  invalid
+                  required
                   onChange={(e) => setBannerImage(e.target.files[0])}
                 />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Link</CFormLabel>
@@ -114,6 +130,28 @@ const AddSlider = () => {
                     value="active"
                     label="Active"
                     onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="lang"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="lang"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(0)}
                   />
                 </CCol>
               </fieldset>
