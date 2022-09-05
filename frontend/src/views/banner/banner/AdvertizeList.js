@@ -155,7 +155,7 @@ const AdvertizeList = () => {
                         checked={ad.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
                     <CTableDataCell>{ad.title}</CTableDataCell>
                     <CTableDataCell>{ad.image_path}</CTableDataCell>
                     <CTableDataCell>{ad.advertize_type}</CTableDataCell>

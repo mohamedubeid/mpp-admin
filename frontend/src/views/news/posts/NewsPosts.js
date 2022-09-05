@@ -156,7 +156,7 @@ const NewsPosts = () => {
                         checked={news.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
                     <CTableDataCell>{news.title}</CTableDataCell>
                     <CTableDataCell>{news.created_date_time}</CTableDataCell>
                     <CTableDataCell>

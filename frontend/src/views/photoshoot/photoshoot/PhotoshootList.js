@@ -157,7 +157,7 @@ const PhotoshootList = () => {
                         checked={photoshoot.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
                     <CTableDataCell>{photoshoot.title}</CTableDataCell>
                     <CTableDataCell>
                       {' '}

@@ -154,7 +154,7 @@ const TvPosts = () => {
                         checked={tv.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
                     <CTableDataCell>{tv.title}</CTableDataCell>
                     <CTableDataCell>{tv.created_date_time}</CTableDataCell>
                     <CTableDataCell>{tv.is_active == '1' ? 'Active' : 'In Active'}</CTableDataCell>

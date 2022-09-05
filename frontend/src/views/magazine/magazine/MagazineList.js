@@ -156,7 +156,7 @@ const MagazineList = () => {
                         checked={magazine.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
                     <CTableDataCell>{magazine.title}</CTableDataCell>
                     <CTableDataCell>
                       {' '}

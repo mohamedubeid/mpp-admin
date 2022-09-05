@@ -159,7 +159,7 @@ const CelebrityPosts = () => {
                         checked={celebrity.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
                     <CTableDataCell>{celebrity.title}</CTableDataCell>
                     <CTableDataCell>
                       {' '}
