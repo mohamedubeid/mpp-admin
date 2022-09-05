@@ -13,6 +13,7 @@ import {
   CInputGroup,
   CInputGroupText,
   CFormTextarea,
+  CFormFeedback,
   CRow,
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
@@ -31,7 +32,8 @@ const AddLifestyle = () => {
   const [metaTitle, setMetaTitle] = useState('')
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState("0")
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
   const navigate = useNavigate()
@@ -54,7 +56,7 @@ const AddLifestyle = () => {
 		formData.append('meta_tags', metaKeywords);
 		formData.append('meta_description', metaDescription);
 		formData.append('is_active', isActive);
-		formData.append('language_id', 1);
+		formData.append('language_id', lang);
     // const data = {
     //   title: title,
     //   slug: slug,
@@ -78,14 +80,16 @@ const AddLifestyle = () => {
             <strong>Add</strong> <small>Post Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+                <CFormInput type="text" id="title" onChange={(e) => setTitle(e.target.value)} invalid required/>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput type="text" id="slug" onChange={(e) => setSlug(e.target.value)} invalid required/>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -98,8 +102,11 @@ const AddLifestyle = () => {
                 <CFormInput
                   type="file"
                   id="formFile"
+                  invalid
+                  required
                   onChange={(e) => setBannerImage(e.target.files[0])}
                 />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
             </CForm>
           </CCardBody>
@@ -111,12 +118,14 @@ const AddLifestyle = () => {
             <strong>SEO</strong> <small>Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm>
+            <CForm validated={true}>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Title</CFormLabel>
                 <CFormTextarea
                   id="metaTitle"
                   rows="3"
+                  invalid
+                  required
                   onChange={(e) => setMetaTitle(e.target.value)}
                 ></CFormTextarea>
               </div>
@@ -125,6 +134,8 @@ const AddLifestyle = () => {
                 <CFormTextarea
                   id="metaKeywords"
                   rows="3"
+                  invalid
+                  required
                   onChange={(e) => setMetaKeywords(e.target.value)}
                 ></CFormTextarea>
               </div>
@@ -156,6 +167,28 @@ const AddLifestyle = () => {
                     value="active"
                     label="Active"
                     onChange={() => setIsActive(true)}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="English"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="Arabic"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(0)}
                   />
                 </CCol>
               </fieldset>

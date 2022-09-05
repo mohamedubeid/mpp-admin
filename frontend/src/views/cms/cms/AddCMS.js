@@ -191,8 +191,8 @@ const AddCMS = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="lang"
-                    id="en"
+                    name="English"
+                    id="IsActive"
                     value="eng"
                     label="English"
                     onChange={() => setLang(1)}
@@ -200,8 +200,8 @@ const AddCMS = () => {
                   />
                   <CFormCheck
                     type="radio"
-                    name="lang"
-                    id="ar"
+                    name="Arabic"
+                    id="IsActive"
                     value="ar"
                     label="Arabic"
                     onChange={() => setLang(0)}

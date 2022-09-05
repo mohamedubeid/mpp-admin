@@ -13,6 +13,7 @@ import {
   CInputGroup,
   CInputGroupText,
   CFormTextarea,
+  CFormFeedback,
   CRow,
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
@@ -34,6 +35,7 @@ const Addmagazine = () => {
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
   const navigate = useNavigate()
@@ -46,17 +48,19 @@ const Addmagazine = () => {
     }
   }, [quill]);
 
-  function handleAddmagazine() {
+  function handleAddmagazine(event) {
+    event.preventDefault();
     const formData = new FormData();
 		formData.append('banner_image', bannerImage);
 		formData.append('title', title);
 		formData.append('slug', slug);
 		formData.append('description', description);
+		formData.append('event_date', eventDate);
 		formData.append('meta_title', metaTitle);
 		formData.append('meta_tags', metaKeywords);
 		formData.append('meta_description', metaDescription);
 		formData.append('is_active', isActive);
-		formData.append('language_id', 1);  
+		formData.append('language_id', lang);  
     //  const data = {
     //   title: title,
     //   slug: slug,
@@ -71,7 +75,7 @@ const Addmagazine = () => {
     // }
     magazinesService.postMagazines(formData).then((result) => {
       if(result) navigate("/magazine/magazine-list")
-    })
+    }).catch((err) => alert(err+"\n please fill out all fields"))
   }
 
   return (
@@ -82,14 +86,21 @@ const Addmagazine = () => {
             <strong>Add</strong> <small>Post Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+                <CFormInput type="text" id="title" onChange={(e) => setTitle(e.target.value)} invalid required/>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput type="text" id="slug" onChange={(e) => setSlug(e.target.value)} invalid required />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
+              </CCol>
+              <CCol md={6}>
+                <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
+                <CFormInput type="text" id="slug" onChange={(e) => setEventDate(e.target.value)} invalid required/>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -102,8 +113,11 @@ const Addmagazine = () => {
                 <CFormInput
                   type="file"
                   id="formFile"
+                  invalid
+                  required
                   onChange={(e) => setBannerImage(e.target.files[0])}
                 />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
             </CForm>
           </CCardBody>
@@ -115,22 +129,28 @@ const Addmagazine = () => {
             <strong>SEO</strong> <small>Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm>
+            <CForm validated={true}>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Title</CFormLabel>
                 <CFormTextarea
                   id="metaTitle"
                   rows="3"
+                  invalid
+                  required
                   onChange={(e) => setMetaTitle(e.target.value)}
                 ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Keywords</CFormLabel>
                 <CFormTextarea
                   id="metaKeywords"
                   rows="3"
+                  invalid
+                  required
                   onChange={(e) => setMetaKeywords(e.target.value)}
                 ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Description</CFormLabel>
@@ -160,6 +180,28 @@ const Addmagazine = () => {
                     value="active"
                     label="Active"
                     onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="English"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="Arabic"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(0)}
                   />
                 </CCol>
               </fieldset>

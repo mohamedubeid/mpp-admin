@@ -39,6 +39,7 @@ const AddEvents = () => {
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
   const navigate = useNavigate()
@@ -84,12 +85,12 @@ const AddEvents = () => {
 		formData.append('meta_title', metaTitle);
 		formData.append('meta_tags', metaKeywords);
 		formData.append('meta_description', metaDescription);
-		formData.append('language_id', 1);
+		formData.append('language_id', lang);
 		formData.append('description', description);
 		formData.append('is_active', isActive);
     eventsService.postEvents(formData).then((result) => {
       if(result) navigate("/events/events-list")
-    })
+    }).catch((err) => alert(err))
   }
     
   return (
@@ -173,22 +174,28 @@ const AddEvents = () => {
             <strong>SEO</strong> <small>Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm>
+            <CForm validated={true}>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Title</CFormLabel>
                 <CFormTextarea
                   id="metaTitle"
                   rows="3"
+                  invalid
+                  required
                   onChange={(e) => setMetaTitle(e.target.value)}
                 ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Tags</CFormLabel>
                 <CFormTextarea
                   id="metaKeywords"
                   rows="3"
+                  invalid
+                  required
                   onChange={(e) => setMetaKeywords(e.target.value)}
                 ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Description</CFormLabel>
@@ -217,6 +224,28 @@ const AddEvents = () => {
                     value="active"
                     label="Active"
                     onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="English"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="Arabic"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(0)}
                   />
                 </CCol>
               </fieldset>
