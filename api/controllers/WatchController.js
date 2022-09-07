@@ -471,39 +471,53 @@ class WatchController {
     }
     async getAllSelectedPosts(req, res) {
         try {
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            let posts;
-            posts = await WatchService.getSelectedPost(language_id);
-            if (posts.length === 0) {
-                posts = await WatchService.getLastUpdatedPost(
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 6;
+            const selectedPosts = await WatchService.getSelectedPost(
+                language_id
+            );
+            const lastUpdatedPostsLimit = limit - selectedPosts.length;
+            let lastUpdatedPosts = [];
+            if (lastUpdatedPostsLimit > 0) {
+                lastUpdatedPosts = await WatchService.getLastUpdatedPost(
                     language_id,
-                    limit
+                    lastUpdatedPostsLimit
                 );
             }
-            return { posts, statusCode: 200 };
+            const posts = [...selectedPosts, ...lastUpdatedPosts];
+            return {
+                posts,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log('error', error);
         }
     }
 
-    async selectPost(req, res) {
-        const id = req.params.id;
-        const { selected, lang } = req.body;
-        const language_id = lang === 'ar' ? 2 : 1;
-
-        const countSelectedPosts = await WatchService.countSelectedPosts(
-            language_id
-        );
-        if (countSelectedPosts >= 6 && selected) {
-            return {
-                msg: 'You have already select the maximum number of posts, which is 6 posts',
-                statusCode: 400,
-            };
+    async clearSelected(req, res) {
+        try {
+            const language_id = req.query.language_id;
+            await WatchService.clearSelected(language_id);
+            return { msg: 'Canceled Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
-        const selectValue = selected ? '1' : '0';
-        const selectPost = await WatchService.selectPost(id, selectValue);
-        return { selectPost, statusCode: 200 };
+    }
+
+    async selectPosts(req, res) {
+        try {
+            const selectedWatches = req.body.selectedWatches;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedWatches.map((watch) => {
+                return watch.id;
+            });
+            await WatchService.clearSelected(language_id);
+            await WatchService.selectPosts(selectedIds, language_id);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async getPost(req, res) {

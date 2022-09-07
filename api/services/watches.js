@@ -303,25 +303,26 @@ class WatchesService {
         const posts = await db('tbl_classified_directory')
             .where({
                 language_id,
+                is_selected: '0',
             })
             .limit(limit)
             .orderBy('updated_date_time', 'desc');
         return posts;
     }
 
-    async countSelectedPosts(language_id) {
-        const selectedPostsCount = await db('tbl_classified_directory').where({
-            is_selected: '1',
-            language_id: language_id,
-        });
-        return selectedPostsCount.length;
-    }
-
-    async selectPost(id, is_selected) {
+    async clearSelected(language_id) {
         const response = await db('tbl_classified_directory')
-            .where({ id })
+            .where({ is_selected: '1', language_id })
             .update({
-                is_selected,
+                is_selected: '0',
+            });
+        return response;
+    }
+    async selectPosts(selectedIds) {
+        const response = await db('tbl_classified_directory')
+            .whereIn('id', selectedIds)
+            .update({
+                is_selected: '1',
             });
         return response;
     }

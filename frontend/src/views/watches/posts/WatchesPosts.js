@@ -34,12 +34,17 @@ const WatchesPosts = () => {
   const [page, setPage] = useState(parseInt(defaultPage))
   const [NumOfPages, setNumOfPages] = useState(0)
   const [lang, setLang] = useState(defaultLang)
+  const [selectedWatches, setSelectedWatches] = useState([])
+  const language_id = lang === 'ar' ? 2 : 1
   const navigate = useNavigate()
 
   function updateData() {
     watchesService.getAllWatchPosts(lang, page).then((result) => {
       setNumOfPages(result.data.pagesAvailable)
       setWatchesTable(result.data.posts)
+    })
+    watchesService.getSelectedPosts(language_id).then((result) => {
+      setSelectedWatches(result.data.selectedPosts)
     })
   }
 
@@ -56,30 +61,67 @@ const WatchesPosts = () => {
     })
   }
 
-  async function selectWatch(e, id) {
+  const handleSelectWatch = (e, post) => {
     const selected = e.target.checked
-    watchesService
-      .selectPost(id, { selected, lang })
-      .then(() => {
-        let temp = watchesTable
-        temp = temp.map((item) => {
-          if (item.id === id) {
-            item.is_selected = selected ? '1' : '0'
-          }
-          return item
-        })
-        setWatchesTable(temp)
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setErrMsg(error.response.data.msg)
-          setDisplayNtf(true)
-          const myInterval = setInterval(() => {
-            setDisplayNtf(false)
-            clearInterval(myInterval)
-          }, 2500)
+    if (selected && selectedWatches.length < 6) {
+      setSelectedWatches([...selectedWatches, post])
+      let temp = watchesTable
+      temp = temp.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '1'
         }
+        return item
       })
+      setWatchesTable(temp)
+    } else if (!selected) {
+      let temp2 = selectedWatches
+      temp2 = temp2.filter((item) => item.id !== post.id)
+      setSelectedWatches(temp2)
+      let temp3 = watchesTable
+      temp3 = temp3.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '0'
+        }
+        return item
+      })
+      setWatchesTable(temp3)
+    } else {
+      setErrMsg('You are selected the maximum number of watch posts')
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    }
+  }
+
+  const handleConfirmSelected = () => {
+    watchesService.selectPosts(language_id, { selectedWatches }).then((result) => {
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
+  }
+
+  const handleCancelSelected = () => {
+    watchesService.ClearSelectedPosts(language_id).then((result) => {
+      setSelectedWatches([])
+      let temp3 = watchesTable
+      temp3 = temp3.map((item) => {
+        item.is_selected = '0'
+        return item
+      })
+      setWatchesTable(temp3)
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
   }
 
   const handlePaginationItemClick = (pageNum) => {
@@ -103,25 +145,43 @@ const WatchesPosts = () => {
 
   return (
     <>
-      <div>
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault1"
-          label="English"
-          defaultChecked
-          onClick={() => setLang('en')}
-          checked={lang === 'en'}
-        />
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault2"
-          label="Arabic"
-          onClick={() => setLang('ar')}
-          checked={lang === 'ar'}
-        />
-      </div>
+      <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            name="flexRadioDefault"
+            id="flexRadioDefault1"
+            label="English"
+            defaultChecked
+            onClick={() => setLang('en')}
+            checked={lang === 'en'}
+          />
+          <CFormCheck
+            type="radio"
+            name="flexRadioDefault"
+            id="flexRadioDefault2"
+            label="Arabic"
+            onClick={() => setLang('ar')}
+            checked={lang === 'ar'}
+          />
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="primary"
+            onClick={handleConfirmSelected}
+          >
+            Confirm Selected
+          </CButton>
+          {'  '}
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="danger"
+            onClick={handleCancelSelected}
+          >
+            Cancel Selected
+          </CButton>
+        </CCol>
+      </fieldset>
       {displayNtf && <Notification msg={errMsg} />}
       <CCol xs={12}>
         <CCard className="mb-4">
@@ -151,11 +211,11 @@ const WatchesPosts = () => {
                         id="select"
                         scope="row"
                         style={{ margin: '10px 0px 0px 10px' }}
-                        onChange={(e) => selectWatch(e, watches.id)}
+                        onChange={(e) => handleSelectWatch(e, watches)}
                         checked={watches.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + (page - 1) * 50 + 1}</CTableHeaderCell>
                     <CTableDataCell>{watches.title}</CTableDataCell>
                     <CTableDataCell>
                       {' '}
