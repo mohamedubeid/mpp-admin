@@ -352,43 +352,51 @@ class PhotoshootsController {
         return { image, statusCode: 200 };
     }
 
-    async selectPhotoShoot(req, res) {
-        const id = req.params.id;
-        const { selected, lang } = req.body;
-        const language_id = lang === 'ar' ? 2 : 1;
-        const countSelectedPhotoShoots =
-            await PhotoshootsService.countSelectedPhotoshootsServices(
-                language_id
-            );
-        if (countSelectedPhotoShoots >= 6 && selected) {
-            return {
-                msg: 'You have already select the maximum number of PhotoShoots, which is 6 PhotoShoots',
-                statusCode: 400,
-            };
-        }
-        const selectValue = selected ? '1' : '0';
-        const selectPhotoshoot =
-            await PhotoshootsService.selectPhotoshootsService(id, selectValue);
-        return { selectPhotoshoot, statusCode: 200 };
-    }
-
     async getAllSelectedPhotoShoots(req, res) {
         try {
-            let photoshoots;
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            photoshoots = await PhotoshootsService.getSelectedPhotoShoot(
-                language_id
-            );
-            if (photoshoots.length === 0) {
-                photoshoots = await PhotoshootsService.getLastUpdatedPost(
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 6;
+            const selectedPosts =
+                await PhotoshootsService.getSelectedPhotoShoot(language_id);
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await PhotoshootsService.getLastCreatedPost(
                     language_id,
-                    limit
+                    lastCreatedPostsLimit
                 );
             }
-            return { photoshoots, statusCode: 200 };
+            const photoshoots = [...selectedPosts, ...lastCreatedPosts];
+            return {
+                photoshoots,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log('error', error);
+        }
+    }
+    async clearSelected(req, res) {
+        try {
+            const language_id = req.query.language_id;
+            await PhotoshootsService.clearSelected(language_id);
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async selectPosts(req, res) {
+        try {
+            const selectedPhotoshoot = req.body.selectedPhotoshoot;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedPhotoshoot.map((post) => {
+                return post.id;
+            });
+            await PhotoshootsService.clearSelected(language_id);
+            await PhotoshootsService.selectPosts(selectedIds);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
     }
 }

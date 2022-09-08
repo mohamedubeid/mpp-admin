@@ -476,15 +476,15 @@ class WatchController {
             const selectedPosts = await WatchService.getSelectedPost(
                 language_id
             );
-            const lastUpdatedPostsLimit = limit - selectedPosts.length;
-            let lastUpdatedPosts = [];
-            if (lastUpdatedPostsLimit > 0) {
-                lastUpdatedPosts = await WatchService.getLastUpdatedPost(
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await WatchService.getLastCreatedPost(
                     language_id,
-                    lastUpdatedPostsLimit
+                    lastCreatedPostsLimit
                 );
             }
-            const posts = [...selectedPosts, ...lastUpdatedPosts];
+            const posts = [...selectedPosts, ...lastCreatedPosts];
             return {
                 posts,
                 selectedPosts,
@@ -499,7 +499,7 @@ class WatchController {
         try {
             const language_id = req.query.language_id;
             await WatchService.clearSelected(language_id);
-            return { msg: 'Canceled Successfully ^_^', statusCode: 200 };
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
         } catch (error) {
             console.log(error);
         }

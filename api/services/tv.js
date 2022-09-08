@@ -333,40 +333,44 @@ class TvService {
 
         return postsCount[0].count;
     }
-
-    async countSelectedVideos(language_id) {
-        const selectedVideosCount = await db('tbl_tv_directory').where({
-            is_selected: '1',
-            language_id,
-        });
-        return selectedVideosCount.length;
-    }
-
-    async selectVideo(id, is_selected) {
-        const response = await db('tbl_tv_directory').where({ id }).update({
-            is_selected,
-        });
-        return response;
-    }
     async getSelectedVideos(language_id) {
         const posts = await db('tbl_tv_directory')
             .where({
                 is_selected: '1',
-                language_id: language_id,
+                language_id,
             })
             .orderBy('id', 'desc');
 
         return posts;
     }
 
-    async getLastUpdatedPost(language_id, limit) {
+    async getLastCreatedPost(language_id, limit) {
         const posts = await db('tbl_tv_directory')
             .where({
                 language_id,
+                is_selected: '0',
             })
             .limit(limit)
-            .orderBy('updated_date_time', 'desc');
+            .orderBy('created_date_time', 'desc');
         return posts;
+    }
+
+    async clearSelected(language_id) {
+        const response = await db('tbl_tv_directory')
+            .where({ is_selected: '1', language_id })
+            .update({
+                is_selected: '0',
+            });
+        return response;
+    }
+
+    async selectPosts(selectedIds) {
+        const response = await db('tbl_tv_directory')
+            .whereIn('id', selectedIds)
+            .update({
+                is_selected: '1',
+            });
+        return response;
     }
 }
 

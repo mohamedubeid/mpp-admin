@@ -34,10 +34,22 @@ const editJewelryPost = (code) => {
   return axios.put(API_URL + '/posts/' + code, { headers: authHeader() })
 }
 
-const selectPost = (id, data) => {
-  return axios.post(API_URL + '/posts/select/' + id, data, {
+const selectPosts = (language_id, data) => {
+  return axios.post(API_URL + `/selected/posts?language_id=${language_id}`, data, {
     headers: authHeader(),
     'Content-Type': `multipart/form-data;`,
+  })
+}
+
+const getSelectedPosts = (language_id) => {
+  return axios.get(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
+  })
+}
+
+const ClearSelectedPosts = (language_id) => {
+  return axios.delete(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
   })
 }
 
@@ -52,7 +64,9 @@ const jewelryService = {
   deleteJewelryPost,
   editJewelryCategory,
   editJewelryPost,
-  selectPost,
+  selectPosts,
+  getSelectedPosts,
+  ClearSelectedPosts,
 }
 
 export default jewelryService

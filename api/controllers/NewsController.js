@@ -619,39 +619,53 @@ class NewsController {
         return { image, statusCode: 200 };
     }
 
-    async selectPost(req, res) {
-        const id = req.params.id;
-        const { selected, lang } = req.body;
-        const language_id = lang === 'ar' ? 2 : 1;
-        const countSelectedPosts = await NewsService.countSelectedPosts(
-            language_id
-        );
-        if (countSelectedPosts >= 4 && selected) {
-            return {
-                msg: 'You have already select the maximum number of News posts, which is 4 News posts',
-                statusCode: 400,
-            };
-        }
-        const selectValue = selected ? '1' : '0';
-        const selectPost = await NewsService.selectPost(id, selectValue);
-        return { selectPost, statusCode: 200 };
-    }
-
     async getAllSelectedPosts(req, res) {
         try {
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            let posts;
-            posts = await NewsService.getSelectedPost(language_id);
-            if (posts.length === 0) {
-                posts = await NewsService.getLastUpdatedPost(
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 4;
+            const selectedPosts = await NewsService.getSelectedPost(
+                language_id
+            );
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await NewsService.getLastCreatedPost(
                     language_id,
-                    limit
+                    lastCreatedPostsLimit
                 );
             }
-            return { posts, statusCode: 200 };
+            const posts = [...selectedPosts, ...lastCreatedPosts];
+            return {
+                posts,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log('error', error);
+        }
+    }
+
+    async clearSelected(req, res) {
+        try {
+            const language_id = req.query.language_id;
+            await NewsService.clearSelected(language_id);
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async selectPosts(req, res) {
+        try {
+            const selectedNews = req.body.selectedNews;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedNews.map((post) => {
+                return post.id;
+            });
+            await NewsService.clearSelected(language_id);
+            await NewsService.selectPosts(selectedIds);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
     }
 }

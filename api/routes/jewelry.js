@@ -61,11 +61,20 @@ router.get('/posts/', async (req, res) => {
     res.status(utils.getStatusCode(data)).send(data);
 });
 
-router.post('/posts/select/:id', async (req, res) => {
-    const response = await JewelryController.selectPost(req, res);
+router.delete('/selected/posts', async (req, res) => {
+    let data = await JewelryController.clearSelected(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
+router.post('/selected/posts', async (req, res) => {
+    const response = await JewelryController.selectPosts(req, res);
     res.status(utils.getStatusCode(response)).json(response);
 });
 
+router.get('/selected/posts', async (req, res) => {
+    let data = await JewelryController.getAllSelectedPosts(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
 router.get('/posts/:id', async (req, res) => {
     let data = await JewelryController.getPost(req, res);
 

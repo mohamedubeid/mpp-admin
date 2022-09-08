@@ -18,10 +18,23 @@ const deleteBanners = (code) => {
 const editBanners = (code) => {
   return axios.put(API_URL + '/' + code, { headers: authHeader() })
 }
-const selectBanner = (id, data) => {
-  return axios.post('/banners/select/' + id, data, {
+
+const selectBanners = (language_id, data) => {
+  return axios.post(API_URL + `/selected/posts?language_id=${language_id}`, data, {
     headers: authHeader(),
     'Content-Type': `multipart/form-data;`,
+  })
+}
+
+const getSelectedBanners = (language_id) => {
+  return axios.get(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
+  })
+}
+
+const ClearSelectedBanners = (language_id) => {
+  return axios.delete(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
   })
 }
 
@@ -31,7 +44,9 @@ const bannersService = {
   postBanners,
   deleteBanners,
   editBanners,
-  selectBanner,
+  selectBanners,
+  getSelectedBanners,
+  ClearSelectedBanners,
 }
 
 export default bannersService

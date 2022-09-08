@@ -492,39 +492,51 @@ class JewelryController {
 
     async getAllSelectedPosts(req, res) {
         try {
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            let posts;
-            posts = await JewelryService.getSelectedPost(language_id);
-            if (posts.length === 0) {
-                posts = await JewelryService.getLastUpdatedPost(
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 6;
+            const selectedPosts = await JewelryService.getSelectedPost(
+                language_id
+            );
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await JewelryService.getLastCreatedPost(
                     language_id,
-                    limit
+                    lastCreatedPostsLimit
                 );
             }
-            return { posts, statusCode: 200 };
+            const posts = [...selectedPosts, ...lastCreatedPosts];
+            return {
+                posts,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log('error', error);
         }
     }
-
-    async selectPost(req, res) {
-        const id = req.params.id;
-        const { selected, lang } = req.body;
-        const language_id = lang === 'ar' ? 2 : 1;
-
-        const countSelectedPosts = await JewelryService.countSelectedPosts(
-            language_id
-        );
-        if (countSelectedPosts >= 6 && selected) {
-            return {
-                msg: 'You have already select the maximum number of posts, which is 6 posts',
-                statusCode: 400,
-            };
+    async clearSelected(req, res) {
+        try {
+            const language_id = req.query.language_id;
+            await JewelryService.clearSelected(language_id);
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
-        const selectValue = selected ? '1' : '0';
-        const selectPost = await JewelryService.selectPost(id, selectValue);
-        return { selectPost, statusCode: 200 };
+    }
+    async selectPosts(req, res) {
+        try {
+            const selectedJewelry = req.body.selectedJewelry;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedJewelry.map((post) => {
+                return post.id;
+            });
+            await JewelryService.clearSelected(language_id);
+            await JewelryService.selectPosts(selectedIds);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async getPost(req, res) {

@@ -299,14 +299,14 @@ class WatchesService {
         return posts;
     }
 
-    async getLastUpdatedPost(language_id, limit) {
+    async getLastCreatedPost(language_id, limit) {
         const posts = await db('tbl_classified_directory')
             .where({
                 language_id,
                 is_selected: '0',
             })
             .limit(limit)
-            .orderBy('updated_date_time', 'desc');
+            .orderBy('created_date_time', 'desc');
         return posts;
     }
 

@@ -359,43 +359,53 @@ class LifestyleController {
         return { image, statusCode: 200 };
     }
 
-    async selectLifeStyle(req, res) {
-        const id = req.params.id;
-        const { selected, lang } = req.body;
-        const language_id = lang === 'ar' ? 2 : 1;
-        const countSelectedPosts =
-            await LifestylesService.countSelectedLifeStyles(language_id);
-        if (countSelectedPosts >= 4 && selected) {
-            return {
-                msg: 'You have already select the maximum number of life styles, which is 4 life styles',
-                statusCode: 400,
-            };
-        }
-        const selectValue = selected ? '1' : '0';
-        const selectPost = await LifestylesService.selectLifeStyle(
-            id,
-            selectValue
-        );
-        return { selectPost, statusCode: 200 };
-    }
-
     async getAllSelectedLifeStyles(req, res) {
         try {
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            let lifestyles;
-            lifestyles = await LifestylesService.getSelectedLifeStyle(
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 4;
+            const selectedPosts = await LifestylesService.getSelectedLifeStyle(
                 language_id
             );
-            if (lifestyles.length === 0) {
-                lifestyles = await LifestylesService.getLastUpdatedPost(
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await LifestylesService.getLastCreatedPost(
                     language_id,
-                    limit
+                    lastCreatedPostsLimit
                 );
             }
-            return { lifestyles, statusCode: 200 };
+            const lifestyles = [...selectedPosts, ...lastCreatedPosts];
+            return {
+                lifestyles,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log('error', error);
+        }
+    }
+
+    async clearSelected(req, res) {
+        try {
+            const language_id = req.query.language_id;
+            await LifestylesService.clearSelected(language_id);
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async selectPosts(req, res) {
+        try {
+            const selectedLifestyle = req.body.selectedLifestyle;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedLifestyle.map((post) => {
+                return post.id;
+            });
+            await LifestylesService.clearSelected(language_id);
+            await LifestylesService.selectPosts(selectedIds);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
     }
 }

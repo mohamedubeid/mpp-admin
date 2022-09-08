@@ -102,9 +102,19 @@ router.get('/:lifestyle_id/images', async (req, res) => {
     res.status(utils.getStatusCode(data)).send(data);
 });
 
-router.post('/lifestyles/select/:id', async (req, res) => {
-    const response = await LifestyleController.selectLifeStyle(req, res);
+router.delete('/selected/posts', async (req, res) => {
+    let data = await LifestyleController.clearSelected(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
+router.post('/selected/posts', async (req, res) => {
+    const response = await LifestyleController.selectPosts(req, res);
     res.status(utils.getStatusCode(response)).json(response);
+});
+
+router.get('/selected/posts', async (req, res) => {
+    let data = await LifestyleController.getAllSelectedLifeStyles(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
 });
 
 module.exports = router;

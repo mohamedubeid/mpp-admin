@@ -67,6 +67,21 @@ router.get('/videos/', async (req, res) => {
     return res.status(utils.getStatusCode(data)).json(data);
 });
 
+router.delete('/selected/posts', async (req, res) => {
+    let data = await TvController.clearSelected(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
+router.post('/selected/posts', async (req, res) => {
+    const response = await TvController.selectVideos(req, res);
+    res.status(utils.getStatusCode(response)).json(response);
+});
+
+router.get('/selected/posts', async (req, res) => {
+    let data = await TvController.getAllSelectedVideos(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
 router.get('/videos/:id', async (req, res) => {
     let data = await TvController.getVideo(req, res);
 
@@ -121,11 +136,6 @@ router.get('/categories/slug/:slug', async (req, res) => {
     let data = await TvController.getCategoryWithSlug(req, res);
 
     return res.status(utils.getStatusCode(data)).json(data);
-});
-
-router.post('/videos/select/:id', async (req, res) => {
-    const response = await TvController.selectVideo(req, res);
-    res.status(utils.getStatusCode(response)).json(response);
 });
 
 module.exports = router;

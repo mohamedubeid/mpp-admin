@@ -416,19 +416,11 @@ class CelebrityService {
         await db('tbl_celebrity_directory_image').where({ id }).del();
     }
 
-    async countSelectedPosts(language_id) {
-        const selectedPostsCount = await db('tbl_celebrity_directory').where({
-            is_selected: '1',
-            language_id: language_id,
-        });
-        return selectedPostsCount.length;
-    }
-
-    async selectPost(id, is_selected) {
+    async selectPosts(selectedIds) {
         const response = await db('tbl_celebrity_directory')
-            .where({ id })
+            .whereIn('id', selectedIds)
             .update({
-                is_selected,
+                is_selected: '1',
             });
         return response;
     }
@@ -442,14 +434,24 @@ class CelebrityService {
             .orderBy('id', 'desc');
         return posts;
     }
-    async getLastUpdatedPost(language_id, limit) {
+    async getLastCreatedPost(language_id, limit) {
         const posts = await db('tbl_celebrity_directory')
             .where({
                 language_id,
+                is_selected: '0',
             })
             .limit(limit)
-            .orderBy('updated_date_time', 'desc');
+            .orderBy('created_date_time', 'desc');
         return posts;
+    }
+
+    async clearSelected(language_id) {
+        const response = await db('tbl_celebrity_directory')
+            .where({ is_selected: '1', language_id })
+            .update({
+                is_selected: '0',
+            });
+        return response;
     }
 }
 

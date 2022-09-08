@@ -61,6 +61,21 @@ router.get('/', async (req, res) => {
     res.status(utils.getStatusCode(data)).json(data);
 });
 
+router.delete('/selected/posts', async (req, res) => {
+    let data = await PhotoshootsController.clearSelected(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
+router.post('/selected/posts', async (req, res) => {
+    const response = await PhotoshootsController.selectPosts(req, res);
+    res.status(utils.getStatusCode(response)).json(response);
+});
+
+router.get('/selected/posts', async (req, res) => {
+    let data = await PhotoshootsController.getAllSelectedPhotoShoots(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
 router.get('/:id', async (req, res) => {
     let data = await PhotoshootsController.getPhotoshoot(req, res);
 

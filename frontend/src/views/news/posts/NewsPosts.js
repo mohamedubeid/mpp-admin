@@ -34,12 +34,17 @@ const NewsPosts = () => {
   const [page, setPage] = useState(parseInt(defaultPage))
   const [NumOfPages, setNumOfPages] = useState(0)
   const [lang, setLang] = useState(defaultLang)
+  const [selectedNews, setSelectedNews] = useState([])
+  const language_id = lang === 'ar' ? 2 : 1
   const navigate = useNavigate()
 
   function updateData() {
     newsService.getAllNewsPosts(lang, page).then((result) => {
       setNumOfPages(result.data.pagesAvailable)
       setNewsTable(result.data.posts)
+    })
+    newsService.getSelectedPosts(language_id).then((result) => {
+      setSelectedNews(result.data.selectedPosts)
     })
   }
 
@@ -57,30 +62,67 @@ const NewsPosts = () => {
     })
   }
 
-  async function selectNewsPost(e, id) {
+  const handleSelectNews = (e, post) => {
     const selected = e.target.checked
-    newsService
-      .selectNewsPost(id, { selected, lang })
-      .then(() => {
-        let temp = newsTable
-        temp = temp.map((item) => {
-          if (item.id === id) {
-            item.is_selected = selected ? '1' : '0'
-          }
-          return item
-        })
-        setNewsTable(temp)
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setErrMsg(error.response.data.msg)
-          setDisplayNtf(true)
-          const myInterval = setInterval(() => {
-            setDisplayNtf(false)
-            clearInterval(myInterval)
-          }, 2500)
+    if (selected && selectedNews.length < 4) {
+      setSelectedNews([...selectedNews, post])
+      let temp = newsTable
+      temp = temp.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '1'
         }
+        return item
       })
+      setNewsTable(temp)
+    } else if (!selected) {
+      let temp2 = selectedNews
+      temp2 = temp2.filter((item) => item.id !== post.id)
+      setSelectedNews(temp2)
+      let temp3 = newsTable
+      temp3 = temp3.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '0'
+        }
+        return item
+      })
+      setNewsTable(temp3)
+    } else {
+      setErrMsg('You are selected the maximum number of News posts')
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    }
+  }
+
+  const handleConfirmSelected = () => {
+    newsService.selectPosts(language_id, { selectedNews }).then((result) => {
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
+  }
+
+  const handleCancelSelected = () => {
+    newsService.ClearSelectedPosts(language_id).then((result) => {
+      setSelectedNews([])
+      let temp3 = newsTable
+      temp3 = temp3.map((item) => {
+        item.is_selected = '0'
+        return item
+      })
+      setNewsTable(temp3)
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
   }
 
   const handlePaginationItemClick = (pageNum) => {
@@ -104,25 +146,40 @@ const NewsPosts = () => {
 
   return (
     <>
-      <div>
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault1"
-          label="English"
-          defaultChecked
-          onClick={() => setLang('en')}
-          checked={lang === 'en'}
-        />
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault2"
-          label="Arabic"
-          onClick={() => setLang('ar')}
-          checked={lang === 'ar'}
-        />
-      </div>
+      <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang('en')}
+            checked={lang === 'en'}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang('ar')}
+            checked={lang === 'ar'}
+            onChange={() => console.log('')}
+          />
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="primary"
+            onClick={handleConfirmSelected}
+          >
+            Confirm Selected
+          </CButton>
+          {'  '}
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="danger"
+            onClick={handleCancelSelected}
+          >
+            Cancel Selected
+          </CButton>
+        </CCol>
+      </fieldset>
       {displayNtf && <Notification msg={errMsg} />}
       <CCol xs={12}>
         <CCard className="mb-4">
@@ -152,11 +209,11 @@ const NewsPosts = () => {
                         id="select"
                         scope="row"
                         style={{ margin: '10px 0px 0px 10px' }}
-                        onChange={(e) => selectNewsPost(e, news.id)}
+                        onChange={(e) => handleSelectNews(e, news)}
                         checked={news.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + (page - 1) * 50 + 1}</CTableHeaderCell>
                     <CTableDataCell>{news.title}</CTableDataCell>
                     <CTableDataCell>{news.created_date_time}</CTableDataCell>
                     <CTableDataCell>

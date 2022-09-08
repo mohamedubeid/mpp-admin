@@ -4,10 +4,8 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CRow,
   CTable,
   CTableBody,
-  CTableCaption,
   CButton,
   CTableDataCell,
   CTableHead,
@@ -17,7 +15,6 @@ import {
   CPagination,
   CPaginationItem,
 } from '@coreui/react'
-import { DocsCallout, DocsExample } from 'src/components'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilTrash, cilImage } from '@coreui/icons'
 import eventsService from 'src/service/eventsService'
@@ -34,12 +31,17 @@ const EventsList = () => {
   const [page, setPage] = useState(parseInt(defaultPage))
   const [NumOfPages, setNumOfPages] = useState(0)
   const [lang, setLang] = useState(defaultLang)
+  const [selectedEvents, setSelectedEvents] = useState([])
+  const language_id = lang === 'ar' ? 2 : 1
   const navigate = useNavigate()
 
   function updateData() {
     eventsService.getAllEvents(lang, page).then((result) => {
       setNumOfPages(result.data.pagesAvailable)
       setEventsTable(result.data.events)
+    })
+    eventsService.getSelectedEvents(language_id).then((result) => {
+      setSelectedEvents(result.data.selectedPosts)
     })
   }
 
@@ -57,30 +59,67 @@ const EventsList = () => {
     })
   }
 
-  async function selectEvent(e, id) {
+  const handleSelectEvents = (e, post) => {
     const selected = e.target.checked
-    eventsService
-      .selectEvent(id, { selected, lang })
-      .then(() => {
-        let temp = eventsTable
-        temp = temp.map((item) => {
-          if (item.id === id) {
-            item.is_selected = selected ? '1' : '0'
-          }
-          return item
-        })
-        setEventsTable(temp)
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setErrMsg(error.response.data.msg)
-          setDisplayNtf(true)
-          const myInterval = setInterval(() => {
-            setDisplayNtf(false)
-            clearInterval(myInterval)
-          }, 2500)
+    if (selected && selectedEvents.length < 5) {
+      setSelectedEvents([...selectedEvents, post])
+      let temp = eventsTable
+      temp = temp.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '1'
         }
+        return item
       })
+      setEventsTable(temp)
+    } else if (!selected) {
+      let temp2 = selectedEvents
+      temp2 = temp2.filter((item) => item.id !== post.id)
+      setSelectedEvents(temp2)
+      let temp3 = eventsTable
+      temp3 = temp3.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '0'
+        }
+        return item
+      })
+      setEventsTable(temp3)
+    } else {
+      setErrMsg('You are selected the maximum number of Events posts')
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    }
+  }
+
+  const handleConfirmSelected = () => {
+    eventsService.selectEvents(language_id, { selectedEvents }).then((result) => {
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
+  }
+
+  const handleCancelSelected = () => {
+    eventsService.ClearSelectedEvents(language_id).then((result) => {
+      setSelectedEvents([])
+      let temp3 = eventsTable
+      temp3 = temp3.map((item) => {
+        item.is_selected = '0'
+        return item
+      })
+      setEventsTable(temp3)
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
   }
 
   const handlePaginationItemClick = (pageNum) => {
@@ -104,25 +143,40 @@ const EventsList = () => {
 
   return (
     <>
-      <div>
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault1"
-          label="English"
-          defaultChecked
-          onClick={() => setLang('en')}
-          checked={lang === 'en'}
-        />
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault2"
-          label="Arabic"
-          onClick={() => setLang('ar')}
-          checked={lang === 'ar'}
-        />
-      </div>
+      <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang('en')}
+            checked={lang === 'en'}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang('ar')}
+            checked={lang === 'ar'}
+            onChange={() => console.log('')}
+          />
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="primary"
+            onClick={handleConfirmSelected}
+          >
+            Confirm Selected
+          </CButton>
+          {'  '}
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="danger"
+            onClick={handleCancelSelected}
+          >
+            Cancel Selected
+          </CButton>
+        </CCol>
+      </fieldset>
       {displayNtf && <Notification msg={errMsg} />}
       <CCol xs={12}>
         <CCard className="mb-4">
@@ -152,11 +206,11 @@ const EventsList = () => {
                         id="select"
                         scope="row"
                         style={{ margin: '10px 0px 0px 10px' }}
-                        onChange={(e) => selectEvent(e, events.id)}
+                        onChange={(e) => handleSelectEvents(e, events)}
                         checked={events.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + (page - 1) * 50 + 1}</CTableHeaderCell>
                     <CTableDataCell>{events.title}</CTableDataCell>
                     <CTableDataCell>
                       {' '}

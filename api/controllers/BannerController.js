@@ -185,42 +185,51 @@ class BannerController {
 
     async getAllSelectedBanners(req, res) {
         try {
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            let banners;
-            banners = await BannersService.getSelectedPost(language_id);
-            if (banners.length === 0) {
-                banners = await BannersService.getLastUpdatedPost(
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 1;
+            const selectedPosts = await BannersService.getSelectedPost(
+                language_id
+            );
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await BannersService.getLastCreatedPost(
                     language_id,
-                    limit
+                    lastCreatedPostsLimit
                 );
             }
-            return { banners, statusCode: 200 };
+            const banners = [...selectedPosts, ...lastCreatedPosts];
+            return {
+                banners,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log(error, 'this is error from catch watch controller');
         }
     }
 
-    async selectBanner(req, res) {
+    async clearSelected(req, res) {
         try {
-            const id = req.params.id;
-            const { selected, lang } = req.body;
-            const language_id = lang === 'ar' ? 2 : 1;
-
-            const countSelectedPosts = await BannersService.countSelectedPosts(
-                language_id
-            );
-            if (countSelectedPosts >= 1 && selected) {
-                return {
-                    msg: 'You have already selected advertize',
-                    statusCode: 400,
-                };
-            }
-            const selectValue = selected ? '1' : '0';
-            const selectPost = await BannersService.selectPost(id, selectValue);
-            return { selectPost, statusCode: 200 };
-        } catch (errors) {
-            console.log(errors, 'errors bannerController');
+            const language_id = req.query.language_id;
+            await BannersService.clearSelected(language_id);
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async selectPosts(req, res) {
+        try {
+            const selectedAdvertize = req.body.selectedAdvertize;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedAdvertize.map((post) => {
+                return post.id;
+            });
+            await BannersService.clearSelected(language_id);
+            await BannersService.selectPosts(selectedIds);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
     }
 }

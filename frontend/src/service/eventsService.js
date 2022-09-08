@@ -31,10 +31,22 @@ const postImage = (id, data) => {
   })
 }
 
-const selectEvent = (id, data) => {
-  return axios.post(API_URL + '/events/select/' + id, data, {
+const selectEvents = (language_id, data) => {
+  return axios.post(API_URL + `/selected/posts?language_id=${language_id}`, data, {
     headers: authHeader(),
     'Content-Type': `multipart/form-data;`,
+  })
+}
+
+const getSelectedEvents = (language_id) => {
+  return axios.get(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
+  })
+}
+
+const ClearSelectedEvents = (language_id) => {
+  return axios.delete(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
   })
 }
 
@@ -47,7 +59,9 @@ const eventsService = {
   getEventsImagesList,
   deleteImage,
   postImage,
-  selectEvent,
+  selectEvents,
+  getSelectedEvents,
+  ClearSelectedEvents,
 }
 
 export default eventsService

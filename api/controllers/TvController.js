@@ -551,36 +551,53 @@ class TvController {
         return { categories, statusCode: 200 };
     }
 
-    async selectVideo(req, res) {
-        const id = req.params.id;
-        const { selected, lang } = req.body;
-        const language_id = lang === 'ar' ? 2 : 1;
-        const countSelectedVideos = await TvService.countSelectedVideos(
-            language_id
-        );
-        if (countSelectedVideos >= 6 && selected) {
-            return {
-                msg: 'You have already select the maximum number of Videos, which is 6 posts',
-                statusCode: 400,
-            };
-        }
-        const selectValue = selected ? '1' : '0';
-        const selectVideo = await TvService.selectVideo(id, selectValue);
-        return { selectVideo, statusCode: 200 };
-    }
-
     async getAllSelectedVideos(req, res) {
         try {
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            let videos;
-            videos = await TvService.getSelectedVideos(language_id);
-            if (videos.length === 0) {
-                videos = await TvService.getLastUpdatedPost(language_id, limit);
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 6;
+            const selectedPosts = await TvService.getSelectedVideos(
+                language_id
+            );
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await TvService.getLastCreatedPost(
+                    language_id,
+                    lastCreatedPostsLimit
+                );
             }
-            return { videos, statusCode: 200 };
+            const videos = [...selectedPosts, ...lastCreatedPosts];
+            return {
+                videos,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log(error, 'error');
+        }
+    }
+
+    async clearSelected(req, res) {
+        try {
+            const language_id = req.query.language_id;
+            await TvService.clearSelected(language_id);
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async selectVideos(req, res) {
+        try {
+            const selectedTvVideos = req.body.selectedTvVideos;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedTvVideos.map((post) => {
+                return post.id;
+            });
+            await TvService.clearSelected(language_id);
+            await TvService.selectPosts(selectedIds);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
     }
 }

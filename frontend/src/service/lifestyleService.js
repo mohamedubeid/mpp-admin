@@ -31,13 +31,24 @@ const postImage = (id, data) => {
   })
 }
 
-const selectLifeStyle = (id, data) => {
-  return axios.post(API_URL + '/lifestyles/select/' + id, data, {
+const selectLifestyle = (language_id, data) => {
+  return axios.post(API_URL + `/selected/posts?language_id=${language_id}`, data, {
     headers: authHeader(),
     'Content-Type': `multipart/form-data;`,
   })
 }
 
+const getSelectedLifestyle = (language_id) => {
+  return axios.get(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
+  })
+}
+
+const ClearSelectedLifestyle = (language_id) => {
+  return axios.delete(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
+  })
+}
 const lifestyleService = {
   getAllLifestyle,
   getLifestyle,
@@ -47,7 +58,9 @@ const lifestyleService = {
   getLifestyleImagesList,
   deleteImage,
   postImage,
-  selectLifeStyle,
+  selectLifestyle,
+  getSelectedLifestyle,
+  ClearSelectedLifestyle,
 }
 
 export default lifestyleService

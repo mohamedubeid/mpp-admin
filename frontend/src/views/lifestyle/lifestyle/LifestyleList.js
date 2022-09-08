@@ -4,10 +4,8 @@ import {
   CCardBody,
   CCardHeader,
   CCol,
-  CRow,
   CTable,
   CTableBody,
-  CTableCaption,
   CButton,
   CTableDataCell,
   CTableHead,
@@ -36,12 +34,17 @@ const LifestyleList = () => {
   const [page, setPage] = useState(parseInt(defaultPage))
   const [NumOfPages, setNumOfPages] = useState(0)
   const [lang, setLang] = useState(defaultLang)
+  const [selectedLifestyle, setSelectedLifestyle] = useState([])
+  const language_id = lang === 'ar' ? 2 : 1
   const navigate = useNavigate()
 
   function updateData() {
     lifestyleService.getAllLifestyle(lang, page).then((result) => {
       setNumOfPages(result.data.pagesAvailable)
       setLifestyleTable(result.data.lifestyles)
+    })
+    lifestyleService.getSelectedLifestyle(language_id).then((result) => {
+      setSelectedLifestyle(result.data.selectedPosts)
     })
   }
 
@@ -59,30 +62,67 @@ const LifestyleList = () => {
     })
   }
 
-  async function selectLifestyle(e, id) {
+  const handleSelectLifestyle = (e, post) => {
     const selected = e.target.checked
-    lifestyleService
-      .selectLifeStyle(id, { selected, lang })
-      .then(() => {
-        let temp = lifestyleTable
-        temp = temp.map((item) => {
-          if (item.id === id) {
-            item.is_selected = selected ? '1' : '0'
-          }
-          return item
-        })
-        setLifestyleTable(temp)
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setErrMsg(error.response.data.msg)
-          setDisplayNtf(true)
-          const myInterval = setInterval(() => {
-            setDisplayNtf(false)
-            clearInterval(myInterval)
-          }, 2500)
+    if (selected && selectedLifestyle.length < 4) {
+      setSelectedLifestyle([...selectedLifestyle, post])
+      let temp = lifestyleTable
+      temp = temp.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '1'
         }
+        return item
       })
+      setLifestyleTable(temp)
+    } else if (!selected) {
+      let temp2 = selectedLifestyle
+      temp2 = temp2.filter((item) => item.id !== post.id)
+      setSelectedLifestyle(temp2)
+      let temp3 = lifestyleTable
+      temp3 = temp3.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '0'
+        }
+        return item
+      })
+      setLifestyleTable(temp3)
+    } else {
+      setErrMsg('You are selected the maximum number of Life Style posts')
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    }
+  }
+
+  const handleConfirmSelected = () => {
+    lifestyleService.selectLifestyle(language_id, { selectedLifestyle }).then((result) => {
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
+  }
+
+  const handleCancelSelected = () => {
+    lifestyleService.ClearSelectedLifestyle(language_id).then((result) => {
+      setSelectedLifestyle([])
+      let temp3 = lifestyleTable
+      temp3 = temp3.map((item) => {
+        item.is_selected = '0'
+        return item
+      })
+      setLifestyleTable(temp3)
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
   }
 
   const handlePaginationItemClick = (pageNum) => {
@@ -106,25 +146,40 @@ const LifestyleList = () => {
 
   return (
     <>
-      <div>
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault1"
-          label="English"
-          defaultChecked
-          onClick={() => setLang('en')}
-          checked={lang === 'en'}
-        />
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault2"
-          label="Arabic"
-          onClick={() => setLang('ar')}
-          checked={lang === 'ar'}
-        />
-      </div>
+      <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang('en')}
+            checked={lang === 'en'}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang('ar')}
+            checked={lang === 'ar'}
+            onChange={() => console.log('')}
+          />
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="primary"
+            onClick={handleConfirmSelected}
+          >
+            Confirm Selected
+          </CButton>
+          {'  '}
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="danger"
+            onClick={handleCancelSelected}
+          >
+            Cancel Selected
+          </CButton>
+        </CCol>
+      </fieldset>
       {displayNtf && <Notification msg={errMsg} />}
       <CCol xs={12}>
         <CCard className="mb-4">
@@ -154,11 +209,11 @@ const LifestyleList = () => {
                         id="select"
                         scope="row"
                         style={{ margin: '10px 0px 0px 10px' }}
-                        onChange={(e) => selectLifestyle(e, lifestyles.id)}
+                        onChange={(e) => handleSelectLifestyle(e, lifestyles)}
                         checked={lifestyles.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + (page - 1) * 50 + 1}</CTableHeaderCell>
                     <CTableDataCell>{lifestyles.title}</CTableDataCell>
                     <CTableDataCell>
                       {' '}

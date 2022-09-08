@@ -254,20 +254,6 @@ class EventsService {
         await db('tbl_events_directory_image').where({ id }).del();
     }
 
-    async countSelectedEvents(language_id) {
-        const selectedEventsCount = await db('tbl_events_directory').where({
-            is_selected: '1',
-            language_id,
-        });
-        return selectedEventsCount.length;
-    }
-    async selectEvent(id, is_selected) {
-        const response = await db('tbl_events_directory').where({ id }).update({
-            is_selected,
-        });
-        return response;
-    }
-
     async getSelectedEvent(language_id) {
         const events = await db('tbl_events_directory')
             .where({
@@ -278,14 +264,33 @@ class EventsService {
         return events;
     }
 
-    async getLastUpdatedPost(language_id, limit) {
+    async getLastCreatedPost(language_id, limit) {
         const posts = await db('tbl_events_directory')
             .where({
                 language_id,
+                is_selected: '0',
             })
             .limit(limit)
-            .orderBy('updated_date_time', 'desc');
+            .orderBy('created_date_time', 'desc');
         return posts;
+    }
+
+    async clearSelected(language_id) {
+        const response = await db('tbl_events_directory')
+            .where({ is_selected: '1', language_id })
+            .update({
+                is_selected: '0',
+            });
+        return response;
+    }
+
+    async selectPosts(selectedIds) {
+        const response = await db('tbl_events_directory')
+            .whereIn('id', selectedIds)
+            .update({
+                is_selected: '1',
+            });
+        return response;
     }
 }
 

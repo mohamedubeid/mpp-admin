@@ -31,12 +31,25 @@ const postImage = (id, data) => {
   })
 }
 
-const selectPhotoShoot = (id, data) => {
-  return axios.post(API_URL + '/photo-shoots/select/' + id, data, {
+const selectPosts = (language_id, data) => {
+  return axios.post(API_URL + `/selected/posts?language_id=${language_id}`, data, {
     headers: authHeader(),
     'Content-Type': `multipart/form-data;`,
   })
 }
+
+const getSelectedPosts = (language_id) => {
+  return axios.get(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
+  })
+}
+
+const ClearSelectedPosts = (language_id) => {
+  return axios.delete(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
+  })
+}
+
 const photoshootService = {
   getAllPhotoshoots,
   getPhotoshoots,
@@ -46,7 +59,9 @@ const photoshootService = {
   getPhotoshootImagesList,
   deleteImage,
   postImage,
-  selectPhotoShoot,
+  selectPosts,
+  getSelectedPosts,
+  ClearSelectedPosts,
 }
 
 export default photoshootService

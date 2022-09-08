@@ -34,10 +34,22 @@ const editTvPost = (id, data) => {
   return axios.put(API_URL + '/videos/' + id, data, { headers: authHeader() })
 }
 
-const selectTvVideo = (id, data) => {
-  return axios.post(API_URL + '/videos/select/' + id, data, {
+const selectTvVideos = (language_id, data) => {
+  return axios.post(API_URL + `/selected/posts?language_id=${language_id}`, data, {
     headers: authHeader(),
     'Content-Type': `multipart/form-data;`,
+  })
+}
+
+const getSelectedTvVideos = (language_id) => {
+  return axios.get(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
+  })
+}
+
+const ClearSelectedPosts = (language_id) => {
+  return axios.delete(API_URL + `/selected/posts?language_id=${language_id}`, {
+    headers: authHeader(),
   })
 }
 const tvService = {
@@ -51,7 +63,9 @@ const tvService = {
   deleteTvPost,
   editTvCategory,
   editTvPost,
-  selectTvVideo,
+  selectTvVideos,
+  getSelectedTvVideos,
+  ClearSelectedPosts,
 }
 
 export default tvService

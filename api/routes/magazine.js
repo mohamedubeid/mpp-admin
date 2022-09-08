@@ -61,6 +61,21 @@ router.get('/', async (req, res) => {
     res.status(utils.getStatusCode(data)).send(data);
 });
 
+router.delete('/selected/posts', async (req, res) => {
+    let data = await MagazinesController.clearSelected(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
+router.post('/selected/posts', async (req, res) => {
+    const response = await MagazinesController.selectPosts(req, res);
+    res.status(utils.getStatusCode(response)).json(response);
+});
+
+router.get('/selected/posts', async (req, res) => {
+    let data = await MagazinesController.getAllSelectedMagazines(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
 router.get('/:id', async (req, res) => {
     let data = await MagazinesController.getMagazine(req, res);
 
@@ -101,11 +116,6 @@ router.get('/:magazine_id/images', async (req, res) => {
     let data = await MagazinesController.getAllMagazineImages(req, res);
 
     res.status(utils.getStatusCode(data)).send(data);
-});
-
-router.post('/magazines/select/:id', async (req, res) => {
-    const response = await MagazinesController.selectMagazine(req, res);
-    res.status(utils.getStatusCode(response)).json(response);
 });
 
 module.exports = router;

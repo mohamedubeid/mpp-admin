@@ -6,10 +6,8 @@ import {
   CCardHeader,
   CButton,
   CCol,
-  CRow,
   CTable,
   CTableBody,
-  CTableCaption,
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
@@ -20,7 +18,6 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilTrash } from '@coreui/icons'
-import { DocsCallout, DocsExample } from 'src/components'
 import bannersService from 'src/service/bannersService'
 import Notification from 'src/components/Notification'
 
@@ -34,12 +31,17 @@ const AdvertizeList = () => {
   const [page, setPage] = useState(parseInt(defaultPage))
   const [NumOfPages, setNumOfPages] = useState(0)
   const [lang, setLang] = useState(defaultLang)
+  const [selectedAdvertize, setSelectedAdvertize] = useState([])
+  const language_id = lang === 'ar' ? 2 : 1
   const navigate = useNavigate()
 
   function updateData() {
     bannersService.getAllBanners(lang, page).then((result) => {
       setNumOfPages(result.data.pagesAvailable)
       setAdvertizeTable(result.data.banners)
+    })
+    bannersService.getSelectedBanners(language_id).then((result) => {
+      setSelectedAdvertize(result.data.selectedPosts)
     })
   }
 
@@ -57,30 +59,67 @@ const AdvertizeList = () => {
     })
   }
 
-  async function selectBanner(e, id) {
+  const handleSelectAdvertize = (e, post) => {
     const selected = e.target.checked
-    bannersService
-      .selectBanner(id, { selected, lang })
-      .then(() => {
-        let temp = advertizeTable
-        temp = temp.map((item) => {
-          if (item.id === id) {
-            item.is_selected = selected ? '1' : '0'
-          }
-          return item
-        })
-        setAdvertizeTable(temp)
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setErrMsg(error.response.data.msg)
-          setDisplayNtf(true)
-          const myInterval = setInterval(() => {
-            setDisplayNtf(false)
-            clearInterval(myInterval)
-          }, 2500)
+    if (selected && selectedAdvertize.length < 1) {
+      setSelectedAdvertize([...selectedAdvertize, post])
+      let temp = advertizeTable
+      temp = temp.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '1'
         }
+        return item
       })
+      setAdvertizeTable(temp)
+    } else if (!selected) {
+      let temp2 = selectedAdvertize
+      temp2 = temp2.filter((item) => item.id !== post.id)
+      setSelectedAdvertize(temp2)
+      let temp3 = advertizeTable
+      temp3 = temp3.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '0'
+        }
+        return item
+      })
+      setAdvertizeTable(temp3)
+    } else {
+      setErrMsg('You are selected the maximum number of Advertize posts')
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    }
+  }
+
+  const handleConfirmSelected = () => {
+    bannersService.selectBanners(language_id, { selectedAdvertize }).then((result) => {
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
+  }
+
+  const handleCancelSelected = () => {
+    bannersService.ClearSelectedBanners(language_id).then((result) => {
+      setSelectedAdvertize([])
+      let temp3 = advertizeTable
+      temp3 = temp3.map((item) => {
+        item.is_selected = '0'
+        return item
+      })
+      setAdvertizeTable(temp3)
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
   }
 
   const handlePaginationItemClick = (pageNum) => {
@@ -103,25 +142,40 @@ const AdvertizeList = () => {
   }
   return (
     <>
-      <div>
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault1"
-          label="English"
-          defaultChecked
-          onClick={() => setLang('en')}
-          checked={lang === 'en'}
-        />
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault2"
-          label="Arabic"
-          onClick={() => setLang('ar')}
-          checked={lang === 'ar'}
-        />
-      </div>
+      <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang('en')}
+            checked={lang === 'en'}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang('ar')}
+            checked={lang === 'ar'}
+            onChange={() => console.log('')}
+          />
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="primary"
+            onClick={handleConfirmSelected}
+          >
+            Confirm Selected
+          </CButton>
+          {'  '}
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="danger"
+            onClick={handleCancelSelected}
+          >
+            Cancel Selected
+          </CButton>
+        </CCol>
+      </fieldset>
       {displayNtf && <Notification msg={errMsg} />}
       <CCol xs={12}>
         <CCard className="mb-4">
@@ -151,11 +205,11 @@ const AdvertizeList = () => {
                         id="select"
                         scope="row"
                         style={{ margin: '10px 0px 0px 10px' }}
-                        onChange={(e) => selectBanner(e, ad.id)}
+                        onChange={(e) => handleSelectAdvertize(e, ad)}
                         checked={ad.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + (page - 1) * 50 + 1}</CTableHeaderCell>
                     <CTableDataCell>{ad.title}</CTableDataCell>
                     <CTableDataCell>{ad.image_path}</CTableDataCell>
                     <CTableDataCell>{ad.advertize_type}</CTableDataCell>

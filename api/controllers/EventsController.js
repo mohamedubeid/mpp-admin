@@ -389,39 +389,53 @@ class EventsController {
         return { image, statusCode: 200 };
     }
 
-    async selectEvent(req, res) {
-        const id = req.params.id;
-        const { selected, lang } = req.body;
-        const language_id = lang === 'ar' ? 2 : 1;
-        const countSelectedEvents = await EventsService.countSelectedEvents(
-            language_id
-        );
-        if (countSelectedEvents >= 5 && selected) {
-            return {
-                msg: 'You have already select the maximum number of Events, which is 5 Events',
-                statusCode: 400,
-            };
-        }
-        const selectValue = selected ? '1' : '0';
-        const selectEvent = await EventsService.selectEvent(id, selectValue);
-        return { selectEvent, statusCode: 200 };
-    }
-
     async getAllSelectedEvents(req, res) {
         try {
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            let events;
-            events = await EventsService.getSelectedEvent(language_id);
-            if (events.length === 0) {
-                events = await EventsService.getLastUpdatedPost(
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 5;
+            const selectedPosts = await EventsService.getSelectedEvent(
+                language_id
+            );
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await EventsService.getLastCreatedPost(
                     language_id,
-                    limit
+                    lastCreatedPostsLimit
                 );
             }
-            return { events, statusCode: 200 };
+            const events = [...selectedPosts, ...lastCreatedPosts];
+            return {
+                events,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log('error', error);
+        }
+    }
+
+    async clearSelected(req, res) {
+        try {
+            const language_id = req.query.language_id;
+            await EventsService.clearSelected(language_id);
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async selectPosts(req, res) {
+        try {
+            const selectedEvents = req.body.selectedEvents;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedEvents.map((post) => {
+                return post.id;
+            });
+            await EventsService.clearSelected(language_id);
+            await EventsService.selectPosts(selectedIds);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
     }
 }

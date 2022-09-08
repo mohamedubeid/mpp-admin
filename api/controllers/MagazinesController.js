@@ -349,43 +349,53 @@ class MagazinesController {
         return { image, statusCode: 200 };
     }
 
-    async selectMagazine(req, res) {
-        const id = req.params.id;
-        const { selected, lang } = req.body;
-        const language_id = lang === 'ar' ? 2 : 1;
-        const countSelectedMagazines =
-            await MagazinesService.countSelectedMagazines(language_id);
-        if (countSelectedMagazines >= 6 && selected) {
-            return {
-                msg: 'You have already select the maximum number of Magazines, which is 6 Magazines',
-                statusCode: 400,
-            };
-        }
-        const selectValue = selected ? '1' : '0';
-        const selectMagazine = await MagazinesService.selectMagazines(
-            id,
-            selectValue
-        );
-        return { selectMagazine, statusCode: 200 };
-    }
-
     async getAllSelectedMagazines(req, res) {
         try {
-            let magazines;
-            const language_id = req.query.language_id;
-            const limit = req.query.limit;
-            magazines = await MagazinesService.getSelectedMagazines(
+            const language_id = req.query.language_id || 1;
+            const limit = req.query.limit || 6;
+            const selectedPosts = await MagazinesService.getSelectedMagazines(
                 language_id
             );
-            if (magazines.length === 0) {
-                magazines = await MagazinesService.getLastUpdatedPost(
+            const lastCreatedPostsLimit = limit - selectedPosts.length;
+            let lastCreatedPosts = [];
+            if (lastCreatedPostsLimit > 0) {
+                lastCreatedPosts = await MagazinesService.getLastCreatedPost(
                     language_id,
-                    limit
+                    lastCreatedPostsLimit
                 );
             }
-            return { magazines, statusCode: 200 };
+            const magazines = [...selectedPosts, ...lastCreatedPosts];
+            return {
+                magazines,
+                selectedPosts,
+                statusCode: 200,
+            };
         } catch (error) {
             console.log('error', error);
+        }
+    }
+
+    async clearSelected(req, res) {
+        try {
+            const language_id = req.query.language_id;
+            await MagazinesService.clearSelected(language_id);
+            return { msg: 'Deleted Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    async selectPosts(req, res) {
+        try {
+            const selectedMagazine = req.body.selectedMagazine;
+            const language_id = req.query.language_id;
+            const selectedIds = selectedMagazine.map((post) => {
+                return post.id;
+            });
+            await MagazinesService.clearSelected(language_id);
+            await MagazinesService.selectPosts(selectedIds);
+            return { msg: 'Added Successfully ^_^', statusCode: 200 };
+        } catch (error) {
+            console.log(error);
         }
     }
 }

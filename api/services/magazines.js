@@ -205,24 +205,6 @@ class MagazinesService {
         await db('tbl_magazine_directory_image').where({ id }).del();
     }
 
-    async countSelectedMagazines(language_id) {
-        const selectedMagazinesCount = await db('tbl_magazine_directory').where(
-            {
-                is_selected: '1',
-                language_id: language_id,
-            }
-        );
-        return selectedMagazinesCount.length;
-    }
-    async selectMagazines(id, is_selected) {
-        const response = await db('tbl_magazine_directory')
-            .where({ id })
-            .update({
-                is_selected,
-            });
-        return response;
-    }
-
     async getSelectedMagazines(language_id) {
         const magazines = await db('tbl_magazine_directory')
             .where({
@@ -233,14 +215,33 @@ class MagazinesService {
         return magazines;
     }
 
-    async getLastUpdatedPost(language_id, limit) {
+    async getLastCreatedPost(language_id, limit) {
         const magazines = await db('tbl_magazine_directory')
             .where({
                 language_id,
+                is_selected: '0',
             })
             .limit(limit)
-            .orderBy('updated_date_time', 'desc');
+            .orderBy('created_date_time', 'desc');
         return magazines;
+    }
+
+    async clearSelected(language_id) {
+        const response = await db('tbl_magazine_directory')
+            .where({ is_selected: '1', language_id })
+            .update({
+                is_selected: '0',
+            });
+        return response;
+    }
+
+    async selectPosts(selectedIds) {
+        const response = await db('tbl_magazine_directory')
+            .whereIn('id', selectedIds)
+            .update({
+                is_selected: '1',
+            });
+        return response;
     }
 }
 

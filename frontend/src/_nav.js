@@ -75,7 +75,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Posts List',
-        to: '/watches/posts',
+        to: '/watches/posts?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -103,7 +103,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Posts List',
-        to: '/jewelry/posts',
+        to: '/jewelry/posts?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -121,7 +121,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Events List',
-        to: '/events/events-list',
+        to: '/events/events-list?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -139,7 +139,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Lifesylte List',
-        to: '/lifestyle/lifestyle-list',
+        to: '/lifestyle/lifestyle-list?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -167,7 +167,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Posts List',
-        to: '/news/news',
+        to: '/news/news?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -195,7 +195,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Celebrity List',
-        to: '/celebrity/celebrities-list',
+        to: '/celebrity/celebrities-list?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -226,7 +226,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Photoshoot List',
-        to: '/photoshoot/photoshoot-list',
+        to: '/photoshoot/photoshoot-list?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -254,7 +254,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Video List',
-        to: '/tv/videos',
+        to: '/tv/videos?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -272,7 +272,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Advertize List',
-        to: '/banners/advertize-list',
+        to: '/banners/advertize-list?lang=en&page=1',
       },
       {
         component: CNavItem,
@@ -326,7 +326,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Magazines List',
-        to: '/magazine/magazine-list',
+        to: '/magazine/magazine-list?lang=en&page=1',
       },
       {
         component: CNavItem,

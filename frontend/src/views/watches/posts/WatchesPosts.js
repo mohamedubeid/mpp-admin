@@ -150,20 +150,17 @@ const WatchesPosts = () => {
         <CCol sm={10}>
           <CFormCheck
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault1"
             label="English"
-            defaultChecked
             onClick={() => setLang('en')}
             checked={lang === 'en'}
+            onChange={() => console.log('')}
           />
           <CFormCheck
             type="radio"
-            name="flexRadioDefault"
-            id="flexRadioDefault2"
             label="Arabic"
             onClick={() => setLang('ar')}
             checked={lang === 'ar'}
+            onChange={() => console.log('')}
           />
           <CButton
             className="col-form-label col-sm-2 mt-2 mb-2"

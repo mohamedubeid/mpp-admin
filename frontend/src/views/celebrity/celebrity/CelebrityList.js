@@ -37,12 +37,17 @@ const CelebrityPosts = () => {
   const [page, setPage] = useState(parseInt(defaultPage))
   const [NumOfPages, setNumOfPages] = useState(0)
   const [lang, setLang] = useState(defaultLang)
+  const [selectedCelebrity, setSelectedCelebrity] = useState([])
+  const language_id = lang === 'ar' ? 2 : 1
   const navigate = useNavigate()
 
   function updateData() {
     celebritiesService.getAllCelebritiesPosts(lang, page).then((result) => {
       setNumOfPages(result.data.pagesAvailable)
       setCelebrityTable(result.data.posts)
+    })
+    celebritiesService.getSelectedPosts(language_id).then((result) => {
+      setSelectedCelebrity(result.data.selectedPosts)
     })
   }
 
@@ -60,30 +65,67 @@ const CelebrityPosts = () => {
     })
   }
 
-  async function selectCelebrity(e, id) {
+  const handleSelectCelebrity = (e, post) => {
     const selected = e.target.checked
-    celebritiesService
-      .selectPost(id, { selected, lang })
-      .then(() => {
-        let temp = celebrityTable
-        temp = temp.map((item) => {
-          if (item.id === id) {
-            item.is_selected = selected ? '1' : '0'
-          }
-          return item
-        })
-        setCelebrityTable(temp)
-      })
-      .catch((error) => {
-        if (error.response.status === 400) {
-          setErrMsg(error.response.data.msg)
-          setDisplayNtf(true)
-          const myInterval = setInterval(() => {
-            setDisplayNtf(false)
-            clearInterval(myInterval)
-          }, 2500)
+    if (selected && selectedCelebrity.length < 6) {
+      setSelectedCelebrity([...selectedCelebrity, post])
+      let temp = celebrityTable
+      temp = temp.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '1'
         }
+        return item
       })
+      setCelebrityTable(temp)
+    } else if (!selected) {
+      let temp2 = selectedCelebrity
+      temp2 = temp2.filter((item) => item.id !== post.id)
+      setSelectedCelebrity(temp2)
+      let temp3 = celebrityTable
+      temp3 = temp3.map((item) => {
+        if (item.id === post.id) {
+          item.is_selected = '0'
+        }
+        return item
+      })
+      setCelebrityTable(temp3)
+    } else {
+      setErrMsg('You are selected the maximum number of celebrity posts')
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    }
+  }
+
+  const handleConfirmSelected = () => {
+    celebritiesService.selectPosts(language_id, { selectedCelebrity }).then((result) => {
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
+  }
+
+  const handleCancelSelected = () => {
+    celebritiesService.ClearSelectedPosts(language_id).then((result) => {
+      setSelectedCelebrity([])
+      let temp3 = celebrityTable
+      temp3 = temp3.map((item) => {
+        item.is_selected = '0'
+        return item
+      })
+      setCelebrityTable(temp3)
+      setErrMsg(result.data.msg)
+      setDisplayNtf(true)
+      const myInterval = setInterval(() => {
+        setDisplayNtf(false)
+        clearInterval(myInterval)
+      }, 3000)
+    })
   }
 
   const handlePaginationItemClick = (pageNum) => {
@@ -107,25 +149,40 @@ const CelebrityPosts = () => {
 
   return (
     <>
-      <div>
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault1"
-          label="English"
-          defaultChecked
-          onClick={() => setLang('en')}
-          checked={lang === 'en'}
-        />
-        <CFormCheck
-          type="radio"
-          name="flexRadioDefault"
-          id="flexRadioDefault2"
-          label="Arabic"
-          onClick={() => setLang('ar')}
-          checked={lang === 'ar'}
-        />
-      </div>
+      <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang('en')}
+            checked={lang === 'en'}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang('ar')}
+            checked={lang === 'ar'}
+            onChange={() => console.log('')}
+          />
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="primary"
+            onClick={handleConfirmSelected}
+          >
+            Confirm Selected
+          </CButton>
+          {'  '}
+          <CButton
+            className="col-form-label col-sm-2 mt-2 mb-2"
+            color="danger"
+            onClick={handleCancelSelected}
+          >
+            Cancel Selected
+          </CButton>
+        </CCol>
+      </fieldset>
       {displayNtf && <Notification msg={errMsg} />}
       <CCol xs={12}>
         <CCard className="mb-4">
@@ -155,11 +212,11 @@ const CelebrityPosts = () => {
                         id="select"
                         scope="row"
                         style={{ margin: '10px 0px 0px 10px' }}
-                        onChange={(e) => selectCelebrity(e, celebrity.id)}
+                        onChange={(e) => handleSelectCelebrity(e, celebrity)}
                         checked={celebrity.is_selected === '1'}
                       />
                     </CTableDataCell>
-                    <CTableHeaderCell scope="row">{i + 1}</CTableHeaderCell>
+                    <CTableHeaderCell scope="row">{i + (page - 1) * 50 + 1}</CTableHeaderCell>
                     <CTableDataCell>{celebrity.title}</CTableDataCell>
                     <CTableDataCell>
                       {' '}

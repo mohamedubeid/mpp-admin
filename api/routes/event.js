@@ -103,9 +103,19 @@ router.get('/:event_id/images', async (req, res) => {
     res.status(utils.getStatusCode(data)).json(data);
 });
 
-router.post('/events/select/:id', async (req, res) => {
-    const response = await EventsController.selectEvent(req, res);
+router.delete('/selected/posts', async (req, res) => {
+    let data = await EventsController.clearSelected(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
+});
+
+router.post('/selected/posts', async (req, res) => {
+    const response = await EventsController.selectPosts(req, res);
     res.status(utils.getStatusCode(response)).json(response);
+});
+
+router.get('/selected/posts', async (req, res) => {
+    let data = await EventsController.getAllSelectedEvents(req, res);
+    res.status(utils.getStatusCode(data)).json(data);
 });
 
 module.exports = router;
