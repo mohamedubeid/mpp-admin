@@ -9,6 +9,7 @@ class MagazinesService {
         description,
         banner_image,
         event_date,
+        magazine_url,
         meta_title,
         meta_tags,
         meta_description,
@@ -40,7 +41,7 @@ class MagazinesService {
             address: '',
             websitename: '',
             telephone: '',
-
+            magazine_url,
             title,
             classified_slug: slug,
             description,

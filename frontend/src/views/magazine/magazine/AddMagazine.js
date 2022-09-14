@@ -20,9 +20,9 @@ import { DocsExample } from 'src/components'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import magazinesService from 'src/service/magazinesService'
-import { useQuill } from 'react-quilljs';
+import { useQuill } from 'react-quilljs'
 
-import 'quill/dist/quill.snow.css';
+import 'quill/dist/quill.snow.css'
 
 const Addmagazine = () => {
   const [title, setTitle] = useState('')
@@ -31,12 +31,13 @@ const Addmagazine = () => {
   const [city, setCity] = useState('')
   const [bannerImage, setBannerImage] = useState(null)
   const [eventDate, setEventDate] = useState('')
+  const [magazineURL, setMagazineURL] = useState('')
   const [metaTitle, setMetaTitle] = useState('')
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
-  const [isActive, setIsActive] = useState("0")
+  const [isActive, setIsActive] = useState('0')
   const [lang, setLang] = useState(1)
-  const { quill, quillRef } = useQuill();
+  const { quill, quillRef } = useQuill()
 
   const navigate = useNavigate()
 
@@ -44,38 +45,30 @@ const Addmagazine = () => {
     if (quill) {
       quill.on('text-change', (delta, oldDelta, source) => {
         setDescription(quillRef.current.firstChild.innerHTML)
-      });
+      })
     }
-  }, [quill]);
+  }, [quill])
 
   function handleAddmagazine(event) {
-    event.preventDefault();
-    const formData = new FormData();
-		formData.append('banner_image', bannerImage);
-		formData.append('title', title);
-		formData.append('slug', slug);
-		formData.append('description', description);
-		formData.append('event_date', eventDate);
-		formData.append('meta_title', metaTitle);
-		formData.append('meta_tags', metaKeywords);
-		formData.append('meta_description', metaDescription);
-		formData.append('is_active', isActive);
-		formData.append('language_id', lang);  
-    //  const data = {
-    //   title: title,
-    //   slug: slug,
-    //   description: description,
-    //   event_data: eventDate,
-    //   banner_image: bannerImage,
-    //   meta_title: metaTitle,
-    //   meta_keywords: metaKeywords,
-    //   meta_desc: metaDescription,
-    //   language_id: 1,
-    //   isActive: isActive,
-    // }
-    magazinesService.postMagazines(formData).then((result) => {
-      if(result) navigate("/magazine/magazine-list")
-    }).catch((err) => alert(err+"\n please fill out all fields"))
+    event.preventDefault()
+    const formData = new FormData()
+    formData.append('banner_image', bannerImage)
+    formData.append('title', title)
+    formData.append('slug', slug)
+    formData.append('description', description)
+    formData.append('event_date', eventDate)
+    formData.append('magazineURL', magazineURL)
+    formData.append('meta_title', metaTitle)
+    formData.append('meta_tags', metaKeywords)
+    formData.append('meta_description', metaDescription)
+    formData.append('is_active', isActive)
+    formData.append('language_id', lang)
+    magazinesService
+      .postMagazines(formData)
+      .then((result) => {
+        if (result) navigate('/magazine/magazine-list')
+      })
+      .catch((err) => alert(err + '\n please fill out all fields'))
   }
 
   return (
@@ -89,17 +82,46 @@ const Addmagazine = () => {
             <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput type="text" id="title" onChange={(e) => setTitle(e.target.value)} invalid required/>
+                <CFormInput
+                  type="text"
+                  id="title"
+                  onChange={(e) => setTitle(e.target.value)}
+                  invalid
+                  required
+                />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" id="slug" onChange={(e) => setSlug(e.target.value)} invalid required />
+                <CFormInput
+                  type="text"
+                  id="slug"
+                  onChange={(e) => setSlug(e.target.value)}
+                  invalid
+                  required
+                />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
-                <CFormInput type="text" id="slug" onChange={(e) => setEventDate(e.target.value)} invalid required/>
+                <CFormInput
+                  type="text"
+                  id="slug"
+                  onChange={(e) => setEventDate(e.target.value)}
+                  invalid
+                  required
+                />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
+              </CCol>
+              <CCol md={6}>
+                <CFormLabel htmlFor="inputPassword4">Magazine URL</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="slug"
+                  onChange={(e) => setMagazineURL(e.target.value)}
+                  invalid
+                  required
+                />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">
@@ -170,7 +192,7 @@ const Addmagazine = () => {
                     id="IsActive"
                     value="inactive"
                     label="In Active"
-                    onChange={() => setIsActive("0")}
+                    onChange={() => setIsActive('0')}
                     defaultChecked
                   />
                   <CFormCheck
@@ -179,7 +201,7 @@ const Addmagazine = () => {
                     id="IsActive"
                     value="active"
                     label="Active"
-                    onChange={() => setIsActive("1")}
+                    onChange={() => setIsActive('1')}
                   />
                 </CCol>
               </fieldset>
