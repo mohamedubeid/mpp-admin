@@ -63,7 +63,7 @@ class Arabic {
             magazinePosts: magazinePosts.magazines,
             eventPosts: eventPosts.events,
             photoshootPosts: photoshootPosts.photoshoots,
-            banner: banner?.banners[0],
+            banner: banner.banners[0],
             metaData: metaData,
             newsCategories: await utils.getNewsCategories(req, res),
             socialMediaLinks: await utils.getSocialMediaLinks(req, res),
