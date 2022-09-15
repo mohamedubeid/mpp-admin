@@ -26,6 +26,7 @@
             axilInit.trendPost();
             axilInit.contactForm();
             axilInit.mobileSearch();
+            axilInit.observeSlider();
             axilInit._clickDoc();
         },
 
@@ -34,6 +35,34 @@
                 .on('load', axilInit.l)
                 .on('scroll', axilInit.scrl)
                 .on('resize', axilInit.res);
+        },
+
+        observeSlider: function () {
+            const img1 = document.querySelector("#observe1"),
+              img2 = document.querySelector("#observe2");
+            let counter = 0;
+            
+            function testImage(img) {
+            var tester = new Image();
+            tester.src = img.src;
+            // tester.onload = imageFound;
+            tester.onerror = ()=>{imageNotFound(img)};
+            }
+            // function imageFound() {
+            // }
+            function imageNotFound(img) {
+                counter++;
+                let ind = +img.parentElement.parentElement.parentElement.getAttribute('data-slick-index');
+                $('.slider-activation').slick('slickRemove',ind);
+                if (ind !== 0){
+                    ind--;
+                }
+                if(counter >= 2){
+                    document.querySelector('#sliderID').style.display = 'none';
+                }
+            }
+            testImage(img1);
+            testImage(img2);
         },
 
         scrl: function () {},
