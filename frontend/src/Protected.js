@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import requestsService from './service/requestsService';
 import watchesService from './service/watchesService';
 
 function Protected(props) {
@@ -20,7 +21,7 @@ function Protected(props) {
           navigate("/login");
         } else {
           const user = JSON.parse(localStorage.getItem("user"));
-          watchesService.deleteWatchPost("99999999999999").then((res) => {
+          requestsService.getAllContact().then((res) => {
             if(res.data.error) {
               console.log(res.data.error);
               navigate("/login");

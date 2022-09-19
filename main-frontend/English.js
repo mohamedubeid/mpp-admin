@@ -34,7 +34,7 @@ class English {
             MagazinesController.getAllSelectedMagazines(req, res),
             PhotoshootController.getAllSelectedPhotoShoots(req, res),
         ]);
-
+        
         req.query.limit = 4;
         let [newsPosts, lifestylePosts] = await Promise.all([
             NewsController.getAllSelectedPosts(req, res),
@@ -153,9 +153,12 @@ class English {
             keywords: `${post.lifestyle.meta_keywords},mpp,mppme`,
         };
 
+        let post_images = await LifestyleController.getAllLifestyleImages(req, res);
+
         res.render('post', {
             pageName: 'lifestyle',
             post: post.lifestyle,
+            images: post_images.images,
             categories: [],
             uploadsFolderPath: 'events',
             title: 'Lifestyle',
@@ -245,10 +248,13 @@ class English {
             keywords: `${post.event.meta_keywords},mpp,mppme`,
         };
 
+        let post_images = await EventsController.getAllEventImages(req, res);
+
         res.render('post', {
             pageName: 'events',
             post: post.event,
             categories: [],
+            images: post_images.images,
             uploadsFolderPath: 'events',
             title: 'Events',
             pathname: 'events',
@@ -404,6 +410,8 @@ class English {
         req.params.post_id = post.post.id;
         let categories = await WatchController.getPostCategories(req, res);
 
+        let post_images = await WatchController.getAllPostImages(req, res);
+      
         res.render('post', {
             pageName: 'watches',
             post: post.post,
@@ -412,6 +420,7 @@ class English {
             title: 'Watches',
             pathname: 'watches',
             metaData,
+            images: post_images.images,
             newsCategories: await utils.getNewsCategories(req, res),
             socialMediaLinks: await utils.getSocialMediaLinks(req, res),
             popularPosts: await utils.getPopularPosts(req, res),
@@ -564,10 +573,13 @@ class English {
         req.params.post_id = post.post.id;
         let categories = await JewelryController.getPostCategories(req, res);
 
+        let post_images = await JewelryController.getAllPostImages(req, res);
+
         res.render('post', {
             pageName: 'jewelry',
             post: post.post,
             categories: categories.categories,
+            images: post_images.images,
             uploadsFolderPath: 'jewelry',
             title: 'Jewellery',
             pathname: 'jewelry',
@@ -724,9 +736,12 @@ class English {
         req.params.post_id = post.post.id;
         let categories = await CelebrityController.getPostCategories(req, res);
 
+        let post_images = await CelebrityController.getAllPostImages(req, res);
+
         res.render('post', {
             pageName: 'celebrities',
             post: post.post,
+            images: post_images.images,
             categories: categories.categories,
             uploadsFolderPath: 'celebrity',
             title: 'Celebrities',
@@ -807,9 +822,12 @@ class English {
             keywords: `${post.magazine.meta_keywords},mpp,mppme`,
         };
 
+        let post_images = await MagazinesController.getAllMagazineImages(req, res);
+
         res.render('post', {
             pageName: 'magazine',
             post: post.magazine,
+            images: post_images.images,
             categories: [],
             uploadsFolderPath: 'magazines',
             title: 'Magazines',
@@ -1124,9 +1142,12 @@ class English {
         req.params.post_id = post.post.id;
         let categories = await NewsController.getPostCategories(req, res);
 
+        let post_images = await NewsController.getAllPostImages(req, res);
+
         res.render('post', {
             pageName: 'news',
             post: post.post,
+            images: post_images.images,
             categories: categories.categories,
             uploadsFolderPath: 'banners',
             title: 'News',
@@ -1218,9 +1239,12 @@ class English {
             keywords: `${post.photoshoot.meta_keywords},mpp,mppme`,
         };
 
+        let post_images = await PhotoshootController.getAllPhotoshootImages(req, res);
+
         res.render('post', {
             pageName: 'photoshoot',
             post: post.photoshoot,
+            images: post_images.images,
             categories: [],
             uploadsFolderPath: 'photoshoot',
             title: 'Photoshoots',

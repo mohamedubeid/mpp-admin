@@ -30,7 +30,9 @@ const Login = () => {
     await AuthService.login(email.toLowerCase(), password).then((res) => {
       if (!res.error) {
         navigate('/')
-      } 
+      } else {
+        alert("Error ")
+      }
     })
   }
 
