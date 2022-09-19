@@ -63,7 +63,7 @@ class Arabic {
             magazinePosts: magazinePosts.magazines,
             eventPosts: eventPosts.events,
             photoshootPosts: photoshootPosts.photoshoots,
-            banner: banner.banners[0],
+            banner: banner?.banners[0],
             metaData: metaData,
             newsCategories: await utils.getNewsCategories(req, res),
             socialMediaLinks: await utils.getSocialMediaLinks(req, res),
@@ -154,9 +154,12 @@ class Arabic {
             keywords: `${post.lifestyle.meta_keywords},mpp,mppme`,
         };
 
+        let post_images = await LifestyleController.getAllLifestyleImages(req, res);
+
         res.render('post', {
             layout: 'layout-ar',
             post: post.lifestyle,
+            images: post_images.images,
             categories: [],
             uploadsFolderPath: 'events',
             title: 'Lifestyle',
@@ -248,10 +251,13 @@ class Arabic {
             keywords: `${post.event.meta_keywords},mpp,mppme`,
         };
 
+        let post_images = await EventsController.getAllEventImages(req, res);
+
         res.render('post', {
             layout: 'layout-ar',
             post: post.event,
             categories: [],
+            images: post_images.images,
             uploadsFolderPath: 'events',
             title: 'Events',
             pathname: 'events',
@@ -472,10 +478,13 @@ class Arabic {
         req.params.post_id = post.post.id;
         let categories = await WatchController.getPostCategories(req, res);
 
+        let post_images = await WatchController.getAllPostImages(req, res);
+
         res.render('post', {
             layout: 'layout-ar',
             post: post.post,
             categories: categories.categories,
+            images: post_images.images,
             uploadsFolderPath: 'watches',
             title: 'Watches',
             pathname: 'watches',
@@ -640,10 +649,13 @@ class Arabic {
         req.params.post_id = post.post.id;
         let categories = await JewelryController.getPostCategories(req, res);
 
+        let post_images = await JewelryController.getAllPostImages(req, res);
+
         res.render('post', {
             layout: 'layout-ar',
             post: post.post,
             categories: categories.categories,
+            images: post_images.images,
             uploadsFolderPath: 'jewelry',
             title: 'Jewellery',
             pathname: 'jewelry',
@@ -809,9 +821,12 @@ class Arabic {
         req.params.post_id = post.post.id;
         let categories = await CelebrityController.getPostCategories(req, res);
 
+        let post_images = await CelebrityController.getAllPostImages(req, res);
+
         res.render('post', {
             layout: 'layout-ar',
             post: post.post,
+            images: post_images.images,
             categories: categories.categories,
             uploadsFolderPath: 'celebrity',
             title: 'Celebrities',
@@ -894,9 +909,12 @@ class Arabic {
             keywords: `${post.magazine.meta_keywords},mpp,mppme`,
         };
 
+        let post_images = await MagazinesController.getAllMagazineImages(req, res);
+
         res.render('post', {
             layout: 'layout-ar',
             post: post.magazine,
+            images: post_images.images,
             categories: [],
             uploadsFolderPath: 'magazines',
             title: 'Magazines',
@@ -1217,9 +1235,12 @@ class Arabic {
         req.params.post_id = post.post.id;
         let categories = await NewsController.getPostCategories(req, res);
 
+        let post_images = await NewsController.getAllPostImages(req, res);
+
         res.render('post', {
             layout: 'layout-ar',
             post: post.post,
+            images: post_images.images, 
             categories: categories.categories,
             uploadsFolderPath: 'banners',
             title: 'News',
@@ -1313,9 +1334,12 @@ class Arabic {
             keywords: `${post.photoshoot.meta_keywords},mpp,mppme`,
         };
 
+        let post_images = await PhotoshootController.getAllPhotoshootImages(req, res);
+
         res.render('post', {
             layout: 'layout-ar',
             post: post.photoshoot,
+            images: post_images.images,
             categories: [],
             uploadsFolderPath: 'photoshoot',
             title: 'Photoshoots',
