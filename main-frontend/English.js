@@ -159,6 +159,7 @@ class English {
             pageName: 'lifestyle',
             post: post.lifestyle,
             images: post_images.images,
+            emagazine: false,
             categories: [],
             uploadsFolderPath: 'events',
             title: 'Lifestyle',
@@ -248,13 +249,12 @@ class English {
             keywords: `${post.event.meta_keywords},mpp,mppme`,
         };
 
-        let post_images = await EventsController.getAllEventImages(req, res);
-
         res.render('post', {
             pageName: 'events',
             post: post.event,
             categories: [],
-            images: post_images.images,
+            images: false,
+            emagazine: false,
             uploadsFolderPath: 'events',
             title: 'Events',
             pathname: 'events',
@@ -416,6 +416,7 @@ class English {
             pageName: 'watches',
             post: post.post,
             categories: categories.categories,
+            emagazine: false,
             uploadsFolderPath: 'watches',
             title: 'Watches',
             pathname: 'watches',
@@ -580,6 +581,7 @@ class English {
             post: post.post,
             categories: categories.categories,
             images: post_images.images,
+            emagazine: false,
             uploadsFolderPath: 'jewelry',
             title: 'Jewellery',
             pathname: 'jewelry',
@@ -741,6 +743,7 @@ class English {
         res.render('post', {
             pageName: 'celebrities',
             post: post.post,
+            emagazine: false,
             images: post_images.images,
             categories: categories.categories,
             uploadsFolderPath: 'celebrity',
@@ -822,14 +825,13 @@ class English {
             keywords: `${post.magazine.meta_keywords},mpp,mppme`,
         };
 
-        let post_images = await MagazinesController.getAllMagazineImages(req, res);
-
         res.render('post', {
             pageName: 'magazine',
             post: post.magazine,
-            images: post_images.images,
+            images: false,
             categories: [],
-            uploadsFolderPath: 'magazines',
+            emagazine: post.magazine.magazine_url,
+            uploadsFolderPath: 'photoshoot',
             title: 'Magazines',
             pathname: 'magazine',
             metaData,
@@ -987,8 +989,10 @@ class English {
 
         res.render('video', {
             pageName: 'tv',
+            emagazine: false,
             post: post.video,
             categories: categories.categories,
+            images: false,
             uploadsFolderPath: 'tv',
             title: 'TV',
             pathname: 'tv',
@@ -1149,6 +1153,7 @@ class English {
             post: post.post,
             images: post_images.images,
             categories: categories.categories,
+            emagazine: false,
             uploadsFolderPath: 'banners',
             title: 'News',
             pathname: 'news',
@@ -1239,12 +1244,11 @@ class English {
             keywords: `${post.photoshoot.meta_keywords},mpp,mppme`,
         };
 
-        let post_images = await PhotoshootController.getAllPhotoshootImages(req, res);
-
         res.render('post', {
             pageName: 'photoshoot',
             post: post.photoshoot,
-            images: post_images.images,
+            images: false,
+            emagazine: false,
             categories: [],
             uploadsFolderPath: 'photoshoot',
             title: 'Photoshoots',
