@@ -160,6 +160,7 @@ class Arabic {
             layout: 'layout-ar',
             post: post.lifestyle,
             images: post_images.images,
+            emagazine: false,
             categories: [],
             uploadsFolderPath: 'events',
             title: 'Lifestyle',
@@ -251,12 +252,11 @@ class Arabic {
             keywords: `${post.event.meta_keywords},mpp,mppme`,
         };
 
-        let post_images = await EventsController.getAllEventImages(req, res);
-
         res.render('post', {
             layout: 'layout-ar',
             post: post.event,
-            categories: [],
+            categories: [],  images: false,
+            emagazine: false,
             images: post_images.images,
             uploadsFolderPath: 'events',
             title: 'Events',
@@ -484,6 +484,7 @@ class Arabic {
             layout: 'layout-ar',
             post: post.post,
             categories: categories.categories,
+            emagazine: false,
             images: post_images.images,
             uploadsFolderPath: 'watches',
             title: 'Watches',
@@ -656,6 +657,7 @@ class Arabic {
             post: post.post,
             categories: categories.categories,
             images: post_images.images,
+            emagazine: false,
             uploadsFolderPath: 'jewelry',
             title: 'Jewellery',
             pathname: 'jewelry',
@@ -826,6 +828,7 @@ class Arabic {
         res.render('post', {
             layout: 'layout-ar',
             post: post.post,
+            emagazine: false,
             images: post_images.images,
             categories: categories.categories,
             uploadsFolderPath: 'celebrity',
@@ -909,12 +912,10 @@ class Arabic {
             keywords: `${post.magazine.meta_keywords},mpp,mppme`,
         };
 
-        let post_images = await MagazinesController.getAllMagazineImages(req, res);
-
         res.render('post', {
             layout: 'layout-ar',
+            emagazine: post.magazine.magazine_url,
             post: post.magazine,
-            images: post_images.images,
             categories: [],
             uploadsFolderPath: 'magazines',
             title: 'Magazines',
@@ -1079,6 +1080,8 @@ class Arabic {
             layout: 'layout-ar',
             post: post.video,
             categories: categories.categories,
+            emagazine: false,
+            images: false,
             uploadsFolderPath: 'tv',
             title: 'TV',
             pathname: 'tv',
@@ -1241,6 +1244,7 @@ class Arabic {
             layout: 'layout-ar',
             post: post.post,
             images: post_images.images, 
+            emagazine: false,
             categories: categories.categories,
             uploadsFolderPath: 'banners',
             title: 'News',
@@ -1334,12 +1338,11 @@ class Arabic {
             keywords: `${post.photoshoot.meta_keywords},mpp,mppme`,
         };
 
-        let post_images = await PhotoshootController.getAllPhotoshootImages(req, res);
-
         res.render('post', {
             layout: 'layout-ar',
             post: post.photoshoot,
-            images: post_images.images,
+            images: false,
+            emagazine: false,
             categories: [],
             uploadsFolderPath: 'photoshoot',
             title: 'Photoshoots',
