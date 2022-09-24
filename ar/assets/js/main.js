@@ -10,15 +10,13 @@
             (this._window = $(window)),
                 (this._document = $(document)),
                 (this._body = $('body')),
-                (this._html = $('html')),
-                (this._subscribePopUp = $('.subscribe-popup'));
+                (this._html = $('html'));
         },
         methods: function (e) {
             axilInit.w();
             axilInit.axilHover();
             axilInit.axilBackToTop();
             axilInit.axilSlickActivation();
-            axilInit.loadSubscribePopup();
             axilInit.megamenuHover();
             axilInit.mobileMenuShow();
             axilInit.mobileMenuHide();
@@ -27,7 +25,6 @@
             axilInit.contactForm();
             axilInit.mobileSearch();
             axilInit.observeSlider();
-            axilInit._clickDoc();
         },
 
         w: function (e) {
@@ -127,14 +124,6 @@
                     },
                 });
             });
-        },
-
-        loadSubscribePopup: function () {
-            if (!localStorage.getItem('popup_was_shown')) {
-                setTimeout(function () {
-                    axilInit._subscribePopUp.addClass('show-popup');
-                }, 3000);
-            }
         },
 
         mobileMenuShow: function () {
@@ -412,22 +401,6 @@
                     },
                 ],
             });
-        },
-
-        _clickDoc: function (e) {
-            var subscribePopupHide;
-            subscribePopupHide = function (e) {
-                if (
-                    !$(
-                        '.subscribe-popup-inner, .subscribe-popup-inner *:not(.close-popup, .close-popup i, .newsletter-content .close-button)'
-                    ).is(e.target)
-                ) {
-                    axilInit._subscribePopUp.fadeOut('300');
-                }
-            };
-            axilInit._document
-                .on('click', '.close-popup', subscribePopupHide)
-                .on('click', subscribePopupHide);
         },
     };
     axilInit.i();
