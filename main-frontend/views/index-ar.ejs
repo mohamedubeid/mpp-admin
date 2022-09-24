@@ -924,7 +924,78 @@
                 </div>
               </div>
             </div>
-<% const n = magazinePosts.length >= 2? magazinePosts.length - 3 : magazinePosts.length - 2%>
+
+            <div class="content-block post-list-view axil-control is-active mt--30">
+              <div class="post-thumbnail">
+                <a href="/ar/photoshoot/details/<%= photoshootPosts[0].classified_slug %>">
+                  <img src="/uploads/photoshoot/<%= photoshootPosts[0].banner_image %>" alt="Post Images" />
+                </a>
+              </div>
+              <div class="post-content row align-items-center">
+                <div class="post-cat">
+                  <div class="post-cat-list">
+                    <a class="hover-flip-item-wrapper" href="/ar/photoshoot/details/<%= photoshootPosts[0].classified_slug %>">
+                      <span class="hover-flip-item">
+                        <span data-text="PHOTOSHOOT">PHOTOSHOOT</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <h4 class="title">
+                  <a href="/ar/photoshoot/details/<%= photoshootPosts[0].classified_slug %>">
+                    <%= photoshootPosts[0].title %>
+                  </a>
+                </h4>
+                <div class="post-meta-wrapper">
+                  <div class="post-meta">
+                    <div class="content">
+                      <ul class="post-meta-list">
+                        <li>
+                          <%= photoshootPosts[0].created_date_time %>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="content-block post-list-view axil-control is-active mt--30">
+              <div class="post-thumbnail">
+                <a href="/magazine/details/<%= magazinePosts[0].classified_slug %>">
+                  <img src="/uploads/photoshoot/<%= magazinePosts[0].banner_image %>" alt="Post Images" />
+                </a>
+              </div>
+              <div class="post-content row align-items-center">
+                <div class="post-cat">
+                  <div class="post-cat-list">
+                    <a class="hover-flip-item-wrapper" href="/magazine/details/<%= magazinePosts[0].classified_slug %>">
+                      <span class="hover-flip-item">
+                        <span data-text="MAGAZINE">MAGAZINE</span>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+                <h4 class="title">
+                  <a href="/magazine/details/<%= magazinePosts[0].classified_slug %>">
+                    <%= magazinePosts[0].title %>
+                  </a>
+                </h4>
+                <div class="post-meta-wrapper">
+                  <div class="post-meta">
+                    <div class="content">
+                      <ul class="post-meta-list">
+                        <li>
+                          <%= magazinePosts[0].created_date_time %>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>     
+
+<!-- <% const n = magazinePosts.length >= 2? magazinePosts.length - 3 : magazinePosts.length - 2%>
             <% for(let i= magazinePosts.length - 1; i > n; --i) {%>
             <div class="content-block post-list-view axil-control is-active mt--30">
               <div class="post-thumbnail">
@@ -956,7 +1027,9 @@
                 </div>
               </div>
             </div>
-            <% } %>
+            <% } %> -->
+            
+
             <!-- End Post List  -->
 
             <!-- End Post List  -->
@@ -1069,7 +1142,7 @@
 
 
               <a class="axil-button button-rounded hover-flip-item-wrapper" href="<%= socialMediaLinks.appleLink.setting.value %>"
-                style="margin-right: 10px">
+                style="margin-left: 10px">
                 <span class="hover-flip-item lni lni-apple mr-2">
                   <span data-text="تنزيل لـ IOS">
                     تنزيل لـ IOS
@@ -1106,7 +1179,7 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="section-title">
-              <h2 class="title">تلفزيون</h2>
+              <h2 class="title">جلسات تصوير</h2>
             </div>
           </div>
         </div>
