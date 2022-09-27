@@ -31,7 +31,11 @@
                 </a>
               </div>
             </div>
-            <h1 class="title"><%= jewelryPosts[0].title%></h1>
+            <h1 class="title">
+            <a href="/jewelry/details/<%= jewelryPosts[0].classified_slug %>">
+              <%= jewelryPosts[0].title%>
+            </a>
+            </h1>
             <!-- Post Meta  -->
           </div>
           <!-- End Post Content  -->
