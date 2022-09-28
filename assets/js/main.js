@@ -49,7 +49,7 @@
             subscribePopupHide = function (e) {
                 if (
                     !$(
-                        '.subscribe-popup-inner, .subscribe-popup-inner *:not(.close-popup, .close-popup i, .newsletter-content .close-button)'
+                        '.subscribe-popup-inner, .subscribe-popup-inner *:not(.close-popup, .close-popup i, .newsletter-content .close-button, .newsletter-content .close-button span)'
                     ).is(e.target)
                 ) {
                     axilInit._subscribePopUp.fadeOut('300');
