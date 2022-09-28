@@ -622,7 +622,7 @@ class NewsController {
     async getAllSelectedPosts(req, res) {
         try {
             const language_id = req.query.language_id || 1;
-            const limit = req.query.limit || 4;
+            const limit = req.query.limit || 5;
             const selectedPosts = await NewsService.getSelectedPost(
                 language_id
             );

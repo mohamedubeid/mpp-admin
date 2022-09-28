@@ -67,7 +67,7 @@ const CelebrityPosts = () => {
 
   const handleSelectCelebrity = (e, post) => {
     const selected = e.target.checked
-    if (selected && selectedCelebrity.length < 6) {
+    if (selected && selectedCelebrity.length < 5) {
       setSelectedCelebrity([...selectedCelebrity, post])
       let temp = celebrityTable
       temp = temp.map((item) => {

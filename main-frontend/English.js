@@ -15,7 +15,7 @@ const BannerController = require('../api/controllers/BannerController');
 
 class English {
     async Index(req, res) {
-        req.query.limit = 6;
+        req.query.limit = 5;
         req.query.language_id = 1;
         req.query.is_active = '1';
 
@@ -26,6 +26,9 @@ class English {
             tvPosts,
             magazinePosts,
             photoshootPosts,
+            newsPosts,
+            lifestylePosts,
+            eventPosts,
         ] = await Promise.all([
             WatchController.getAllSelectedPosts(req, res),
             JewelryController.getAllSelectedPosts(req, res),
@@ -33,17 +36,10 @@ class English {
             TvController.getAllSelectedVideos(req, res),
             MagazinesController.getAllSelectedMagazines(req, res),
             PhotoshootController.getAllSelectedPhotoShoots(req, res),
-        ]);
-        
-        req.query.limit = 4;
-        let [newsPosts, lifestylePosts] = await Promise.all([
             NewsController.getAllSelectedPosts(req, res),
             LifestyleController.getAllSelectedLifeStyles(req, res),
-            ,
+            EventsController.getAllSelectedEvents(req, res),
         ]);
-
-        req.query.limit = 5;
-        let eventPosts = await EventsController.getAllSelectedEvents(req, res);
 
         req.query.limit = 1;
         let banner = await BannerController.getAllSelectedBanners(req, res);
@@ -153,7 +149,10 @@ class English {
             keywords: `${post.lifestyle.meta_keywords},mpp,mppme`,
         };
 
-        let post_images = await LifestyleController.getAllLifestyleImages(req, res);
+        let post_images = await LifestyleController.getAllLifestyleImages(
+            req,
+            res
+        );
 
         res.render('post', {
             pageName: 'lifestyle',
@@ -411,7 +410,7 @@ class English {
         let categories = await WatchController.getPostCategories(req, res);
 
         let post_images = await WatchController.getAllPostImages(req, res);
-      
+
         res.render('post', {
             pageName: 'watches',
             post: post.post,

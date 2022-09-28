@@ -362,7 +362,7 @@ class LifestyleController {
     async getAllSelectedLifeStyles(req, res) {
         try {
             const language_id = req.query.language_id || 1;
-            const limit = req.query.limit || 4;
+            const limit = req.query.limit || 5;
             const selectedPosts = await LifestylesService.getSelectedLifeStyle(
                 language_id
             );

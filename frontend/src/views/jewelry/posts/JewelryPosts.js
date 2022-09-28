@@ -61,7 +61,7 @@ const JewelryPosts = () => {
 
   const handleSelectJewelry = (e, post) => {
     const selected = e.target.checked
-    if (selected && selectedJewelry.length < 6) {
+    if (selected && selectedJewelry.length < 5) {
       setSelectedJewelry([...selectedJewelry, post])
       let temp = jewelryTable
       temp = temp.map((item) => {

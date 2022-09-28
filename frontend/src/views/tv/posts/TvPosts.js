@@ -61,7 +61,7 @@ const TvPosts = () => {
 
   const handleSelectTvVideos = (e, post) => {
     const selected = e.target.checked
-    if (selected && selectedTvVideos.length < 6) {
+    if (selected && selectedTvVideos.length < 5) {
       setSelectedTvVideos([...selectedTvVideos, post])
       let temp = tvVideosTable
       temp = temp.map((item) => {

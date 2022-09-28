@@ -64,7 +64,7 @@ const NewsPosts = () => {
 
   const handleSelectNews = (e, post) => {
     const selected = e.target.checked
-    if (selected && selectedNews.length < 4) {
+    if (selected && selectedNews.length < 5) {
       setSelectedNews([...selectedNews, post])
       let temp = newsTable
       temp = temp.map((item) => {

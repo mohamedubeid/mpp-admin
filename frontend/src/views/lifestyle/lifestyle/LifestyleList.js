@@ -64,7 +64,7 @@ const LifestyleList = () => {
 
   const handleSelectLifestyle = (e, post) => {
     const selected = e.target.checked
-    if (selected && selectedLifestyle.length < 4) {
+    if (selected && selectedLifestyle.length < 5) {
       setSelectedLifestyle([...selectedLifestyle, post])
       let temp = lifestyleTable
       temp = temp.map((item) => {

@@ -61,7 +61,7 @@ const MagazineList = () => {
 
   const handleSelectMagazine = (e, post) => {
     const selected = e.target.checked
-    if (selected && selectedMagazine.length < 6) {
+    if (selected && selectedMagazine.length < 5) {
       setSelectedMagazine([...selectedMagazine, post])
       let temp = magazineTable
       temp = temp.map((item) => {

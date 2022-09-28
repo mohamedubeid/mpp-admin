@@ -63,7 +63,7 @@ const WatchesPosts = () => {
 
   const handleSelectWatch = (e, post) => {
     const selected = e.target.checked
-    if (selected && selectedWatches.length < 6) {
+    if (selected && selectedWatches.length < 5) {
       setSelectedWatches([...selectedWatches, post])
       let temp = watchesTable
       temp = temp.map((item) => {
