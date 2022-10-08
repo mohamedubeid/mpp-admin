@@ -9,6 +9,7 @@ import {
   CTableBody,
   CTableCaption,
   CTableDataCell,
+  CFormCheck,
   CTableHead,
   CButton,
   CTableHeaderCell,
@@ -23,11 +24,13 @@ import { useNavigate } from 'react-router-dom'
 const SettingList = () => {
 
     const [settingsTable, setSettingsTable] = useState([])
+    const [lang, setLang] = useState(1)
+    
 
     const navigate = useNavigate()
 
     function updateData() {
-      settingsService.getAllSetting().then((result) => {
+      settingsService.getAllSetting(lang).then((result) => {
         console.log(result.data)
         setSettingsTable(result.data.settings);
       });
@@ -35,9 +38,30 @@ const SettingList = () => {
   
     useEffect(() => {
       updateData();
-    }, []);
+    }, [lang]);
 
   return (
+    <>
+     <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            name="lang"
+            defaultChecked
+            onClick={() => setLang(1)}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            name="lang"
+            onClick={() => setLang(2)}
+            onChange={() => console.log('')}
+          />
+        </CCol>
+      </fieldset>
     <CCol xs={12}>
       <CCard className="mb-4">
         <CCardHeader>
@@ -49,7 +73,7 @@ const SettingList = () => {
               <CTableRow>
                 <CTableHeaderCell scope="col" style={{width: "20%"}}>No #</CTableHeaderCell>
                 <CTableHeaderCell scope="col" style={{width: "20%"}}>Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "20%"}}>Value</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "15%"}}>Value</CTableHeaderCell>
                 <CTableHeaderCell scope="col" style={{width: "20%"}}>Status</CTableHeaderCell>
                 <CTableHeaderCell scope="col" style={{width: "20%"}}>Action</CTableHeaderCell>
               </CTableRow>
@@ -64,7 +88,11 @@ const SettingList = () => {
                 <CTableDataCell>
                     <CButton 
                     onClick={() => {
+                      if(lang === 2){
+                      navigate("/settings/edit-setting/"+settings.id+"?lang=ar")
+                      } else {
                       navigate("/settings/edit-setting/"+settings.id)
+                      }
                     }}
                     color={'primary'}
                     className="me-2">
@@ -79,6 +107,7 @@ const SettingList = () => {
         </CCardBody>
       </CCard>
     </CCol>
+    </>
   )
 }
 

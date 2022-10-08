@@ -33,6 +33,7 @@ const EditMagazine = () => {
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
   const navigate = useNavigate()
@@ -178,6 +179,28 @@ const EditMagazine = () => {
                     value="active"
                     label="Active"
                     onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(0)}
                   />
                 </CCol>
               </fieldset>

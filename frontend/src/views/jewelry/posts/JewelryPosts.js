@@ -84,7 +84,7 @@ const JewelryPosts = () => {
       })
       setJewelryTable(temp3)
     } else {
-      setErrMsg('You are selected the maximum number of jewelry posts')
+      setErrMsg('You have selected the maximum number of jewelry posts')
       setDisplayNtf(true)
       const myInterval = setInterval(() => {
         setDisplayNtf(false)
