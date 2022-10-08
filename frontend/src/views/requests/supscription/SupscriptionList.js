@@ -52,15 +52,15 @@ const SupscriptionList = () => {
           <CTable>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col">No #</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Company Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">City</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Country</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Time</CTableHeaderCell>
-                <CTableHeaderCell scope="col">IP Address</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>No #</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>Email</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>Company Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>City</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>Country</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>Time</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>IP Address</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "10%"}}>Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
@@ -68,7 +68,7 @@ const SupscriptionList = () => {
               <CTableRow key={i}>
                 <CTableHeaderCell scope="row">{newsletter.id}</CTableHeaderCell>
                 <CTableDataCell>{newsletter.fname}</CTableDataCell>
-                <CTableDataCell>{newsletter.email}</CTableDataCell>
+                <CTableDataCell >{newsletter.email}</CTableDataCell>
                 <CTableDataCell>{newsletter.company_name}</CTableDataCell>
                 <CTableDataCell>{newsletter.city}</CTableDataCell>
                 <CTableDataCell>{newsletter.country_name}</CTableDataCell>

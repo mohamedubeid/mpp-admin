@@ -3,8 +3,8 @@ import authHeader from './auth-header'
 
 const API_URL = '/settings'
 
-const getAllSetting = () => {
-  return axios.get(API_URL, { headers: authHeader() })
+const getAllSetting = (lang) => {
+  return axios.get(API_URL+`/?language_id=${lang}`, { headers: authHeader() })
 }
 const getSetting = (code) => {
   return axios.get(API_URL + "/" + code, { headers: authHeader() })

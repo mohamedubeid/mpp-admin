@@ -210,7 +210,7 @@ const Addmagazine = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="English"
+                    name="lang"
                     id="IsActive"
                     value="eng"
                     label="English"
@@ -219,7 +219,7 @@ const Addmagazine = () => {
                   />
                   <CFormCheck
                     type="radio"
-                    name="Arabic"
+                    name="lang"
                     id="IsActive"
                     value="ar"
                     label="Arabic"
