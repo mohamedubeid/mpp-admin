@@ -64,7 +64,7 @@
         </li>
         <li class="nav-item" role="presentation">
           <a class="nav-link" id="grid-four" data-bs-toggle="tab" href="#gridfour" role="tab" aria-controls="grid-four"
-            aria-selected="false">TV</a>
+            aria-selected="false">PHOTOSHOOT</a>
         </li>
       </ul>
       <div class="grid-tab-content tab-content mt--10">
@@ -370,8 +370,8 @@
                 <!-- Start Post Grid  -->
                 <div class="content-block post-grid post-grid-large mt--30 sticky-tag">
                   <div class="post-thumbnail">
-                    <a href="/tv/details/<%= tvPosts[0].classified_slug%>">
-                      <img src="/uploads/tv/<%= tvPosts[0].banner_image%>" alt="Post Images" />
+                    <a href="/photoshoot/details/<%= photoshootPosts[0].classified_slug%>">
+                      <img src="/uploads/photoshoot/<%= photoshootPosts[0].banner_image%>" alt="Post Images" />
                     </a>
                   </div>
                   <div class="post-grid-content">
@@ -380,14 +380,14 @@
                         <div class="post-cat-list">
                           <a class="hover-flip-item-wrapper" href="#">
                             <span class="hover-flip-item">
-                              <span data-text="TV">TV</span>
+                              <span data-text="PHOTOSHOOT">PHOTOSHOOT</span>
                             </span>
                           </a>
                         </div>
                       </div>
                       <h3 class="title">
-                        <a href="/tv/details/<%= tvPosts[0].classified_slug%>">
-                          <%= tvPosts[0].title%>
+                        <a href="/photoshoot/details/<%= photoshootPosts[0].classified_slug%>">
+                          <%= photoshootPosts[0].title%>
                         </a>
                       </h3>
                       <div class="post-meta-wrapper">
@@ -395,7 +395,7 @@
                           <div class="content">
                             <ul class="post-meta-list">
                               <li>
-                                <%= tvPosts[0].created_date_time%>
+                                <%= photoshootPosts[0].created_date_time%>
                               </li>
                             </ul>
                           </div>
@@ -418,35 +418,35 @@
               <div class="col-xl-5 col-lg-5 col-md-12 col-12">
                 <div class="row">
 
-                  <% for(let tvPost of tvPosts.slice(1)) { %>
+                  <% for(let photoshootPost of photoshootPosts.slice(1)) { %>
                     <!-- Start Post Grid  -->
                     <div class="content-block post-grid mt--30">
                       <div class="post-thumbnail">
-                        <a href="/tv/details/<%= tvPost.classified_slug%>">
-                          <img src="uploads/tv/<%= tvPost.banner_image %>" alt="Post Images" />
+                        <a href="/photoshoot/details/<%= photoshootPost.classified_slug%>">
+                          <img src="uploads/photoshoot/<%= photoshootPost.banner_image %>" alt="Post Images" />
                         </a>
                       </div>
                       <div class="post-grid-content">
                         <div class="post-content">
                           <div class="post-cat">
                             <div class="post-cat-list">
-                              <a class="hover-flip-item-wrapper" href="/tv">
+                              <a class="hover-flip-item-wrapper" href="/photoshoot">
                                 <span class="hover-flip-item">
-                                  <span data-text="TV">TV</span>
+                                  <span data-text="PHOTOSHOOT">PHOTOSHOOT</span>
                                 </span>
                               </a>
                             </div>
                           </div>
                           <h5 class="title">
-                            <a href="/tv/details/<%= tvPost.classified_slug%>">
-                              <%= tvPost.title %>
+                            <a href="/photoshoot/details/<%= photoshootPost.classified_slug%>">
+                              <%= photoshootPost.title %>
                             </a>
                           </h5>
                           <div class="post-meta">
                             <div class="content">
                               <ul class="post-meta-list">
                                 <li>
-                                  <%= tvPost.created_date_time %>
+                                  <%= photoshootPost.created_date_time %>
                                 </li>
                               </ul>
                             </div>
@@ -1242,7 +1242,7 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="section-title">
-            <h2 class="title">AWJ - PHOTOSHOOT</h2>
+            <h2 class="title">AWJ - TV</h2>
           </div>
         </div>
       </div>
@@ -1251,23 +1251,24 @@
           <!-- Start Post List  -->
           <div class="content-block post-default image-rounded mt--30">
             <div class="post-thumbnail">
-              <a href="/photoshoot/details/<%= photoshootPosts[0].classified_slug %>">
-                <img src="/uploads/photoshoot/<%= photoshootPosts[0].banner_image %>" alt="Post Images" />
+              <a href="/tv/details/<%= tvPosts[0].classified_slug %>">
+                <img src="/uploads/tv/ <%= tvPosts[0].banner_image%>" alt="Post Images" />
               </a>
+              <a class="video-popup position-top-center" href="/tv/details/<%= tvPosts[0].classified_slug %>"><span class="play-icon"></span></a>
             </div>
             <div class="post-content">
               <div class="post-cat">
                 <div class="post-cat-list">
                   <a class="hover-flip-item-wrapper" href="#">
                     <span class="hover-flip-item">
-                      <span data-text="PhotoShoot">PhotoShoot</span>
+                      <span data-text="TV">TV</span>
                     </span>
                   </a>
                 </div>
               </div>
               <h3 class="title">
-                <a href="/photoshoot/details/<%= photoshootPosts[0].classified_slug %>">
-                  <%= photoshootPosts[0].title%>
+                <a href="/tv/details/<%= tvPosts[0].classified_slug %>">
+                  <%= tvPosts[0].title%>
                 </a>
               </h3>
               <div class="post-meta-wrapper">
@@ -1275,7 +1276,7 @@
                   <div class="content">
                     <ul class="post-meta-list">
                       <li>
-                        <%= photoshootPosts[0].created_date_time %>
+                        <%= tvPosts[0].created_date_time %>
                       </li>
                     </ul>
                   </div>
@@ -1298,28 +1299,30 @@
         </div>
         <div class="col-xl-6 col-lg-6 col-md-12 col-md-6 col-12">
           <div class="row">
-            <% for(let photoshootPost of photoshootPosts.slice(1)) { %>
+            <% for(let tvPost of tvPosts.slice(1)) { %>
               <!-- Start Post List  -->
               <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                 <div class="content-block post-default image-rounded mt--30">
                   <div class="post-thumbnail">
-                    <a href="/photoshoot/details/<%= photoshootPost.classified_slug %>">
-                      <img src="/uploads/photoshoot/<%= photoshootPost.banner_image %>" alt="Post Images" />
+                    <a href="/tv/details/<%= tvPost.classified_slug %>">
+                      <img src="/uploads/tv/ <%= tvPost.banner_image%>" alt="Post Images" />
                     </a>
+                    <a class="video-popup size-medium position-top-center" href="/tv/details/<%= tvPost.classified_slug %>"><span
+                      class="play-icon"></span></a>
                   </div>
                   <div class="post-content">
                     <div class="post-cat">
                       <div class="post-cat-list">
                         <a class="hover-flip-item-wrapper" href="#">
                           <span class="hover-flip-item">
-                            <span data-text="PHOTOSHOOT">PHOTOSHOOT</span>
+                            <span data-text="TV">TV</span>
                           </span>
                         </a>
                       </div>
                     </div>
                     <h5 class="title">
-                      <a href="/photoshoot/details/<%= photoshootPost.classified_slug %>">
-                        <%= photoshootPost.title %>
+                      <a href="/tv/details/<%= tvPost.classified_slug %>">
+                        <%= tvPost.title %>
                       </a>
                     </h5>
                   </div>
