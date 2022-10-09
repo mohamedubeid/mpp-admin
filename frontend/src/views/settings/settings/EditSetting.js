@@ -27,19 +27,31 @@ const EditSetting = () => {
   const language = location.search
   const fullParam = language.slice(6)
   const langURL = fullParam || 'en'
-  const [lang, setLang] = useState(langURL)
+  const [lang, setLang] = useState(1)
+
+  useEffect(() => {
+    if(langURL === 'ar'){
+      setLang(2);
+    } 
+    if(lang === 'en'){
+      setLang(1);
+    }
+  },[])
 
   const navigate = useNavigate()
   const params = useParams()
 
   function handleEditSetting() {
+    console.log(lang)
     const data = {
       setting_title: title,
       setting_value: value,
       language_id: lang,
     }
+    console.log(data)
     SettingsService.editSetting(params.id, data).then(
       (result) => {
+      console.log(result)
       navigate("/settings/setting-list")
       }
     )
@@ -81,7 +93,7 @@ const EditSetting = () => {
                     id="IsActive"
                     label="English"
                     onChange={() => setLang(1)}
-                    defaultChecked={lang === 'en'}
+                    defaultChecked={langURL === 'en'}
                   />
                   <CFormCheck
                     type="radio"
@@ -89,7 +101,7 @@ const EditSetting = () => {
                     id="IsActive"
                     label="Arabic"
                     onChange={() => setLang(2)}
-                    defaultChecked={lang === "ar"}
+                    defaultChecked={langURL === 'ar'}
                   />
                 </CCol>
               </fieldset>

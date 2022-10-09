@@ -11,6 +11,7 @@ import {
   CButton,
   CTableDataCell,
   CTableHead,
+  CFormCheck,
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
@@ -23,18 +24,19 @@ import slidersService from 'src/service/sliderService'
 const SliderList = () => {
 
     const [sliderTable, setSliderTable] = useState([])
+    const [lang, setLang] = useState(1)
 
     const navigate = useNavigate()
 
     function updateData() {
-      slidersService.getAllSliders().then((result) => {
+      slidersService.getAllSliders(lang).then((result) => {
         setSliderTable(result.data.sliders);
       });
     }
   
     useEffect(() => {
       updateData();
-    }, []);
+    }, [lang]);
 
     function handleDeleteSlider(code) {
       console.log(code)
@@ -46,6 +48,27 @@ const SliderList = () => {
     }
 
   return (
+    <>
+     <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            name="lang"
+            defaultChecked
+            onClick={() => setLang(1)}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            name="lang"
+            onClick={() => setLang(2)}
+            onChange={() => console.log('')}
+          />
+        </CCol>
+      </fieldset>
     <CCol xs={12}>
       <CCard className="mb-4">
         <CCardHeader>
@@ -72,7 +95,11 @@ const SliderList = () => {
                 <CTableDataCell>
                 <CButton 
                     onClick={() => {
-                      navigate("/slider/edit-slider/"+slider.id)
+                      if(lang === 2){
+                        navigate("/slider/edit-slider/"+slider.id+"?lang=ar")
+                        } else {
+                          navigate("/slider/edit-slider/"+slider.id)
+                        }
                     }}
                     color={'primary'}
                     className="me-2">
@@ -96,6 +123,7 @@ const SliderList = () => {
         </CCardBody>
       </CCard>
     </CCol>
+    </>
   )
 }
 

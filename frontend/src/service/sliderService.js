@@ -3,8 +3,8 @@ import authHeader from './auth-header'
 
 const API_URL = '/sliders'
 
-const getAllSliders = () => {
-  return axios.get(API_URL, { headers: authHeader() })
+const getAllSliders = (lang) => {
+  return axios.get(API_URL+`?language_id=${lang}`, { headers: authHeader() })
 }
 const getSliders = (code) => {
   return axios.get(API_URL + "/" +code, { headers: authHeader() })

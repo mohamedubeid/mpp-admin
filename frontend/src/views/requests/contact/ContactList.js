@@ -23,7 +23,7 @@ import requestsService from 'src/service/requestsService'
 const ContactList = () => {
 
     const [contactTable, setContactTable] = useState([])
-
+  	
     function updateData() {
       requestsService.getAllContact().then((result) => {
         setContactTable(result.data.contact_requests);
@@ -48,27 +48,27 @@ const ContactList = () => {
         <CCardHeader>
           <strong>Contact</strong> <small> List</small>
         </CCardHeader>
-        <CCardBody>
-          <CTable>
+        <CCardBody >
+          <CTable bordered> 
             <CTableHead>
-              <CTableRow >
-                <CTableHeaderCell scope="col">No #</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Message</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Time</CTableHeaderCell>
-                <CTableHeaderCell scope="col">IP Address</CTableHeaderCell>
-                <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+              <CTableRow>
+                <CTableHeaderCell scope="col" >No#</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Email</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Message</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Time</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >IP Address</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
            {contactTable.map((contacts, i) => (
-              <CTableRow key={i}>
+              <CTableRow key={i} >
                 <CTableHeaderCell scope="row">{contacts.id}</CTableHeaderCell>
-                <CTableDataCell>{contacts.name}</CTableDataCell>
-                <CTableDataCell>{contacts.email}</CTableDataCell>
-                <CTableDataCell>{contacts.comments}</CTableDataCell>
-                <CTableDataCell>{contacts.created_date_time}</CTableDataCell>
+                <CTableDataCell style={{columnWidth: "75px"}}>{contacts.name}</CTableDataCell>
+                <CTableDataCell style={{columnWidth: "100px"}}>{contacts.email}</CTableDataCell>
+                <CTableDataCell style={{columnWidth: "300px"}}>{contacts.comments}</CTableDataCell>
+                <CTableDataCell >{contacts.created_date_time}</CTableDataCell>
                 <CTableDataCell>{contacts.created_ip}</CTableDataCell>
                 <CTableDataCell>
                     <CButton

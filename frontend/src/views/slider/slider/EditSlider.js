@@ -12,11 +12,12 @@ import {
   CFormSelect,
   CInputGroup,
   CInputGroupText,
+  CFormFeedback,
   CFormTextarea,
   CRow,
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import slidersService from 'src/service/sliderService'
 
 const EditSlider = () => {
@@ -25,22 +26,36 @@ const EditSlider = () => {
   const [link, setLink] = useState('')
   const [description, setDescription] = useState('')
   const [bannerImage, setBannerImage] = useState(null)
+  const [image, setImage] = useState("")
+  const location = useLocation()
+  const language = location.search
+  const fullParam = language.slice(6)
+  const langURL = fullParam || 'en'
+  const [lang, setLang] = useState(langURL)
   const [isActive, setIsActive] = useState("0")
 
   const navigate = useNavigate()
   const params = useParams()
 
-  function handleEditSlider() {
-    const data = {
-      title: title,
-      short_description: shortDescription,
-      link: link,
-      description: description,
-      banner_image: bannerImage,
-      language_id: 1,
-      isActive: isActive,
+  function handleEditSlider(event) {
+    event.preventDefault();
+    if(lang === 'ar'){
+      setLang(2);
+    } 
+    if(lang === 'en'){
+      setLang(1);
     }
-    slidersService.editSliders(params.id, data).then(
+    
+    const formData = new FormData();
+		formData.append('banner_image', bannerImage);
+		formData.append('title', title);
+		formData.append('link', link);
+		formData.append('description', description);
+		formData.append('short_description', shortDescription);
+		formData.append('language_id', lang);
+		formData.append('is_active', isActive);
+
+    slidersService.editSliders(params.id, formData).then(
       (result) => {
         console.log(result)
         navigate("/slider/slider-list")
@@ -54,7 +69,8 @@ const EditSlider = () => {
       if(result.data.slider.short_description) setShortDescription(result.data.slider.classified_slug)
       if(result.data.slider.description) setDescription(result.data.slider.description)
       if(result.data.slider.link) setLink(result.data.slider.link)
-      if(result.data.slider.banner_image) setBannerImage(result.data.slider.banner_image)
+      if(result.data.slider.banner_image) setImage(result.data.slider.banner_image)
+      if(result.data.slider.is_active)  setIsActive(result.data.slider.is_active)
     });
   }, []);
 
@@ -66,16 +82,21 @@ const EditSlider = () => {
             <strong>Edit</strong> <small>Post Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+                <CFormInput value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} invalid required/>
+              </CCol>
+              <CCol md={6}>
+                <CFormLabel htmlFor="inputPassword4">Short Description</CFormLabel>
+                <CFormInput type="text" value={shortDescription} id="shortDescription" onChange={(e) => setShortDescription(e.target.value)} />
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
                 <CFormTextarea
                   id="descriptionTextArea"
                   rows="3"
+                  value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></CFormTextarea>
               </div>
@@ -86,7 +107,12 @@ const EditSlider = () => {
                   id="formFile"
                   onChange={(e) => setBannerImage(e.target.files[0])}
                 />
+                <CFormFeedback >Current Image: {image}</CFormFeedback>
               </div>
+              <CCol md={6}>
+                <CFormLabel htmlFor="inputPassword4">Link</CFormLabel>
+                <CFormInput type="text" id="shortDescription" value={link} onChange={(e) => setLink(e.target.value)} />
+              </CCol>
             </CForm>
           </CCardBody>
         </CCard>
@@ -98,26 +124,48 @@ const EditSlider = () => {
           </CCardHeader>
           <CCardBody>
             <CForm>     
-              <fieldset className="row mb-3">
-                <h6></h6>
+            <fieldset className="row mb-3">
+                <h6>Status</h6>
                 <legend className="col-form-label col-sm-2 pt-0">Is Active:</legend>
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
-                    value="inactive"
                     label="In Active"
+                    defaultChecked={isActive === "0"}
                     onChange={() => setIsActive("0")}
-                    defaultChecked
                   />
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
-                    value="active"
                     label="Active"
+                    defaultChecked={isActive === "1"}
                     onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="lang"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked={lang === 'en'}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="lang"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(2)}
+                    defaultChecked={lang === "ar"}
                   />
                 </CCol>
               </fieldset>
