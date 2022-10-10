@@ -86,7 +86,7 @@ const PhotoshootList = React.lazy(() => import('./views/photoshoot/photoshoot/Ph
 const AddPhotoshoot = React.lazy(() => import('./views/photoshoot/photoshoot/AddPhotoshoot'))
 const EditPhotoshoot = React.lazy(() => import('./views/photoshoot/photoshoot/EditPhotoshoot'))
 const PhotoshootImageList = React.lazy(() => import('./views/photoshoot/photoshoot/ImagesList'))
-const PhotoshootAddImage = React.lazy(() => import('./views/photoshoot/photoshoot/ImagesList'))
+const PhotoshootAddImage = React.lazy(() => import('./views/photoshoot/photoshoot/AddImage'))
 
 //TV
 const TvCategories = React.lazy(() => import('./views/tv/categories/TvCategories'))
@@ -98,6 +98,7 @@ const TvEditVideo = React.lazy(() => import('./views/tv/posts/EditPosts'))
 
 //Banners
 const AddBanners = React.lazy(() => import('./views/banner/banner/AddAdvertize'))
+const EditBanners = React.lazy(() => import('./views/banner/banner/EditAdvertize'))
 const BannersList = React.lazy(() => import('./views/banner/banner/AdvertizeList'))
 
 //Slider
@@ -206,7 +207,8 @@ const routes = [
   { path: '/tv/add-videos', name: 'Add Videos', element: TvAddVideo },
   { path: '/tv/edit-videos/:id', name: 'Edit Videos', element: TvEditVideo },
   { path: '/banners/advertize-list', name: 'Banners', element: BannersList, exact: true },
-  { path: '/banners/add-advertize', name: 'Advertize List', element: AddBanners },
+  { path: '/banners/add-advertize', name: 'Add Advertize', element: AddBanners },
+  { path: '/banners/edit-advertize/:id', name: 'Edit Advertize', element: EditBanners },
   { path: '/banners/add-pieces', name: 'Add Advertize', element: AddBanners },
   { path: '/slider', name: 'Slider', element: SliderList, exact: true },
   { path: '/slider/slider-list', name: 'Slider List', element: SliderList },

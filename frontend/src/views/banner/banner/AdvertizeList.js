@@ -10,6 +10,7 @@ import {
   CTableBody,
   CTableDataCell,
   CTableHead,
+  CImage,
   CTableHeaderCell,
   CTableRow,
   CFormCheck,
@@ -191,7 +192,7 @@ const AdvertizeList = () => {
                   <CTableHeaderCell scope="col" style={{ width: '20%' }}>
                     Name
                   </CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Image</CTableHeaderCell>
+                  <CTableHeaderCell scope="col" style={{ width: '10%' }}>Image</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Type</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
@@ -211,13 +212,18 @@ const AdvertizeList = () => {
                     </CTableDataCell>
                     <CTableHeaderCell scope="row">{i + (page - 1) * 50 + 1}</CTableHeaderCell>
                     <CTableDataCell>{ad.title}</CTableDataCell>
-                    <CTableDataCell>{ad.image_path}</CTableDataCell>
+                    <CTableDataCell style={{columnWidth: "200px"}}>{ad.image_path}</CTableDataCell>
                     <CTableDataCell>{ad.advertize_type}</CTableDataCell>
                     <CTableDataCell>{ad.is_active == '1' ? 'Active' : 'In Active'}</CTableDataCell>
                     <CTableDataCell>
                       <CButton
                         onClick={() => {
-                          navigate('/banners/edit-banner/' + ad.id)
+                          if(lang === 'ar'){
+                            navigate('/banners/edit-advertize/' + ad.id+"?lang=ar")
+                            } else {
+                              navigate('/banners/edit-advertize/' + ad.id)
+
+                            }
                         }}
                         className="me-2"
                         color={'primary'}
