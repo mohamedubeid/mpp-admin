@@ -29,12 +29,13 @@ const AddImage = () => {
   const navigate = useNavigate()
   const params = useParams()
 
-  function handleAddImage() {
+  function handleAddImage(event) {
+    event.preventDefault()
     const formData = new FormData();
 		formData.append('image', bannerImage);
 		formData.append('caption', caption);
 		formData.append('is_active', isActive);
-		formData.append('language_id', 1);
+		formData.append('language_id', lang);
     photoshootService.postImage(params.id, formData).then((result) => {
       if(result) navigate("/photoshoot/post-Images-list/"+params.id)
     })
@@ -51,7 +52,8 @@ const AddImage = () => {
             <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Caption</CFormLabel>
-                <CFormInput type="text" id="title" onChange={(e) => setCaption(e.target.value)} />
+                <CFormInput invalid required type="text" id="title" onChange={(e) => setCaption(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="formFile">Banner Image</CFormLabel>

@@ -52,7 +52,8 @@ const AddEvents = () => {
     }
   }, [quill]);
    
-  function handleAddEvent() {
+  function handleAddEvent(event) {
+    event.preventDefault()
     // const data = {
     //   title: title,
     //   slug: slug,
@@ -206,6 +207,7 @@ const AddEvents = () => {
                 ></CFormTextarea>
               </div>
               <fieldset className="row mb-3">
+                <h6>Status</h6>
                 <legend className="col-form-label col-sm-2 pt-0">Is Active:</legend>
                 <CCol sm={10}>
                   <CFormCheck
@@ -214,7 +216,7 @@ const AddEvents = () => {
                     id="IsActive"
                     value="inactive"
                     label="In Active"
-                    onChange={() => setIsActive("0")}
+                    onChange={() => setIsActive('0')}
                     defaultChecked
                   />
                   <CFormCheck
@@ -223,7 +225,7 @@ const AddEvents = () => {
                     id="IsActive"
                     value="active"
                     label="Active"
-                    onChange={() => setIsActive("1")}
+                    onChange={() => setIsActive('1')}
                   />
                 </CCol>
               </fieldset>
@@ -232,7 +234,7 @@ const AddEvents = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="English"
+                    name="lang"
                     id="IsActive"
                     value="eng"
                     label="English"
@@ -241,11 +243,11 @@ const AddEvents = () => {
                   />
                   <CFormCheck
                     type="radio"
-                    name="Arabic"
+                    name="lang"
                     id="IsActive"
                     value="ar"
                     label="Arabic"
-                    onChange={() => setLang(0)}
+                    onChange={() => setLang(2)}
                   />
                 </CCol>
               </fieldset>

@@ -14,10 +14,11 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
+  CFormFeedback
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import lifestyleService from 'src/service/lifestyleService'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams,useLocation } from 'react-router-dom'
 import { useQuill } from 'react-quilljs';
 
 import 'quill/dist/quill.snow.css';
@@ -26,12 +27,27 @@ const EditLifestyle = () => {
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
-  const [bannerImage, setBannerImage] = useState(null)
+  const [bannerImage, setBannerImage] = useState([])
+  const [image, setImage] = useState("")
   const [metaTitle, setMetaTitle] = useState('')
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState("0")
+  const location = useLocation()
+  const language = location.search
+  const fullParam = language.slice(6)
+  const langURL = fullParam || 'en'
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
+
+  useEffect(() => {
+    if(langURL === 'ar'){
+      setLang(2);
+    } 
+    if(lang === 'en'){
+      setLang(1);
+    }
+  },[])
 
   const navigate = useNavigate()
   const params = useParams()
@@ -51,10 +67,10 @@ const EditLifestyle = () => {
 		formData.append('slug', slug);
 		formData.append('description', description);
 		formData.append('meta_title', metaTitle);
-		formData.append('meta_keywords', metaKeywords);
-		formData.append('meta_desc', metaDescription);
+		formData.append('meta_tags', metaKeywords);
+		formData.append('meta_description', metaDescription);
 		formData.append('is_active', isActive);
-		formData.append('language_id', 1);
+		formData.append('language_id', lang);
     // const data = {
     //   title: title,
     //   classified_slug: slug,
@@ -78,7 +94,7 @@ const EditLifestyle = () => {
       if(result.data.lifestyle.title) setTitle(result.data.lifestyle.title)
       if(result.data.lifestyle.classified_slug) setSlug(result.data.lifestyle.classified_slug)
       if(result.data.lifestyle.description) setDescription(result.data.lifestyle.description)
-      if(result.data.lifestyle.banner_image) setBannerImage(result.data.lifestyle.banner_image)
+      if(result.data.lifestyle.banner_image) setImage(result.data.lifestyle.banner_image)
       if(result.data.lifestyle.meta_title) setMetaTitle(result.data.lifestyle.meta_title)
       if(result.data.lifestyle.meta_keywords) setMetaKeywords(result.data.lifestyle.meta_keywords)
       if(result.data.lifestyle.meta_desc)  setMetaDescription(result.data.lifestyle.meta_desc)
@@ -95,14 +111,15 @@ const EditLifestyle = () => {
             <strong>Add</strong> <small>Post Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+                <CFormInput value={title} invalid required type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput value={slug} disabled type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -117,6 +134,7 @@ const EditLifestyle = () => {
                   id="formFile"
                   onChange={(e) => setBannerImage(e.target.files[0])}
                 />
+                <CFormFeedback >Current Image: {image}</CFormFeedback>
               </div>
             </CForm>
           </CCardBody>
@@ -128,28 +146,36 @@ const EditLifestyle = () => {
             <strong>SEO</strong> <small>Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm>
+            <CForm validated={true}>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Title</CFormLabel>
                 <CFormTextarea
                   id="metaTitle"
                   rows="3"
+                  value={metaTitle}
+                  invalid required
                   onChange={(e) => setMetaTitle(e.target.value)}
                 ></CFormTextarea>
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Keywords</CFormLabel>
                 <CFormTextarea
                   id="metaKeywords"
                   rows="3"
+                  invalid required
+                  value={metaKeywords}
                   onChange={(e) => setMetaKeywords(e.target.value)}
                 ></CFormTextarea>
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Description</CFormLabel>
                 <CFormTextarea
                   id="metaDescription"
                   rows="3"
+                  invalid required
+                  value={metaDescription}
                   onChange={(e) => setMetaDescription(e.target.value)}
                 ></CFormTextarea>
               </div>
@@ -159,20 +185,42 @@ const EditLifestyle = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
-                    value="inactive"
                     label="In Active"
-                    onChange={() => setIsActive(false)}
-                    defaultChecked
+                    defaultChecked={isActive === "0"}
+                    onChange={() => setIsActive("0")}
                   />
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
-                    value="active"
                     label="Active"
-                    onChange={() => setIsActive(true)}
+                    defaultChecked={isActive === "1"}
+                    onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked={langURL === 'en'}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(2)}
+                    defaultChecked={langURL === 'ar'}
                   />
                 </CCol>
               </fieldset>

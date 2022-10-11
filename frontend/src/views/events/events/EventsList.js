@@ -229,7 +229,11 @@ const EventsList = () => {
                     <CTableDataCell>
                       <CButton
                         onClick={() => {
-                          navigate('/events/edit-events/' + events.id)
+                          if(lang === 'ar'){
+                            navigate('/events/edit-events/' + events.id+"?lang=ar")
+                            } else {
+                              navigate('/events/edit-events/' + events.id)
+                            }
                         }}
                         className="me-2"
                         color={'primary'}

@@ -98,7 +98,11 @@ const CMSList = () => {
                   <CTableDataCell>
                     <CButton
                       onClick={() => {
-                        navigate('/cms/edit-cms/' + cms.id)
+                        if(lang === 2){
+                          navigate('/cms/edit-cms/' + cms.id+"?lang=ar")
+                          } else {
+                            navigate('/cms/edit-cms/' + cms.id)
+                          }
                       }}
                       className="me-2"
                       color={'primary'}

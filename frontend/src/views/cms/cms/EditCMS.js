@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate,useLocation } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -33,8 +33,22 @@ const EditCMS = () => {
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
+  const location = useLocation()
+  const language = location.search
+  const fullParam = language.slice(6)
+  const langURL = fullParam || 'en'
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  useEffect(() => {
+    if(langURL === 'ar'){
+      setLang(2);
+    } 
+    if(lang === 'en'){
+      setLang(1);
+    }
+  },[])
+  
   const params = useParams()
   const navigate = useNavigate()
 
@@ -57,7 +71,7 @@ const EditCMS = () => {
       meta_title: metaTitle,
       meta_keywords: metaKeywords,
       meta_description: metaDescription,
-      language_id: "1",
+      language_id: lang,
       is_active: isActive,
     }
     cmsService.editCMS(params.id, data).then(
@@ -84,9 +98,10 @@ const EditCMS = () => {
   }, []);
 
   function updateParentsData() {
-    cmsService.getAllCMS().then((result) => {
+    console.log("j")
+    cmsService.getAllCMS(lang).then((result) => {
       const listt  = []
-      listt.pust("0 None")
+      listt.push("0 None")
       const dataa = result.data.cmspages
       for(const key in dataa){
         listt.push(dataa[key].id+" "+dataa[key].title)
@@ -107,7 +122,7 @@ const EditCMS = () => {
             <strong>Edit</strong> <small>CMS Page Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={12}>
                 <CFormLabel htmlFor="inputEmail4">Parent Page</CFormLabel>
                 <CFormSelect 
@@ -123,7 +138,7 @@ const EditCMS = () => {
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" value={slug} id="slug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput type="text" value={slug} id="slug" disabled onChange={(e) => setSlug(e.target.value)} />
               </CCol>
               <CCol md={12}>
                 <CFormLabel htmlFor="inputPassword4">Short Description</CFormLabel>
@@ -179,23 +194,47 @@ const EditCMS = () => {
                 ></CFormTextarea>
               </div>
               <fieldset className="row mb-3">
+                <h6>Status</h6>
                 <legend className="col-form-label col-sm-2 pt-0">Is Active:</legend>
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
-                    value="inactive"
                     label="In Active"
+                    defaultChecked={isActive === "0"}
                     onChange={() => setIsActive("0")}
                   />
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
-                    value="active"
                     label="Active"
+                    defaultChecked={isActive === "1"}
                     onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked={langURL === 'en'}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(2)}
+                    defaultChecked={langURL === 'ar'}
                   />
                 </CCol>
               </fieldset>

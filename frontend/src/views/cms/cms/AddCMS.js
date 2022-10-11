@@ -71,11 +71,12 @@ const AddCMS = () => {
   }
   
   function updateParentsData() {
-    cmsService.getAllCMS().then((result) => {
+    cmsService.getAllCMS(lang).then((result) => {
       //setParentList(result.data.cmspages)
       const listt  = []
       listt.push("0 None")
       const dataa = result.data.cmspages
+      console.log(dataa)
       for(const key in dataa){
         listt.push(dataa[key].id+" "+dataa[key].title)
       }
