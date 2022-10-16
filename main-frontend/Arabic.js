@@ -15,7 +15,7 @@ const utils = require('./utils');
 class Arabic {
     async Index(req, res) {
         req.query.language_id = 2;
-        req.query.limit = 6;
+        req.query.limit = 5;
         req.query.is_active = '1';
 
         let [
@@ -25,6 +25,9 @@ class Arabic {
             tvPosts,
             magazinePosts,
             photoshootPosts,
+            newsPosts,
+            lifestylePosts,
+            eventPosts,
         ] = await Promise.all([
             WatchController.getAllSelectedPosts(req, res),
             JewelryController.getAllSelectedPosts(req, res),
@@ -32,17 +35,10 @@ class Arabic {
             TvController.getAllSelectedVideos(req, res),
             MagazinesController.getAllSelectedMagazines(req, res),
             PhotoshootController.getAllSelectedPhotoShoots(req, res),
-        ]);
-
-        req.query.limit = 4;
-        let [newsPosts, lifestylePosts] = await Promise.all([
             NewsController.getAllSelectedPosts(req, res),
             LifestyleController.getAllSelectedLifeStyles(req, res),
-            ,
+            EventsController.getAllSelectedEvents(req, res),
         ]);
-
-        req.query.limit = 5;
-        let eventPosts = await EventsController.getAllSelectedEvents(req, res);
 
         req.query.limit = 1;
         let banner = await BannerController.getAllSelectedBanners(req, res);
@@ -154,7 +150,10 @@ class Arabic {
             keywords: `${post.lifestyle.meta_keywords},mpp,mppme`,
         };
 
-        let post_images = await LifestyleController.getAllLifestyleImages(req, res);
+        let post_images = await LifestyleController.getAllLifestyleImages(
+            req,
+            res
+        );
 
         res.render('post', {
             layout: 'layout-ar',
@@ -256,7 +255,8 @@ class Arabic {
         res.render('post', {
             layout: 'layout-ar',
             post: post.event,
-            categories: [],  images: false,
+            categories: [],
+            images: false,
             emagazine: false,
             singleImage: true,
             images: false,

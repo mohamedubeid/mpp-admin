@@ -472,7 +472,7 @@ class WatchController {
     async getAllSelectedPosts(req, res) {
         try {
             const language_id = req.query.language_id || 1;
-            const limit = req.query.limit || 6;
+            const limit = req.query.limit || 5;
             const selectedPosts = await WatchService.getSelectedPost(
                 language_id
             );

@@ -26,7 +26,6 @@
             axilInit.trendPost();
             axilInit.contactForm();
             axilInit.mobileSearch();
-            axilInit.observeSlider();
             axilInit._clickDoc();
         },
 
@@ -51,7 +50,7 @@
                 console.log('asd');
                 if (
                     !$(
-                        '.subscribe-popup-inner, .subscribe-popup-inner *:not(.close-popup, .close-popup i, .newsletter-content .close-button)'
+                        '.subscribe-popup-inner, .subscribe-popup-inner *:not(.close-popup, .close-popup i, .newsletter-content .close-button, .newsletter-content .close-button span)'
                     ).is(e.target)
                 ) {
                     console.log(e.target)
@@ -61,21 +60,6 @@
             axilInit._document
                 .on('click', '.close-popup', subscribePopupHide)
                 .on('click', subscribePopupHide);
-        },
-
-        observeSlider: function () {
-            if(document.querySelector("#observe1")){
-                const img1 = document.querySelector("#observe1");
-                function testImage(img) {
-                    var tester = new Image();
-                    tester.src = img.src;
-                    tester.onerror = ()=>{imageNotFound(img)};
-                }
-                function imageNotFound() {
-                    document.querySelector('#sliderID').style.display = 'none';
-                }
-                testImage(img1);
-            }
         },
 
         scrl: function () {},

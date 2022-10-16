@@ -354,7 +354,7 @@ class MagazinesController {
     async getAllSelectedMagazines(req, res) {
         try {
             const language_id = req.query.language_id || 1;
-            const limit = req.query.limit || 6;
+            const limit = req.query.limit || 5;
             const selectedPosts = await MagazinesService.getSelectedMagazines(
                 language_id
             );
