@@ -3,8 +3,8 @@ import authHeader from './auth-header'
 
 const API_URL = '/cmspages'
 
-const getAllCMS = () => {
-  return axios.get(API_URL, { headers: authHeader() })
+const getAllCMS = (lang) => {
+  return axios.get(API_URL+`?language_id=${lang}`, { headers: authHeader() })
 }
 const getCMSPage = (code) => {
   return axios.get(API_URL + "/" + code, { headers: authHeader() })

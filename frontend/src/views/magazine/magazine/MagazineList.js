@@ -189,7 +189,7 @@ const MagazineList = () => {
                 <CTableRow>
                   <CTableHeaderCell scope="col">Select</CTableHeaderCell>
                   <CTableHeaderCell scope="col">No #</CTableHeaderCell>
-                  <CTableHeaderCell scope="col" className="me-2">
+                  <CTableHeaderCell scope="col" style={{width: "15%"}} className="me-2">
                     Title
                   </CTableHeaderCell>
                   <CTableHeaderCell scope="col">Images</CTableHeaderCell>
@@ -229,7 +229,11 @@ const MagazineList = () => {
                     <CTableDataCell>
                       <CButton
                         onClick={() => {
-                          navigate('/magazine/edit-magazine/' + magazine.id)
+                          if(lang === 'ar'){
+                            navigate("/magazine/edit-magazine/"+magazine.id+"?lang=ar")
+                            } else {
+                            navigate("/magazine/edit-magazine/"+magazine.id)
+                            }
                         }}
                         color={'primary'}
                         className="me-2"

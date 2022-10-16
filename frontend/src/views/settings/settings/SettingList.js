@@ -71,10 +71,10 @@ const SettingList = () => {
           <CTable>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col" style={{width: "20%"}}>No #</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "20%"}}>Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "15%"}}>No #</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "15%"}}>Name</CTableHeaderCell>
                 <CTableHeaderCell scope="col" style={{width: "15%"}}>Value</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "20%"}}>Status</CTableHeaderCell>
+                <CTableHeaderCell scope="col" style={{width: "15%"}}>Status</CTableHeaderCell>
                 <CTableHeaderCell scope="col" style={{width: "20%"}}>Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>

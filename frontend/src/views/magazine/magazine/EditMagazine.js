@@ -14,9 +14,10 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
+  CFormFeedback
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import magazinesService from 'src/service/magazinesService'
 import { useQuill } from 'react-quilljs';
 
@@ -27,15 +28,30 @@ const EditMagazine = () => {
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
   const [city, setCity] = useState('')
-  const [bannerImage, setBannerImage] = useState(null)
+  const [bannerImage, setBannerImage] = useState([])
+  const [image, setImage] = useState("")
   const [eventDate, setEventDate] = useState('')
+  const [magazineURL, setMagazineURL] = useState('')
   const [metaTitle, setMetaTitle] = useState('')
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
+  const location = useLocation()
+  const language = location.search
+  const fullParam = language.slice(6)
+  const langURL = fullParam || 'en'
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  useEffect(() => {
+    if(langURL === 'ar'){
+      setLang(2);
+    } 
+    if(lang === 'en'){
+      setLang(1);
+    }
+  },[])
+  
   const navigate = useNavigate()
   const params = useParams()
 
@@ -47,17 +63,20 @@ const EditMagazine = () => {
     }
   }, [quill]);
 
-  function handleEditMagazine() {
+  function handleEditMagazine(event) {
+    event.preventDefault();
     const formData = new FormData();
 		formData.append('banner_image', bannerImage);
 		formData.append('title', title);
 		formData.append('slug', slug);
 		formData.append('description', description);
+    formData.append('event_date', eventDate)
+    formData.append('magazine_url', magazineURL)
 		formData.append('meta_title', metaTitle);
-		formData.append('meta_keywords', metaKeywords);
+		formData.append('meta_tags', metaKeywords);
 		formData.append('meta_desc', metaDescription);
 		formData.append('is_active', isActive);
-		formData.append('language_id', 1);  
+		formData.append('language_id', lang);  
     // const data = {
     //   title: title,
     //   classified_slug: slug,
@@ -84,14 +103,20 @@ const EditMagazine = () => {
       if(result.data.magazine.classified_slug) setSlug(result.data.magazine.classified_slug)
       if(result.data.magazine.description) setDescription(result.data.magazine.description)
       if(result.data.magazine.event_date) setDescription(result.data.magazine.event_date)
-      if(result.data.magazine.banner_image) setBannerImage(result.data.magazine.banner_image)
+      if(result.data.magazine.banner_image) setImage(result.data.magazine.banner_image)
       if(result.data.magazine.meta_title) setMetaTitle(result.data.magazine.meta_title)
       if(result.data.magazine.meta_keywords) setMetaKeywords(result.data.magazine.meta_keywords)
+      if(result.data.magazine.event_date) setEventDate(result.data.magazine.event_date)
+      if(result.data.magazine.magazine_url) setMagazineURL(result.data.magazine.magazine_url)
       if(result.data.magazine.meta_desc)  setMetaDescription(result.data.magazine.meta_desc)
       if(result.data.magazine.is_active)  setIsActive(result.data.magazine.is_active)
       quillRef.current.firstChild.innerHTML = result.data.magazine.description
     });
   }, []);
+
+  useEffect(()=>{
+    console.log(isActive)
+  },[isActive])
 
   return (
     <CRow>
@@ -101,14 +126,42 @@ const EditMagazine = () => {
             <strong>Edit</strong> <small>Magazine Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+                <CFormInput value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} 
+                 invalid
+                 required />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput value={slug} type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput value={slug} type="text" id="slug" onChange={(e) => setSlug(e.target.value)} 
+                 invalid
+                 required/>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
+              </CCol>
+              <CCol md={6}>
+                <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="slug"
+                  value={eventDate}
+                  onChange={(e) => setEventDate(e.target.value)}
+                />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
+              </CCol>
+              <CCol md={6}>
+                <CFormLabel htmlFor="inputPassword4">Magazine URL</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="slug"
+                  value={magazineURL}
+                  onChange={(e) => setMagazineURL(e.target.value)}
+                  invalid
+                  required
+                />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -120,9 +173,10 @@ const EditMagazine = () => {
                 <CFormLabel htmlFor="formFile">Banner Image</CFormLabel>
                 <CFormInput
                   type="file"
-                  id="formFile"
+                  id="formFile" 
                   onChange={(e) => setBannerImage(e.target.files[0])}
                 />
+                <CFormFeedback >Current Image: {image}</CFormFeedback>
               </div>
             </CForm>
           </CCardBody>
@@ -134,28 +188,37 @@ const EditMagazine = () => {
             <strong>SEO</strong> <small>Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm>
+            <CForm validated={true}>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Title</CFormLabel>
                 <CFormTextarea
                   id="metaTitle"
                   rows="3"
+                  invalid
+                  required
+                  value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                 ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Keywords</CFormLabel>
                 <CFormTextarea
                   id="metaKeywords"
                   rows="3"
+                  invalid
+                  required
+                  value={metaKeywords}
                   onChange={(e) => setMetaKeywords(e.target.value)}
                 ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Description</CFormLabel>
                 <CFormTextarea
                   id="metaDescription"
                   rows="3"
+                  value={metaDescription}
                   onChange={(e) => setMetaDescription(e.target.value)}
                 ></CFormTextarea>
               </div>
@@ -165,19 +228,18 @@ const EditMagazine = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
-                    value="inactive"
                     label="In Active"
+                    defaultChecked={isActive === "0"}
                     onChange={() => setIsActive("0")}
-                    defaultChecked
                   />
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
-                    value="active"
                     label="Active"
+                    defaultChecked={isActive === "1"}
                     onChange={() => setIsActive("1")}
                   />
                 </CCol>
@@ -192,7 +254,7 @@ const EditMagazine = () => {
                     value="eng"
                     label="English"
                     onChange={() => setLang(1)}
-                    defaultChecked
+                    defaultChecked={langURL === 'en'}
                   />
                   <CFormCheck
                     type="radio"
@@ -200,7 +262,8 @@ const EditMagazine = () => {
                     id="IsActive"
                     value="ar"
                     label="Arabic"
-                    onChange={() => setLang(0)}
+                    onChange={() => setLang(2)}
+                    defaultChecked={langURL === 'ar'}
                   />
                 </CCol>
               </fieldset>

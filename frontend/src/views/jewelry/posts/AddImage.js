@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -12,76 +13,46 @@ import {
   CFormSelect,
   CInputGroup,
   CInputGroupText,
-  CFormFeedback,
   CFormTextarea,
   CRow,
+  CFormFeedback
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
-import { useState } from 'react'
-import bannersService from 'src/service/bannersService'
-import { useNavigate } from 'react-router-dom'
+import jewelryService from 'src/service/jewelryService'
 
-const AddAdvertize = () => {
-  const [title, setTitle] = useState('')
-  const [link, setLink] = useState('')
-  const [bannerImage, setBannerImage] = useState(null)
-  const [type, setType] = useState("Header")
-  const [isActive, setIsActive] = useState("0")
+const AddImage = () => {
+  const [caption, setCaption] = useState('')
+  const [bannerImage, setBannerImage] = useState()
   const [lang, setLang] = useState(1)
+  const [isActive, setIsActive] = useState("0")
 
   const navigate = useNavigate()
+  const params = useParams()
 
-  function handleAddAdvertize(event) {
+  function handleAddImage(event) {
     event.preventDefault()
-    const formData = new FormData()
-    formData.append('banner_image', bannerImage)
-    formData.append('title', title)
-    formData.append('advertize_url', link)
-    formData.append('type', type)
-    formData.append('is_active', isActive)
-    formData.append('language_id', lang)
-   
-    bannersService.postBanners(formData)
-    .then((result) => {
-      if (result) navigate('/banners/advertize-list')
+    const formData = new FormData();
+		formData.append('image', bannerImage);
+		formData.append('caption', caption);
+		formData.append('is_active', isActive);
+		formData.append('language_id', lang);
+    jewelryService.postImage(params.id, formData).then((result) => {
+      if(result) navigate("/jewelry/post-images-list/"+params.id)
     })
-    .catch((err) => alert(err + '\n please fill out all fields'))
   }
-  
-
+    
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Add</strong> <small>Post Details</small>
+            <strong>Add</strong> <small>Image Details</small>
           </CCardHeader>
           <CCardBody>
             <CForm validated={true} className="row g-3">
               <CCol md={6}>
-                <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput invalid required type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
-                <CFormFeedback invalid>This field is required!</CFormFeedback>
-              </CCol>
-              <CCol md={6}>
-                <CFormLabel htmlFor="inputEmail4">Type</CFormLabel>
-                <CFormSelect 
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                invalid required
-                options={["Header", "Footer", "Popup Banner", "Home page Banner"]} 
-                aria-label="Default select example">      
-                </CFormSelect>
-                <CFormFeedback invalid>This field is required!</CFormFeedback>
-              </CCol>
-              <CCol md={12}>
-                <CFormLabel htmlFor="inputPassword4">Advertize Link</CFormLabel>
-                <CFormInput
-                  type="text"
-                  invalid required
-                  id="description"
-                  onChange={(e) => setLink(e.target.value)}
-                />
+                <CFormLabel htmlFor="inputEmail4">Caption</CFormLabel>
+                <CFormInput invalid required type="text" id="title" onChange={(e) => setCaption(e.target.value)} />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">
@@ -101,7 +72,7 @@ const AddAdvertize = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Status</strong> <small></small>
+            <strong>Is Active</strong> <small></small>
           </CCardHeader>
           <CCardBody>
             <CForm>
@@ -111,7 +82,7 @@ const AddAdvertize = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
                     value="inactive"
                     label="In Active"
@@ -120,7 +91,7 @@ const AddAdvertize = () => {
                   />
                   <CFormCheck
                     type="radio"
-                    name="is active"
+                    name="isactive"
                     id="IsActive"
                     value="active"
                     label="Active"
@@ -150,8 +121,7 @@ const AddAdvertize = () => {
                   />
                 </CCol>
               </fieldset>
-              <CButton type="submit" onClick={handleAddAdvertize}>
-                {' '}
+              <CButton type="submit" onClick={handleAddImage}>
                 Submit
               </CButton>
             </CForm>
@@ -162,4 +132,4 @@ const AddAdvertize = () => {
   )
 }
 
-export default AddAdvertize
+export default AddImage

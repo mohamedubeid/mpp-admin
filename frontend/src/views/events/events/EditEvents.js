@@ -14,9 +14,10 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
+  CFormFeedback
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import eventsService from 'src/service/eventsService'
 import { useQuill } from 'react-quilljs';
 
@@ -34,11 +35,26 @@ const EditEvents = () => {
   const [website, setWebsite] = useState('')
   const [description, setDescription] = useState('')
   const [bannerImage, setBannerImage] = useState(null)
+  const [image, setImage] = useState("")
   const [metaTitle, setMetaTitle] = useState('')
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
+  const location = useLocation()
+  const language = location.search
+  const fullParam = language.slice(6)
+  const langURL = fullParam || 'en'
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
+
+  useEffect(() => {
+    if(langURL === 'ar'){
+      setLang(2);
+    } 
+    if(lang === 'en'){
+      setLang(1);
+    }
+  },[])
 
   const navigate = useNavigate()
   const params = useParams()
@@ -106,11 +122,11 @@ const EditEvents = () => {
       if(result.data.event.organizer) setOrganizer(result.data.event.organizer)
       if(result.data.event.event_fax) setEventFax(result.data.event.event_fax)
       if(result.data.event.event_email) setEventEmail(result.data.event.event_email)
-      if(result.data.event.website) setWebsite(result.data.event.website)
+      if(result.data.event.websitename) setWebsite(result.data.event.websitename)
       if(result.data.event.description) setDescription(result.data.event.description)
-      if(result.data.event.banner_image) setBannerImage(result.data.event.banner_image)
+      if(result.data.event.banner_image) setImage(result.data.event.banner_image)
       if(result.data.event.meta_title) setMetaTitle(result.data.event.meta_title)
-      if(result.data.event.meta_tags) setMetaKeywords(result.data.event.meta_tags)
+      if(result.data.event.meta_keywords) setMetaKeywords(result.data.event.meta_keywords)
       if(result.data.event.meta_desc)  setMetaDescription(result.data.event.meta_desc)
       if(result.data.event.is_active)  setIsActive(result.data.event.is_active)
       quillRef.current.firstChild.innerHTML = result.data.event.description
@@ -125,42 +141,51 @@ const EditEvents = () => {
           <strong>Edit</strong> <small>Event Details</small>
         </CCardHeader>
         <CCardBody>
-          <CForm className="row g-3">
+          <CForm validated={true} className="row g-3">
             <CCol md={6}>
               <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-              <CFormInput value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+              <CFormInput invalid required value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-              <CFormInput value={slug} type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
+              <CFormInput disabled value={slug} type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Telephone Number</CFormLabel>
-              <CFormInput value={telephone} type="text" id="slug" onChange={(e) => setTelephone(e.target.value)} />
+              <CFormInput invalid required value={telephone} type="text" id="slug" onChange={(e) => setTelephone(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
-              <CFormInput value={eventDate} type="text" id="slug" onChange={(e) => setEventDate(e.target.value)} />
+              <CFormInput invalid required value={eventDate} type="text" id="slug" onChange={(e) => setEventDate(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Venue</CFormLabel>
-              <CFormInput value={venue} type="text" id="slug" onChange={(e) => setVenue(e.target.value)} />
+              <CFormInput invalid required value={venue} type="text" id="slug" onChange={(e) => setVenue(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Organizer</CFormLabel>
-              <CFormInput value={organizer} type="text" id="slug" onChange={(e) => setOrganizer(e.target.value)} />
+              <CFormInput invalid required value={organizer} type="text" id="slug" onChange={(e) => setOrganizer(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Event Fax</CFormLabel>
-              <CFormInput value={eventFax} type="text" id="slug" onChange={(e) => setEventFax(e.target.value)} />
+              <CFormInput invalid required value={eventFax} type="text" id="slug" onChange={(e) => setEventFax(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Event Email</CFormLabel>
-              <CFormInput value={eventEmail} type="text" id="slug" onChange={(e) => setEventEmail(e.target.value)} />
+              <CFormInput invalid required value={eventEmail} type="text" id="slug" onChange={(e) => setEventEmail(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputPassword4">Website</CFormLabel>
-              <CFormInput type="text" id="slug" onChange={(e) => setWebsite(e.target.value)} />
+              <CFormInput invalid required value={website} type="text" id="slug" onChange={(e) => setWebsite(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </CCol>
             <div className="mb-3">
               <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -175,6 +200,7 @@ const EditEvents = () => {
                 id="formFile"
                 onChange={(e) => setBannerImage(e.target.files[0])}
               />
+                <CFormFeedback >Current Image: {image}</CFormFeedback>
             </div>
           </CForm>
         </CCardBody>
@@ -186,15 +212,17 @@ const EditEvents = () => {
           <strong>SEO</strong> <small>Details</small>
         </CCardHeader>
         <CCardBody>
-          <CForm>
+          <CForm validated={true}>
             <div className="mb-3">
               <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Title</CFormLabel>
               <CFormTextarea
                 id="metaTitle"
                 value={metaTitle}
                 rows="3"
+                invalid required 
                 onChange={(e) => setMetaTitle(e.target.value)}
               ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </div>
             <div className="mb-3">
               <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Tags</CFormLabel>
@@ -202,8 +230,10 @@ const EditEvents = () => {
                 value={metaKeywords}
                 id="metaKeywords"
                 rows="3"
+                invalid required 
                 onChange={(e) => setMetaKeywords(e.target.value)}
               ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
             </div>
             <div className="mb-3">
               <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Description</CFormLabel>
@@ -215,27 +245,50 @@ const EditEvents = () => {
               ></CFormTextarea>
             </div>
             <fieldset className="row mb-3">
-              <legend className="col-form-label col-sm-2 pt-0">Is Active:</legend>
-              <CCol sm={10}>
-                <CFormCheck
-                  type="radio"
-                  name="is active"
-                  id="IsActive"
-                  value="inactive"
-                  label="In Active"
-                  onChange={() => setIsActive("0")}
-                  defaultChecked
-                />
-                <CFormCheck
-                  type="radio"
-                  name="is active"
-                  id="IsActive"
-                  value="active"
-                  label="Active"
-                  onChange={() => setIsActive("1")}
-                />
-              </CCol>
-            </fieldset>
+                <h6>Status</h6>
+                <legend className="col-form-label col-sm-2 pt-0">Is Active:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="isactive"
+                    id="IsActive"
+                    label="In Active"
+                    defaultChecked={isActive === "0"}
+                    onChange={() => setIsActive("0")}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="isactive"
+                    id="IsActive"
+                    label="Active"
+                    defaultChecked={isActive === "1"}
+                    onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked={langURL === 'en'}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(2)}
+                    defaultChecked={langURL === 'ar'}
+                  />
+                </CCol>
+              </fieldset>
             <CButton type="submit" onClick={handleEditEvent}>
               Submit
             </CButton>

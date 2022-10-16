@@ -231,7 +231,11 @@ const WatchesPosts = () => {
                     <CTableDataCell>
                       <CButton
                         onClick={() => {
-                          navigate('/watches/edit-posts/' + watches.id)
+                          if(lang === 'ar'){
+                          navigate('/watches/edit-posts/' + watches.id+"?lang=ar")
+                            } else {
+                              navigate('/watches/edit-posts/' + watches.id)
+                            }
                         }}
                         className="me-2"
                         color={'primary'}

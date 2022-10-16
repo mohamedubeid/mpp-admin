@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CButton,
   CCard,
@@ -14,21 +14,28 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
+  CFormFeedback
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useQuill } from 'react-quilljs';
-
 import 'quill/dist/quill.snow.css';
+import celebritiesService from 'src/service/celebritiesService';
+import { useNavigate } from 'react-router-dom';
 
 const AddCategories = () => {
+  const [parentList, setParentList] = useState([])
+  const [parent, setParent] = useState('')
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
   const [metaTitle, setMetaTitle] = useState('')
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState("0")
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
+
+  const navigate = useNavigate()
 
   React.useEffect(() => {
     if (quill) {
@@ -38,20 +45,43 @@ const AddCategories = () => {
     }
   }, [quill]);
 
-  function handleAddCategory() {
+  function handleAddCategory(e) {
+    e.preventDefault()
     const data = {
+      parent_page: parent,
       title: title,
       slug: slug,
       description: description,
-      metaTitle: metaTitle,
-      metaKeywords: metaKeywords,
-      metaDescription: metaDescription,
-      isActive: isActive,
+      meta_title: metaTitle,
+      meta_keywords: metaKeywords,
+      meta_description: metaDescription,
+      is_active: isActive,
+      language_id: lang
     }
-
-    console.log(data)
+    celebritiesService.postCelebritiesCategory(data).then((result) => {
+      if(result) navigate("/celebrity/categories-list")
+    }).catch((err) => alert(err+"\n please fill out all fields"))
   }
 
+  function updateParentsData() {
+    celebritiesService.getAllCelebritiesCategories(lang).then((result) => {
+      //setParentList(result.data.cmspages)
+      const listt  = []
+      listt.push("0 None")
+      const dataa = result.data.categories
+      console.log(dataa)
+      for(const key in dataa){
+        listt.push(dataa[key].id+" "+dataa[key].title)
+      }
+      console.log(listt)
+      setParentList(listt)
+    })
+  }
+
+  useEffect(() => {
+    updateParentsData()
+  }, [])
+  
   return (
     <CRow>
       <CCol xs={12}>
@@ -60,18 +90,29 @@ const AddCategories = () => {
             <strong>Add</strong> <small>Category Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
+            <CCol md={12}>
+                <CFormLabel htmlFor="inputEmail4">Parent Page</CFormLabel>
+                <CFormSelect 
+                onChange={(e) => setParent(e.target.value)}
+                options={parentList} 
+                aria-label="Default select example">      
+                </CFormSelect>
+              </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
                 <CFormInput
                   type="text"
+                  invalid required
                   id="inputTitle"
                   onChange={(e) => setTitle(e.target.value)}
                 />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" id="inputSlug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput invalid required type="text" id="inputSlug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -119,20 +160,42 @@ const AddCategories = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="gridRadios"
-                    id="gridRadios1"
-                    value="option1"
+                    name="is active"
+                    id="IsActive"
+                    value="inactive"
                     label="In Active"
-                    onChange={() => setIsActive(false)}
+                    onChange={() => setIsActive("0")}
                     defaultChecked
                   />
                   <CFormCheck
                     type="radio"
-                    name="gridRadios"
-                    id="gridRadios2"
-                    value="option2"
+                    name="is active"
+                    id="IsActive"
+                    value="active"
                     label="Active"
-                    onChange={() => setIsActive(true)}
+                    onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(2)}
                   />
                 </CCol>
               </fieldset>

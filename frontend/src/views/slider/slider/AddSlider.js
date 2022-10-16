@@ -151,7 +151,7 @@ const AddSlider = () => {
                     id="lang"
                     value="ar"
                     label="Arabic"
-                    onChange={() => setLang(0)}
+                    onChange={() => setLang(2)}
                   />
                 </CCol>
               </fieldset>

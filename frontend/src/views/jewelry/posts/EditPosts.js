@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   CButton,
   CCard,
@@ -18,22 +18,23 @@ import {
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useNavigate, useParams, useLocation } from 'react-router-dom'
-import photoshootService from 'src/service/photoshootService'
 import { useQuill } from 'react-quilljs';
 
 import 'quill/dist/quill.snow.css';
+import jewelryService from 'src/service/jewelryService';
 
-const EditPhotoshoot = () => {
+const EditPosts = () => {
+  const [categories, setCategories] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState([])
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
-  const [city, setCity] = useState('')
-  const [bannerImage, setBannerImage] = useState(null)
+  const [bannerImage, setBannerImage] = useState([])
   const [image, setImage] = useState("")
-  const [eventDate, setEventDate] = useState('')
   const [metaTitle, setMetaTitle] = useState('')
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
+  const [iconOfTheWeek, setIconOfTheWeek] = useState("0")
   const [isActive, setIsActive] = useState("0")
   const location = useLocation()
   const language = location.search
@@ -42,15 +43,6 @@ const EditPhotoshoot = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
-  useEffect(() => {
-    if(langURL === 'ar'){
-      setLang(2);
-    } 
-    if(lang === 'en'){
-      setLang(1);
-    }
-  },[])
-  
   const navigate = useNavigate()
   const params = useParams()
 
@@ -62,62 +54,88 @@ const EditPhotoshoot = () => {
     }
   }, [quill]);
 
-  function handleEditPhotoshoot(event) {
+  function handleEditPost(event) {
     event.preventDefault()
-    const formData = new FormData()
-    formData.append('banner_image', bannerImage)
-    formData.append('title', title)
-    formData.append('slug', slug)
-    formData.append('description', description)
-    formData.append('event_date', eventDate)
-    formData.append('city', city)
-    formData.append('meta_title', metaTitle)
-    formData.append('meta_tags', metaKeywords)
-    formData.append('meta_description', metaDescription)
-    formData.append('is_active', isActive)
-    formData.append('language_id', lang)
-
-    photoshootService.editPhotoshoots(params.id, formData).then(
+    let category = []
+    selectedCategories.map((e) => {
+      let id = e.id;
+      category.push(id)
+    })
+    const formData = new FormData();
+    category.forEach((cate) => formData.append("categories", cate))
+    formData.append('banner_image', bannerImage);
+		formData.append('title', title);
+		formData.append('slug', slug);  
+		formData.append('meta_title', metaTitle);
+		formData.append('meta_keywords', metaKeywords);
+		formData.append('meta_description', metaDescription);
+		formData.append('language_id', lang);
+		formData.append('description', description);
+		formData.append('icon_of_the_week', iconOfTheWeek);
+		formData.append('is_active', isActive);
+    jewelryService.editJewelryPost(params.id, formData).then(
       (result) => {
         console.log(result)
-        navigate("/photoshoot/photoshoot-list")
+        navigate("/jewelry/posts")
       }
-    )
+    ).catch((err) => console.log(err))
   }
 
   useEffect(() => {
-    photoshootService.getPhotoshoots(params.id).then((result) => {
-      if(result.data.photoshoot.title) setTitle(result.data.photoshoot.title)
-      if(result.data.photoshoot.classified_slug) setSlug(result.data.photoshoot.classified_slug)
-      if(result.data.photoshoot.description) setDescription(result.data.photoshoot.description)
-      if(result.data.photoshoot.event_date) setEventDate(result.data.photoshoot.event_date)
-      if(result.data.photoshoot.banner_image) setImage(result.data.photoshoot.banner_image)
-      if(result.data.photoshoot.meta_title) setMetaTitle(result.data.photoshoot.meta_title)
-      if(result.data.photoshoot.meta_keywords) setMetaKeywords(result.data.photoshoot.meta_keywords)
-      if(result.data.photoshoot.meta_desc)  setMetaDescription(result.data.photoshoot.meta_desc)
-      if(result.data.photoshoot.is_active)  setIsActive(result.data.photoshoot.is_active)
-      quillRef.current.firstChild.innerHTML = result.data.photoshoot.description
+    jewelryService.getJewelryPost(params.id).then((result) => {
+      if(result.data.post.title) setTitle(result.data.post.title)
+      if(result.data.post.classified_slug) setSlug(result.data.post.classified_slug)
+      if(result.data.post.description) setDescription(result.data.post.description)
+      if(result.data.post.banner_image) setImage(result.data.post.banner_image)
+      if(result.data.post.meta_title) setMetaTitle(result.data.post.meta_title)
+      if(result.data.post.meta_keywords) setMetaKeywords(result.data.post.meta_keywords)
+      if(result.data.post.meta_desc)  setMetaDescription(result.data.post.meta_desc)
+      if(result.data.post.is_weekicon)  setIconOfTheWeek(result.data.post.is_weekicon)
+      if(result.data.post.is_active)  setIsActive(result.data.post.is_active)
+      quillRef.current.firstChild.innerHTML = result.data.post.description
     });
   }, []);
+
+  function updateParentsData() {
+    jewelryService.getJewelryCategoryList(params.id).then((result) => {
+      setSelectedCategories(result.data.categories)
+  })
+    jewelryService.getAllJewelryCategories().then((result) => {
+      const list  = []
+      const data = result.data.categories
+      for(const key in data){
+        list.push(data[key].title)
+      }
+      setCategories(list)
+    })
+  }
+
+  useEffect(() => {
+    updateParentsData()
+  }, [])
 
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Edit</strong> <small>Photoshoot Details</small>
+            <strong>Edit</strong> <small>Post Details</small>
           </CCardHeader>
           <CCardBody>
-          <CForm validated={true} className="row g-3">
+            <CForm validated={true} className="row g-3">
+            <CCol md={12}>
+                <CFormLabel htmlFor="inputEmail4">Categories</CFormLabel>
+                <CFormFeedback>{selectedCategories.map((e) => ("ID: " + e.id + " TITLE: " + e.title + " - "))}</CFormFeedback>
+              </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
-                <CFormInput value={title} invalid required type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
-                <CFormFeedback invalid>This field is required!</CFormFeedback>
+                <CFormInput invalid required value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} />
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput value={slug} invalid required type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
-                <CFormFeedback invalid>This field is required!</CFormFeedback>
+                <CFormInput disabled value={slug} type="text" id="slug" onChange={(e) => setSlug(e.target.value)} />
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -125,14 +143,6 @@ const EditPhotoshoot = () => {
                   <div ref={quillRef} />
                 </div>
               </div>
-              <CCol md={6}>
-                <CFormLabel htmlFor="inputPassword4">City Name</CFormLabel>
-                <CFormInput value={city} type="text" id="slug" onChange={(e) => setCity(e.target.value)} />
-              </CCol>
-              <CCol md={6}>
-                <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
-                <CFormInput value={eventDate} type="text" id="slug" onChange={(e) => setEventDate(e.target.value)} />
-              </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="formFile">Banner Image</CFormLabel>
                 <CFormInput
@@ -152,38 +162,62 @@ const EditPhotoshoot = () => {
             <strong>SEO</strong> <small>Details</small>
           </CCardHeader>
           <CCardBody>
-          <CForm validated={true}>
+            <CForm validated={true}>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Title</CFormLabel>
                 <CFormTextarea
+                invalid required
+                  value={metaTitle}
                   id="metaTitle"
                   rows="3"
-                  value={metaTitle}
-                  invalid required
                   onChange={(e) => setMetaTitle(e.target.value)}
                 ></CFormTextarea>
-                  <CFormFeedback invalid>This field is required!</CFormFeedback>
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Keywords</CFormLabel>
                 <CFormTextarea
+                invalid required
+                 value={metaKeywords}
                   id="metaKeywords"
                   rows="3"
-                  value={metaKeywords}
-                  invalid required
                   onChange={(e) => setMetaKeywords(e.target.value)}
                 ></CFormTextarea>
-                  <CFormFeedback invalid>This field is required!</CFormFeedback>
+              <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Description</CFormLabel>
                 <CFormTextarea
+                 value={metaDescription}
                   id="metaDescription"
                   rows="3"
-                  value={metaDescription}
                   onChange={(e) => setMetaDescription(e.target.value)}
                 ></CFormTextarea>
               </div>
+              <fieldset className="row mb-3">
+                <h6>Status</h6>
+                <legend className="col-form-label col-sm-2 pt-0">Icon of th week:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="iconoftheweek"
+                    id="IconOfTheWeek"
+                    value="Yes"
+                    label="Yes"
+                    defaultChecked={iconOfTheWeek === "1"}
+                    onChange={() => setIconOfTheWeek("1")}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="iconoftheweek"
+                    id="IconOfTheWeek"
+                    value="No"
+                    label="No"
+                    defaultChecked={iconOfTheWeek === "0"}
+                    onChange={() => setIconOfTheWeek("0")}
+                  />
+                </CCol>
+              </fieldset>
               <fieldset className="row mb-3">
                 <h6>Status</h6>
                 <legend className="col-form-label col-sm-2 pt-0">Is Active:</legend>
@@ -192,18 +226,17 @@ const EditPhotoshoot = () => {
                     type="radio"
                     name="isactive"
                     id="IsActive"
-                    value="inactive"
                     label="In Active"
-                    onChange={() => setIsActive('0')}
-                    defaultChecked
+                    defaultChecked={isActive === "0"}
+                    onChange={() => setIsActive("0")}
                   />
                   <CFormCheck
                     type="radio"
                     name="isactive"
                     id="IsActive"
-                    value="active"
                     label="Active"
-                    onChange={() => setIsActive('1')}
+                    defaultChecked={isActive === "1"}
+                    onChange={() => setIsActive("1")}
                   />
                 </CCol>
               </fieldset>
@@ -230,8 +263,7 @@ const EditPhotoshoot = () => {
                   />
                 </CCol>
               </fieldset>
-              <CButton type="submit" onClick={handleEditPhotoshoot}>
-                {' '}
+              <CButton type="submit" onClick={handleEditPost}>
                 Submit
               </CButton>
             </CForm>
@@ -242,4 +274,4 @@ const EditPhotoshoot = () => {
   )
 }
 
-export default EditPhotoshoot
+export default EditPosts

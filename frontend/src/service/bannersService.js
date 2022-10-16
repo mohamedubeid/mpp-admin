@@ -6,17 +6,17 @@ const API_URL = '/banners'
 const getAllBanners = (lang, page) => {
   return axios.get(`/banners?language_id=${lang}&page=${page}`, { headers: authHeader() })
 }
-const getBanners = () => {
-  return axios.get(API_URL, { headers: authHeader() })
+const getBanners = (code) => {
+  return axios.get(API_URL + '/' + code, { headers: authHeader() })
 }
-const postBanners = (code) => {
-  return axios.post(API_URL, code, { headers: authHeader() })
+const postBanners = (data) => {
+  return axios.post(API_URL, data, { headers: authHeader() })
 }
 const deleteBanners = (code) => {
   return axios.delete(API_URL + '/' + code, { headers: authHeader() })
 }
-const editBanners = (code) => {
-  return axios.put(API_URL + '/' + code, { headers: authHeader() })
+const editBanners = (code, data) => {
+  return axios.put(API_URL + '/' + code, data, { headers: authHeader() })
 }
 
 const selectBanners = (language_id, data) => {

@@ -37,8 +37,13 @@ const WatchesAddImage = React.lazy(() => import('./views/watches/posts/AddImage'
 //Jewelry
 const JewelryCategories = React.lazy(() => import('./views/jewelry/categories/JewelryCategories'))
 const JewelryAddCategories = React.lazy(() => import('./views/jewelry/categories/AddCategories'))
+const JewelryEditCategories = React.lazy(() => import('./views/jewelry/categories/EditCategories'))
 const JewelryAddPosts = React.lazy(() => import('./views/jewelry/posts/AddPosts'))
 const JewelryPosts = React.lazy(() => import('./views/jewelry/posts/JewelryPosts'))
+const JewelryEditPosts = React.lazy(() => import('./views/jewelry/posts/EditPosts'))
+const JewelryImageList = React.lazy(() => import('./views/jewelry/posts/ImagesList'))
+const JewelryAddImage = React.lazy(() => import('./views/jewelry/posts/AddImage'))
+
 
 //Events
 const EventsList = React.lazy(() => import('./views/events/events/EventsList'))
@@ -86,7 +91,7 @@ const PhotoshootList = React.lazy(() => import('./views/photoshoot/photoshoot/Ph
 const AddPhotoshoot = React.lazy(() => import('./views/photoshoot/photoshoot/AddPhotoshoot'))
 const EditPhotoshoot = React.lazy(() => import('./views/photoshoot/photoshoot/EditPhotoshoot'))
 const PhotoshootImageList = React.lazy(() => import('./views/photoshoot/photoshoot/ImagesList'))
-const PhotoshootAddImage = React.lazy(() => import('./views/photoshoot/photoshoot/ImagesList'))
+const PhotoshootAddImage = React.lazy(() => import('./views/photoshoot/photoshoot/AddImage'))
 
 //TV
 const TvCategories = React.lazy(() => import('./views/tv/categories/TvCategories'))
@@ -98,6 +103,7 @@ const TvEditVideo = React.lazy(() => import('./views/tv/posts/EditPosts'))
 
 //Banners
 const AddBanners = React.lazy(() => import('./views/banner/banner/AddAdvertize'))
+const EditBanners = React.lazy(() => import('./views/banner/banner/EditAdvertize'))
 const BannersList = React.lazy(() => import('./views/banner/banner/AdvertizeList'))
 
 //Slider
@@ -157,8 +163,12 @@ const routes = [
   { path: '/jewelry', name: 'Jewelry', element: JewelryAddCategories, exact: true },
   { path: '/jewelry/categories', name: 'Categories', element: JewelryCategories },
   { path: '/jewelry/add-categories', name: 'Add Categories', element: JewelryAddCategories },
+  { path: '/jewelry/edit-categories/:id', name: 'Edit Categories', element: JewelryEditCategories },
   { path: '/jewelry/posts', name: 'Posts', element: JewelryPosts },
+  { path: '/jewelry/edit-posts/:id', name: 'Edit Posts', element: JewelryEditPosts },
   { path: '/jewelry/add-posts', name: 'Add Posts', element: JewelryAddPosts },
+  { path: '/jewelry/post-images-list/:id', name: 'Image List', element: JewelryImageList },
+  { path: '/jewelry/post-images-add/:id', name: 'Add Image', element: JewelryAddImage },
   { path: '/events', name: 'Events', element: EventsList, exact: true },
   { path: '/events/events-list', name: 'Events List', element: EventsList },
   { path: '/events/add-events', name: 'Add Events', element: AddEvents },
@@ -206,7 +216,8 @@ const routes = [
   { path: '/tv/add-videos', name: 'Add Videos', element: TvAddVideo },
   { path: '/tv/edit-videos/:id', name: 'Edit Videos', element: TvEditVideo },
   { path: '/banners/advertize-list', name: 'Banners', element: BannersList, exact: true },
-  { path: '/banners/add-advertize', name: 'Advertize List', element: AddBanners },
+  { path: '/banners/add-advertize', name: 'Add Advertize', element: AddBanners },
+  { path: '/banners/edit-advertize/:id', name: 'Edit Advertize', element: EditBanners },
   { path: '/banners/add-pieces', name: 'Add Advertize', element: AddBanners },
   { path: '/slider', name: 'Slider', element: SliderList, exact: true },
   { path: '/slider/slider-list', name: 'Slider List', element: SliderList },

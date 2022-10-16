@@ -235,7 +235,11 @@ const CelebrityPosts = () => {
                     <CTableDataCell>
                       <CButton
                         onClick={() => {
-                          navigate('/celebrity/edit-celebrities/' + celebrity.id)
+                          if(lang === 'ar'){
+                            navigate('/celebrity/edit-celebrities/' + celebrity.id+"?lang=ar")
+                              } else {
+                                navigate('/celebrity/edit-celebrities/' + celebrity.id)
+                              }
                         }}
                         color={'primary'}
                         className="me-2"

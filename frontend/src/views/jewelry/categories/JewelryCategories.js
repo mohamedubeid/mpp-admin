@@ -9,6 +9,7 @@ import {
 CTable,
   CButton,
   CTableBody,
+  CFormCheck,
   CTableCaption,
   CTableDataCell,
   CTableHead,
@@ -23,18 +24,19 @@ import jewelryService from 'src/service/jewelryService'
 const JewelryCategories = () => {
 
     const [jewelryTable, setJewelryTable] = useState([])
+    const [lang, setLang] = useState(1)
 
     const navigate = useNavigate()
 
     function updateData() {
-      jewelryService.getAllJewelryCategories().then((result) => {
+      jewelryService.getAllJewelryCategories(lang).then((result) => {
         setJewelryTable(result.data.categories);
       });
     }
   
     useEffect(() => {
       updateData();
-    }, []);
+    }, [lang]);
 
     function deleteCategory(code) {
       console.log(code)
@@ -46,6 +48,26 @@ const JewelryCategories = () => {
     }
 
   return (
+    <>
+       <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang(1)}
+            checked={lang === 1}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang(2)}
+            checked={lang === 2}
+            onChange={() => console.log('')}
+          />
+        </CCol>
+      </fieldset>
     <CCol xs={12}>
       <CCard className="mb-4">
         <CCardHeader>
@@ -72,7 +94,11 @@ const JewelryCategories = () => {
                 <CTableDataCell>
                     <CButton 
                     onClick={() => {
-                      navigate("/jewelry/edit-categories/"+jewelry.id)
+                      if(lang === 2){
+                        navigate("/jewelry/edit-categories/"+jewelry.id+"?lang=ar")
+                        } else {
+                          navigate("/jewelry/edit-categories/"+jewelry.id)
+                        }
                     }}
                     className="me-2"
                     color={'primary'}>
@@ -96,6 +122,7 @@ const JewelryCategories = () => {
         </CCardBody>
       </CCard>
     </CCol>
+    </>
   )
 }
 

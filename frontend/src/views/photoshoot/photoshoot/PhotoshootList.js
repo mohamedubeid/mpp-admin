@@ -233,8 +233,12 @@ const PhotoshootList = () => {
                     <CTableDataCell>
                       <CButton
                         onClick={() => {
-                          navigate('/photoshoot/edit-photoshoot/' + photoshoot.id)
-                        }}
+                          if(lang === 'ar'){
+                            navigate('/photoshoot/edit-photoshoot/' + photoshoot.id+"?lang=ar")
+                            } else {
+                              navigate('/photoshoot/edit-photoshoot/' + photoshoot.id)}
+                            }
+                        }
                         color={'primary'}
                         className="me-2"
                       >

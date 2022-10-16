@@ -71,11 +71,12 @@ const AddCMS = () => {
   }
   
   function updateParentsData() {
-    cmsService.getAllCMS().then((result) => {
+    cmsService.getAllCMS(lang).then((result) => {
       //setParentList(result.data.cmspages)
       const listt  = []
       listt.push("0 None")
       const dataa = result.data.cmspages
+      console.log(dataa)
       for(const key in dataa){
         listt.push(dataa[key].id+" "+dataa[key].title)
       }
@@ -191,7 +192,7 @@ const AddCMS = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="English"
+                    name="lang"
                     id="IsActive"
                     value="eng"
                     label="English"
@@ -200,11 +201,11 @@ const AddCMS = () => {
                   />
                   <CFormCheck
                     type="radio"
-                    name="Arabic"
+                    name="lang"
                     id="IsActive"
                     value="ar"
                     label="Arabic"
-                    onChange={() => setLang(0)}
+                    onChange={() => setLang(2)}
                   />
                 </CCol>
               </fieldset>

@@ -32,7 +32,6 @@ const AppSidebar = () => {
     >
       <CSidebarBrand className="d-none d-md-flex" to="/">
         <CImage className="sidebar-brand-full" src={logo} style={{width: "90%"}}/> 
-        <CIcon className="sidebar-brand-narrow" icon={sygnet} height={35} />
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>

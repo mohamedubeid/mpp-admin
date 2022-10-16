@@ -3,8 +3,8 @@ import authHeader from './auth-header'
 
 const API_URL = '/watches'
 
-const getAllWatchCategories = () => {
-  return axios.get(API_URL + '/categories', { headers: authHeader() })
+const getAllWatchCategories = (lang) => {
+  return axios.get(API_URL + `/categories?language_id=${lang}`, { headers: authHeader() })
 }
 const getAllWatchPosts = (lang, page) => {
   return axios.get(API_URL + `/posts?language_id=${lang}&page=${page}`, { headers: authHeader() })
@@ -27,17 +27,20 @@ const deleteWatchCategory = (code) => {
 const deleteWatchPost = (code) => {
   return axios.delete(API_URL + '/posts/' + code, { headers: authHeader() })
 }
-const editWatchCategory = (code) => {
-  return axios.put(API_URL + '/watches/' + code, { headers: authHeader() })
+const editWatchCategory = (code, data) => {
+  return axios.put(API_URL + '/categories/' + code, data, { headers: authHeader() })
 }
-const editWatchPost = (code) => {
-  return axios.put(API_URL + '/posts/' + code, { headers: authHeader() })
+const editWatchPost = (code, data) => {
+  return axios.put(API_URL + '/posts/' + code, data,{ headers: authHeader() })
 }
 const getWatchesImagesList = (id) => {
   return axios.get(API_URL + '/posts/' + id + '/images', { headers: authHeader() })
 }
+const getWatchCategoryList = (id) => {
+  return axios.get(API_URL + '/posts/' + 'categories/' + id, { headers: authHeader() })
+}
 const deleteImage = (id) => {
-  return axios.delete(API_URL + '/posts' + '/images' + id, { headers: authHeader() })
+  return axios.delete(API_URL + '/posts' + '/images/' + id, { headers: authHeader() })
 }
 const postImage = (id, data) => {
   return axios.post(API_URL + '/posts/' + id + '/images', data, {
@@ -69,6 +72,7 @@ const watchesService = {
   getAllWatchPosts,
   getWatchCategory,
   getWatchPost,
+  getWatchCategoryList,
   postWatchCategory,
   postWatchPost,
   deleteWatchCategory,

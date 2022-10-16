@@ -46,32 +46,32 @@ const SupscriptionList = () => {
     <CCol xs={12}>
       <CCard className="mb-4">
         <CCardHeader>
-          <strong>newsletter</strong> <small> List</small>
+          <strong>Newsletter</strong> <small> List</small>
         </CCardHeader>
         <CCardBody>
-          <CTable>
+          <CTable bordered>
             <CTableHead>
               <CTableRow>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>No #</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>Email</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>Company Name</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>City</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>Country</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>Time</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>IP Address</CTableHeaderCell>
-                <CTableHeaderCell scope="col" style={{width: "10%"}}>Action</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >No#</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Email</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Company Name</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >City</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Country</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Time</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >IP Address</CTableHeaderCell>
+                <CTableHeaderCell scope="col" >Action</CTableHeaderCell>
               </CTableRow>
             </CTableHead>
             <CTableBody>
            {supscriptionTable.map((newsletter, i) => (
               <CTableRow key={i}>
                 <CTableHeaderCell scope="row">{newsletter.id}</CTableHeaderCell>
-                <CTableDataCell>{newsletter.fname}</CTableDataCell>
-                <CTableDataCell >{newsletter.email}</CTableDataCell>
-                <CTableDataCell>{newsletter.company_name}</CTableDataCell>
-                <CTableDataCell>{newsletter.city}</CTableDataCell>
-                <CTableDataCell>{newsletter.country_name}</CTableDataCell>
+                <CTableDataCell style={{columnWidth: "75px"}}>{newsletter.fname}</CTableDataCell>
+                <CTableDataCell style={{columnWidth: "100px"}}>{newsletter.email}</CTableDataCell>
+                <CTableDataCell style={{columnWidth: "100px"}}>{newsletter.company_name}</CTableDataCell>
+                <CTableDataCell style={{columnWidth: "50px"}}>{newsletter.city}</CTableDataCell>
+                <CTableDataCell style={{columnWidth: "100px"}}>{newsletter.country_name}</CTableDataCell>
                 <CTableDataCell>{newsletter.created_date_time}</CTableDataCell>
                 <CTableDataCell>{newsletter.created_ip}</CTableDataCell>
                 <CTableDataCell>

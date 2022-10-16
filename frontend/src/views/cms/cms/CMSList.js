@@ -10,6 +10,7 @@ import {
   CTable,
   CTableBody,
   CTableCaption,
+  CFormCheck,
   CTableDataCell,
   CTableHead,
   CTableHeaderCell,
@@ -22,18 +23,19 @@ import cmsService from 'src/service/cmsService'
 
 const CMSList = () => {
   const [CMSTable, setCMSTable] = useState([])
+  const [lang, setLang] = useState(1)
 
   const navigate = useNavigate()
 
   function updateData() {
-    cmsService.getAllCMS().then((result) => {
+    cmsService.getAllCMS(lang).then((result) => {
       setCMSTable(result.data.cmspages)
     })
   }
 
   useEffect(() => {
     updateData()
-  }, [])
+  }, [lang])
 
   function deleteCMS(code) {
     console.log(code)
@@ -45,6 +47,27 @@ const CMSList = () => {
   }
 
   return (
+    <>
+     <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            name="lang"
+            defaultChecked
+            onClick={() => setLang(1)}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            name="lang"
+            onClick={() => setLang(2)}
+            onChange={() => console.log('')}
+          />
+        </CCol>
+      </fieldset>
     <CCol xs={12}>
       <CCard className="mb-4">
         <CCardHeader>
@@ -75,7 +98,11 @@ const CMSList = () => {
                   <CTableDataCell>
                     <CButton
                       onClick={() => {
-                        navigate('/cms/edit-cms/' + cms.id)
+                        if(lang === 2){
+                          navigate('/cms/edit-cms/' + cms.id+"?lang=ar")
+                          } else {
+                            navigate('/cms/edit-cms/' + cms.id)
+                          }
                       }}
                       className="me-2"
                       color={'primary'}
@@ -100,6 +127,7 @@ const CMSList = () => {
         </CCardBody>
       </CCard>
     </CCol>
+    </>
   )
 }
 
