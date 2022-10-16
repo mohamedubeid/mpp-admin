@@ -11,6 +11,7 @@ import {
   CTableBody,
   CTableCaption,
   CTableDataCell,
+  CFormCheck,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
@@ -23,18 +24,20 @@ import newsService from 'src/service/newsService'
 const NewsCategories = () => {
 
     const [newsTable, setNewsTable] = useState([])
+    const [lang, setLang] = useState(1)
+
 
     const navigate = useNavigate()
 
     function updateData() {
-      newsService.getAllNewsCategories().then((result) => {
+      newsService.getAllNewsCategories(lang).then((result) => {
         setNewsTable(result.data.categories);
       });
     }
   
     useEffect(() => {
       updateData();
-    }, []);
+    }, [lang]);
 
     function deleteCategory(code) {
       console.log(code)
@@ -46,6 +49,26 @@ const NewsCategories = () => {
     }
 
   return (
+    <>
+     <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang(1)}
+            checked={lang === 1}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang(2)}
+            checked={lang === 2}
+            onChange={() => console.log('')}
+          />
+        </CCol>
+      </fieldset>
     <CCol xs={12}>
       <CCard className="mb-4">
         <CCardHeader>
@@ -72,7 +95,11 @@ const NewsCategories = () => {
                 <CTableDataCell>
                     <CButton 
                     onClick={() => {
+                      if(lang === 2){
+                      navigate("/news/edit-categories/"+news.id+"?lang=ar")
+                        } else {
                       navigate("/news/edit-categories/"+news.id)
+                        }
                     }}
                     color={'primary'}
                     className="me-2">
@@ -96,6 +123,7 @@ const NewsCategories = () => {
         </CCardBody>
       </CCard>
     </CCol>
+    </>
   )
 }
 

@@ -11,6 +11,7 @@ import {
   CTableBody,
   CTableCaption,
   CTableDataCell,
+  CFormCheck,
   CTableHead,
   CTableHeaderCell,
   CTableRow,
@@ -22,18 +23,20 @@ import watchesService from 'src/service/watchesService'
 
 const WatchesCategories = () => {
   const [watchesTable, setWatchesTable] = useState([])
+  const [lang, setLang] = useState(1)
+
 
   const navigate = useNavigate()
 
   function updateData() {
-    watchesService.getAllWatchCategories().then((result) => {
+    watchesService.getAllWatchCategories(lang).then((result) => {
       setWatchesTable(result.data.categories)
     })
   }
 
   useEffect(() => {
     updateData()
-  }, [])
+  }, [lang])
 
   function deleteCategory(code) {
     console.log(code)
@@ -45,6 +48,26 @@ const WatchesCategories = () => {
   }
 
   return (
+    <>
+      <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang(1)}
+            checked={lang === 1}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang(2)}
+            checked={lang === 2}
+            onChange={() => console.log('')}
+          />
+        </CCol>
+      </fieldset>
     <CCol xs={12}>
       <CCard className="mb-4">
         <CCardHeader>
@@ -75,7 +98,12 @@ const WatchesCategories = () => {
                   <CTableDataCell>
                     <CButton
                       onClick={() => {
-                        navigate('/watches/edit-categories/' + watches.id)
+                        if(lang === 2){
+                          navigate('/watches/edit-categories/' + watches.id+"?lang=ar")
+                          } else {
+                            navigate('/watches/edit-categories/' + watches.id)
+                          }
+                
                       }}
                       className="me-2"
                       color={'primary'}
@@ -100,6 +128,7 @@ const WatchesCategories = () => {
         </CCardBody>
       </CCard>
     </CCol>
+    </>
   )
 }
 

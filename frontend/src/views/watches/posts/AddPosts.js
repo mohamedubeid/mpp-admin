@@ -15,10 +15,10 @@ import {
   CInputGroupText,
   CFormTextarea,
   CFormFeedback,
-  
   CRow,
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
+import Multiselect from "multiselect-react-dropdown";
 import watchesService from 'src/service/watchesService'
 import { useQuill } from 'react-quilljs';
 
@@ -26,7 +26,7 @@ import 'quill/dist/quill.snow.css';
 
 const AddPosts = () => {
   const [categories, setCategories] = useState([])
-  const [category, setCategoy] = useState([])
+  const [allCategories, setAllCategories] = useState([])
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
@@ -55,8 +55,13 @@ const AddPosts = () => {
    
   function handleAddPost(event) {
     event.preventDefault()
+    let category = []
+    categories.map((e) => {
+      category.push(e.substring(0, e.indexOf(" ")))
+    })
     const formData = new FormData();
-		formData.append('categories', category);
+		// formData.append('categories', JSON.stringify(category));
+    category.forEach((cate) => formData.append("categories", cate))
 		formData.append('banner_image', bannerImage);
 		formData.append('title', title);
 		formData.append('slug', slug);  
@@ -93,7 +98,7 @@ const AddPosts = () => {
   }
 
   function updateParentsData() {
-    watchesService.getAllWatchCategories().then((result) => {
+    watchesService.getAllWatchCategories(lang).then((result) => {
       //setParentList(result.data.cmspages)
       const listt  = []
       listt.push("0 None")
@@ -102,14 +107,14 @@ const AddPosts = () => {
         listt.push(dataa[key].id+" "+dataa[key].title)
       }
       console.log(listt)
-      setCategories(listt)
+      setAllCategories(listt)
     })
   }
 
   useEffect(() => {
     updateParentsData()
   }, [])
-    
+
   return (
     <CRow>
       <CCol xs={12}>
@@ -121,20 +126,21 @@ const AddPosts = () => {
             <CForm validated={true} className="row g-3">
               <CCol md={12}>
                 <CFormLabel htmlFor="inputEmail4">Select Category</CFormLabel>
-                <CFormSelect 
-                onChange={(e) => {
-                  let array = [];
-                  let categ = e.target.value;
-                  console.log(categ);
-                  let categSplit = categ.split(/(\s+)/);
-                  array.push(categSplit[2]);
-                  console.log(array);
-                  setCategoy(array);
-                  console.log(category);
-                }}
-                options={categories} 
-                aria-label="Default select example">      
-                </CFormSelect>
+                <Multiselect
+              showArrow={true } 
+              closeOnSelect={true}
+              isObject={false}
+              onKeyPressFn={function noRefCheck(){}}
+              onRemove={function noRefCheck(){}}
+              onSearch={function noRefCheck(){}}
+              onSelect={function handleChange(e){
+                setCategories(e);
+              }}
+              options={allCategories}
+              value={categories}
+              placeholder="Select Categories Here"
+              emptyRecordMsg="No options avaliable"
+              />
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
@@ -291,7 +297,7 @@ const AddPosts = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="English"
+                    name="lang"
                     id="IsActive"
                     value="eng"
                     label="English"
@@ -300,11 +306,11 @@ const AddPosts = () => {
                   />
                   <CFormCheck
                     type="radio"
-                    name="Arabic"
+                    name="lang"
                     id="IsActive"
                     value="ar"
                     label="Arabic"
-                    onChange={() => setLang(0)}
+                    onChange={() => setLang(2)}
                   />
                 </CCol>
               </fieldset>

@@ -17,13 +17,13 @@ import {
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import watchesService from 'src/service/watchesService'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { useQuill } from 'react-quilljs';
 
 import 'quill/dist/quill.snow.css';
 
 
-const Addcategory = () => {
+const EditCategory = () => {
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
@@ -31,7 +31,21 @@ const Addcategory = () => {
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
+  const location = useLocation()
+  const language = location.search
+  const fullParam = language.slice(6)
+  const langURL = fullParam || 'en'
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
+
+  useEffect(() => {
+    if(langURL === 'ar'){
+      setLang(2);
+    } 
+    if(lang === 'en'){
+      setLang(1);
+    }
+  },[])
 
   const params = useParams()
   const navigate = useNavigate()
@@ -44,7 +58,8 @@ const Addcategory = () => {
     }
   }, [quill]);
 
-  function handleEditCategory() {
+  function handleEditCategory(event) {
+    event.preventDefault()
     const data = {
       title: title,
       slug: slug,
@@ -52,7 +67,7 @@ const Addcategory = () => {
       meta_title: metaTitle,
       meta_keywords: metaKeywords,
       meta_description: metaDescription,
-      language_id: 1,
+      language_id: lang,
       is_active: isActive,
     }
 
@@ -82,11 +97,12 @@ const Addcategory = () => {
             <strong>Edit</strong> <small>Category Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
                 <CFormInput
                   type="text"
+                  invalid required
                   value={title}
                   id="inputTitle"
                   onChange={(e) => setTitle(e.target.value)}
@@ -94,7 +110,7 @@ const Addcategory = () => {
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" value={slug} id="inputSlug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput type="text" invalid required value={slug} id="inputSlug" onChange={(e) => setSlug(e.target.value)} />
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -162,6 +178,29 @@ const Addcategory = () => {
                   />
                 </CCol>
               </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked={langURL === 'en'}
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(2)}
+                    defaultChecked={langURL === 'ar'}
+                  />
+                </CCol>
+              </fieldset>
               <CButton type="submit" onClick={handleEditCategory}>
                 Submit
               </CButton>
@@ -173,4 +212,4 @@ const Addcategory = () => {
   )
 }
 
-export default Addcategory
+export default EditCategory
