@@ -3,8 +3,8 @@ import authHeader from './auth-header'
 
 const API_URL = '/news'
 
-const getAllNewsCategories = () => {
-  return axios.get(API_URL + '/categories', { headers: authHeader() })
+const getAllNewsCategories = (lang) => {
+  return axios.get(API_URL + '/categories' + `?language_id=${lang}`, { headers: authHeader() })
 }
 const getAllNewsPosts = (lang, page) => {
   return axios.get(API_URL + `/posts?language_id=${lang}&page=${page}`, { headers: authHeader() })

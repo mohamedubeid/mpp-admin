@@ -12,6 +12,7 @@ import {
   CTableCaption,
   CTableDataCell,
   CTableHead,
+  CFormCheck,
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
@@ -23,22 +24,23 @@ import celebritiesService from 'src/service/celebritiesService'
 const CelebrityCategories = () => {
 
     const [celebritiesTable, setCelebritiesTable] = useState([])
+    const [lang, setLang] = useState(1)
 
     const navigate = useNavigate()
 
     function updateData() {
-      celebritiesService.getAllCelebritiesCategories().then((result) => {
+      celebritiesService.getAllCelebritiesCategories(lang).then((result) => {
         setCelebritiesTable(result.data.categories);
       });
     }
   
     useEffect(() => {
       updateData();
-    }, []);
+    }, [lang]);
 
     function deleteCategory(code) {
       console.log(code)
-      celebritiesService.deleteCategory(code).then((result) => {
+      celebritiesService.deleteCelebritiesCategory(code).then((result) => {
         if (result) {
           updateData()
         }
@@ -46,6 +48,26 @@ const CelebrityCategories = () => {
     }
 
   return (
+    <>
+      <fieldset className="row mb-3">
+        <legend className="col-form-label col-sm-1 pt-0">Language:</legend>
+        <CCol sm={10}>
+          <CFormCheck
+            type="radio"
+            label="English"
+            onClick={() => setLang(1)}
+            checked={lang === 1}
+            onChange={() => console.log('')}
+          />
+          <CFormCheck
+            type="radio"
+            label="Arabic"
+            onClick={() => setLang(2)}
+            checked={lang === 2}
+            onChange={() => console.log('')}
+          />
+        </CCol>
+      </fieldset>
     <CCol xs={12}>
       <CCard className="mb-4">
         <CCardHeader>
@@ -74,7 +96,11 @@ const CelebrityCategories = () => {
                 <CTableDataCell>
                     <CButton 
                     onClick={() => {
-                      navigate("/celebrity/edit-categories/"+celebrity.id)
+                      if(lang === 2){
+                      navigate("/celebrity/edit-categories/"+celebrity.id+"?lang=ar")
+                          } else {
+                            navigate("/celebrity/edit-categories/"+celebrity.id)
+                          }
                     }}
                     color={'primary'}
                     className="me-2">
@@ -98,6 +124,7 @@ const CelebrityCategories = () => {
         </CCardBody>
       </CCard>
     </CCol>
+    </>
   )
 }
 

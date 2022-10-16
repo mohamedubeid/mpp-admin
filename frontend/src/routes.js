@@ -37,8 +37,10 @@ const WatchesAddImage = React.lazy(() => import('./views/watches/posts/AddImage'
 //Jewelry
 const JewelryCategories = React.lazy(() => import('./views/jewelry/categories/JewelryCategories'))
 const JewelryAddCategories = React.lazy(() => import('./views/jewelry/categories/AddCategories'))
+const JewelryEditCategories = React.lazy(() => import('./views/jewelry/categories/EditCategories'))
 const JewelryAddPosts = React.lazy(() => import('./views/jewelry/posts/AddPosts'))
 const JewelryPosts = React.lazy(() => import('./views/jewelry/posts/JewelryPosts'))
+const JewelryEditPosts = React.lazy(() => import('./views/jewelry/posts/EditPosts'))
 
 //Events
 const EventsList = React.lazy(() => import('./views/events/events/EventsList'))
@@ -158,7 +160,9 @@ const routes = [
   { path: '/jewelry', name: 'Jewelry', element: JewelryAddCategories, exact: true },
   { path: '/jewelry/categories', name: 'Categories', element: JewelryCategories },
   { path: '/jewelry/add-categories', name: 'Add Categories', element: JewelryAddCategories },
+  { path: '/jewelry/edit-categories/:id', name: 'Edit Categories', element: JewelryEditCategories },
   { path: '/jewelry/posts', name: 'Posts', element: JewelryPosts },
+  { path: '/jewelry/edit-posts/:id', name: 'Edit Posts', element: JewelryEditPosts },
   { path: '/jewelry/add-posts', name: 'Add Posts', element: JewelryAddPosts },
   { path: '/events', name: 'Events', element: EventsList, exact: true },
   { path: '/events/events-list', name: 'Events List', element: EventsList },

@@ -3,8 +3,8 @@ import authHeader from './auth-header'
 
 const API_URL = '/celebrities'
 
-const getAllCelebritiesCategories = () => {
-  return axios.get(API_URL + '/categories', { headers: authHeader() })
+const getAllCelebritiesCategories = (lang) => {
+  return axios.get(API_URL + '/categories' + `?language_id=${lang}`, { headers: authHeader() })
 }
 const getAllCelebritiesPosts = (lang, page) => {
   return axios.get(API_URL + `/posts?language_id=${lang}&page=${page}`, { headers: authHeader() })
@@ -16,10 +16,10 @@ const getCelebritiesPost = (code) => {
   return axios.get(API_URL + '/posts/' + code, { headers: authHeader() })
 }
 const postCelebritiesCategory = (code) => {
-  return axios.post(API_URL, code, { headers: authHeader() })
+  return axios.post(API_URL + "/categories", code, { headers: authHeader() })
 }
 const postCelebritiesPost = (code) => {
-  return axios.post(API_URL, code, { headers: authHeader() })
+  return axios.post(API_URL + "/posts" , code, { headers: authHeader() })
 }
 const deleteCelebritiesCategory = (code) => {
   return axios.delete(API_URL + '/categories/' + code, { headers: authHeader() })

@@ -18,6 +18,12 @@ import {
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 
+import { useQuill } from 'react-quilljs';
+
+import 'quill/dist/quill.snow.css';
+import { useNavigate } from 'react-router-dom';
+import jewelryService from 'src/service/jewelryService';
+
 const AddCategories = () => {
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
@@ -27,8 +33,20 @@ const AddCategories = () => {
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
   const [lang, setLang] = useState(1)
+  const { quill, quillRef } = useQuill();
 
-  function handleAddCategory() {
+  React.useEffect(() => {
+    if (quill) {
+      quill.on('text-change', (delta, oldDelta, source) => {
+        setDescription(quillRef.current.firstChild.innerHTML)
+      });
+    }
+  }, [quill]);
+
+  const navigate = useNavigate()
+
+  function handleAddCategory(event) {
+    event.preventDefault()
     const data = {
       title: title,
       slug: slug,
@@ -39,8 +57,10 @@ const AddCategories = () => {
       is_active: isActive,
       language_id: lang
     }
-
-    console.log(data)
+    jewelryService.postJewelryCategory(data).then((result) => {
+      console.log(result.data)
+      if(result) navigate("/jewelry/categories")
+    }).catch((err) => alert(err))
   }
 
   return (
@@ -70,11 +90,9 @@ const AddCategories = () => {
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
-                <CFormTextarea
-                  id="exampleFormControlTextarea1"
-                  rows="3"
-                  onChange={(e) => setDescription(e.target.value)}
-                ></CFormTextarea>
+                <div>
+                  <div ref={quillRef} />
+                </div>
               </div>
             </CForm>
           </CCardBody>
@@ -86,22 +104,26 @@ const AddCategories = () => {
             <strong>SEO</strong> <small>Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm>
+            <CForm validated={true}>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Title</CFormLabel>
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
                   rows="3"
+                  invalid required
                   onChange={(e) => setMetaTitle(e.target.value)}
                 ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Keywords</CFormLabel>
                 <CFormTextarea
                   id="exampleFormControlTextarea1"
                   rows="3"
+                  invalid required
                   onChange={(e) => setMetaKeywords(e.target.value)}
                 ></CFormTextarea>
+                <CFormFeedback invalid>This field is required!</CFormFeedback>
               </div>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Meta Description</CFormLabel>
@@ -138,7 +160,7 @@ const AddCategories = () => {
                 <CCol sm={10}>
                   <CFormCheck
                     type="radio"
-                    name="English"
+                    name="lang"
                     id="IsActive"
                     value="eng"
                     label="English"
@@ -147,11 +169,11 @@ const AddCategories = () => {
                   />
                   <CFormCheck
                     type="radio"
-                    name="Arabic"
+                    name="lang"
                     id="IsActive"
                     value="ar"
                     label="Arabic"
-                    onChange={() => setLang(0)}
+                    onChange={() => setLang(2)}
                   />
                 </CCol>
               </fieldset>
