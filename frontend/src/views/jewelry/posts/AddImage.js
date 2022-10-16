@@ -18,7 +18,7 @@ import {
   CFormFeedback
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
-import watchesService from 'src/service/watchesService'
+import jewelryService from 'src/service/jewelryService'
 
 const AddImage = () => {
   const [caption, setCaption] = useState('')
@@ -36,8 +36,8 @@ const AddImage = () => {
 		formData.append('caption', caption);
 		formData.append('is_active', isActive);
 		formData.append('language_id', lang);
-    watchesService.postImage(params.id, formData).then((result) => {
-      if(result) navigate("/watches/post-images-list/"+params.id)
+    jewelryService.postImage(params.id, formData).then((result) => {
+      if(result) navigate("/jewelry/post-images-list/"+params.id)
     })
   }
     

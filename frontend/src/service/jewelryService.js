@@ -15,17 +15,32 @@ const getJewelryCategory = (code) => {
 const getJewelryPost = (code) => {
   return axios.get(API_URL + '/posts/' + code, { headers: authHeader() })
 }
+const getJewelryImagesList = (id) => {
+  return axios.get(API_URL + '/posts/' + id + '/images', { headers: authHeader() })
+}
+const getJewelryCategoryList = (id) => {
+  return axios.get(API_URL + '/posts/' + 'categories/' + id, { headers: authHeader() })
+}
 const postJewelryCategory = (code) => {
   return axios.post(API_URL + '/categories', code, { headers: authHeader() })
 }
 const postJewelryPost = (code) => {
   return axios.post(API_URL + '/posts',code, { headers: authHeader() })
 }
+const postImage = (id, data) => {
+  return axios.post(API_URL + '/posts/' + id + '/images', data, {
+    headers: authHeader(),
+    'Content-Type': `multipart/form-data;`,
+  })
+}
 const deleteJewelryCategory = (code) => {
   return axios.delete(API_URL + '/categories/' + code, { headers: authHeader() })
 }
 const deleteJewelryPost = (code) => {
   return axios.delete(API_URL + '/posts/' + code, { headers: authHeader() })
+}
+const deleteImage = (id) => {
+  return axios.delete(API_URL + '/posts' + '/images/' + id, { headers: authHeader() })
 }
 const editJewelryCategory = (code, data) => {
   return axios.put(API_URL + '/categories/' + code,data, { headers: authHeader() })
@@ -58,10 +73,14 @@ const jewelryService = {
   getAllJewelryPosts,
   getJewelryCategory,
   getJewelryPost,
+  getJewelryImagesList,
+  getJewelryCategoryList,
   postJewelryCategory,
   postJewelryPost,
+  postImage,
   deleteJewelryCategory,
   deleteJewelryPost,
+  deleteImage,
   editJewelryCategory,
   editJewelryPost,
   selectPosts,

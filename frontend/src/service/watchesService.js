@@ -36,8 +36,11 @@ const editWatchPost = (code, data) => {
 const getWatchesImagesList = (id) => {
   return axios.get(API_URL + '/posts/' + id + '/images', { headers: authHeader() })
 }
+const getWatchCategoryList = (id) => {
+  return axios.get(API_URL + '/posts/' + 'categories/' + id, { headers: authHeader() })
+}
 const deleteImage = (id) => {
-  return axios.delete(API_URL + '/posts' + '/images' + id, { headers: authHeader() })
+  return axios.delete(API_URL + '/posts' + '/images/' + id, { headers: authHeader() })
 }
 const postImage = (id, data) => {
   return axios.post(API_URL + '/posts/' + id + '/images', data, {
@@ -69,6 +72,7 @@ const watchesService = {
   getAllWatchPosts,
   getWatchCategory,
   getWatchPost,
+  getWatchCategoryList,
   postWatchCategory,
   postWatchPost,
   deleteWatchCategory,

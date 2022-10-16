@@ -25,6 +25,7 @@ import jewelryService from 'src/service/jewelryService';
 
 const EditPosts = () => {
   const [categories, setCategories] = useState('')
+  const [selectedCategories, setSelectedCategories] = useState([])
   const [title, setTitle] = useState('')
   const [slug, setSlug] = useState('')
   const [description, setDescription] = useState('')
@@ -55,8 +56,13 @@ const EditPosts = () => {
 
   function handleEditPost(event) {
     event.preventDefault()
+    let category = []
+    selectedCategories.map((e) => {
+      let id = e.id;
+      category.push(id)
+    })
     const formData = new FormData();
-		// formData.append('categories', categories);
+    category.forEach((cate) => formData.append("categories", cate))
     formData.append('banner_image', bannerImage);
 		formData.append('title', title);
 		formData.append('slug', slug);  
@@ -91,6 +97,9 @@ const EditPosts = () => {
   }, []);
 
   function updateParentsData() {
+    jewelryService.getJewelryCategoryList(params.id).then((result) => {
+      setSelectedCategories(result.data.categories)
+  })
     jewelryService.getAllJewelryCategories().then((result) => {
       const list  = []
       const data = result.data.categories
@@ -114,6 +123,10 @@ const EditPosts = () => {
           </CCardHeader>
           <CCardBody>
             <CForm validated={true} className="row g-3">
+            <CCol md={12}>
+                <CFormLabel htmlFor="inputEmail4">Categories</CFormLabel>
+                <CFormFeedback>{selectedCategories.map((e) => ("ID: " + e.id + " TITLE: " + e.title + " - "))}</CFormFeedback>
+              </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
                 <CFormInput invalid required value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} />

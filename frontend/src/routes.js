@@ -41,6 +41,9 @@ const JewelryEditCategories = React.lazy(() => import('./views/jewelry/categorie
 const JewelryAddPosts = React.lazy(() => import('./views/jewelry/posts/AddPosts'))
 const JewelryPosts = React.lazy(() => import('./views/jewelry/posts/JewelryPosts'))
 const JewelryEditPosts = React.lazy(() => import('./views/jewelry/posts/EditPosts'))
+const JewelryImageList = React.lazy(() => import('./views/jewelry/posts/ImagesList'))
+const JewelryAddImage = React.lazy(() => import('./views/jewelry/posts/AddImage'))
+
 
 //Events
 const EventsList = React.lazy(() => import('./views/events/events/EventsList'))
@@ -164,6 +167,8 @@ const routes = [
   { path: '/jewelry/posts', name: 'Posts', element: JewelryPosts },
   { path: '/jewelry/edit-posts/:id', name: 'Edit Posts', element: JewelryEditPosts },
   { path: '/jewelry/add-posts', name: 'Add Posts', element: JewelryAddPosts },
+  { path: '/jewelry/post-images-list/:id', name: 'Image List', element: JewelryImageList },
+  { path: '/jewelry/post-images-add/:id', name: 'Add Image', element: JewelryAddImage },
   { path: '/events', name: 'Events', element: EventsList, exact: true },
   { path: '/events/events-list', name: 'Events List', element: EventsList },
   { path: '/events/add-events', name: 'Add Events', element: AddEvents },

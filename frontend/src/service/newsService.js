@@ -36,6 +36,9 @@ const editNewsPost = (id, data) => {
 const getNewsImagesList = (id) => {
   return axios.get(API_URL + '/posts/' + id + '/images', { headers: authHeader() })
 }
+const getNewsCategoryList = (id) => {
+  return axios.get(API_URL + '/posts/' + 'categories/' + id, { headers: authHeader() })
+}
 const deleteImage = (id) => {
   return axios.delete(API_URL + '/posts' + '/images' + id, { headers: authHeader() })
 }
@@ -81,6 +84,7 @@ const newsService = {
   selectPosts,
   getSelectedPosts,
   ClearSelectedPosts,
+  getNewsCategoryList
 }
 
 export default newsService
