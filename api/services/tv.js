@@ -180,7 +180,7 @@ class TvService {
     async addCategoriesToVideo(categories) {
         if (categories.length == 0) return;
 
-        await db('tbl_post_tv_directory_map').batchInsert(
+        await db.batchInsert(
             'tbl_post_tv_directory_map',
             categories,
             categories.length

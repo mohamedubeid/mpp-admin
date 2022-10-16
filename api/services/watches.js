@@ -190,8 +190,8 @@ class WatchesService {
 
     async addCategoriesToPost(categories) {
         if (categories.length == 0) return;
-
-        await db('tbl_post_category_directory_map').batchInsert(
+        
+        await db.batchInsert(
             'tbl_post_category_directory_map',
             categories,
             categories.length

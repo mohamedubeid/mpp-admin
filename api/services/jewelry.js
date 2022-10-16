@@ -189,7 +189,7 @@ class JewelryService {
     async addCategoriesToPost(categories) {
         if (categories.length == 0) return;
 
-        await db('tbl_post_jewelry_directory_map').batchInsert(
+        await db.batchInsert(
             'tbl_post_jewelry_directory_map',
             categories,
             categories.length
