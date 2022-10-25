@@ -101,7 +101,7 @@ const AddPhotoshoot = () => {
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
-                <CFormInput type="text" id="slug" onChange={(e) => setEventDate(e.target.value)} />
+                <CFormInput type="date" id="slug" onChange={(e) => setEventDate(e.target.value)} />
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="formFile">Banner Image</CFormLabel>

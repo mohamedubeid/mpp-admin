@@ -105,7 +105,7 @@ const Addmagazine = () => {
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
                 <CFormInput
-                  type="text"
+                  type="date"
                   id="slug"
                   onChange={(e) => setEventDate(e.target.value)}
                   invalid

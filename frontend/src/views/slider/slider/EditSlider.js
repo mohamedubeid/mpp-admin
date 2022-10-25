@@ -60,15 +60,16 @@ const EditSlider = () => {
         console.log(result)
         navigate("/slider/slider-list")
       }
-    )
+    ).catch((err) => alert(err) )
   }
 
   useEffect(() => {
     slidersService.getSliders(params.id).then((result) => {
+      console.log(result.data)
       if(result.data.slider.title) setTitle(result.data.slider.title)
-      if(result.data.slider.short_description) setShortDescription(result.data.slider.classified_slug)
+      if(result.data.slider.small_description) setShortDescription(result.data.slider.small_description)
       if(result.data.slider.description) setDescription(result.data.slider.description)
-      if(result.data.slider.link) setLink(result.data.slider.link)
+      if(result.data.slider.classified_address) setLink(result.data.slider.classified_address)
       if(result.data.slider.banner_image) setImage(result.data.slider.banner_image)
       if(result.data.slider.is_active)  setIsActive(result.data.slider.is_active)
     });

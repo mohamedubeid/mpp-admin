@@ -58,7 +58,7 @@ const AddPosts = () => {
       category.push(e.substring(0, e.indexOf(" ")))
     })
     const formData = new FormData();
-    category.forEach((cate) => formData.append("categories", cate))
+    category.forEach((cate) => formData.append("categories[]", cate))
     formData.append("title", title)
     formData.append("slug", slug)
     formData.append("short_description", shortDescription)
@@ -153,7 +153,7 @@ const AddPosts = () => {
               </div>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Date</CFormLabel>
-                <CFormInput invalid required type="text" id="slug" onChange={(e) => setDate(e.target.value)} />
+                <CFormInput invalid required type="date" id="slug" onChange={(e) => setDate(e.target.value)} />
                 <CFormFeedback invalid>This field is required!</CFormFeedback>
               </CCol>
               <div className="mb-3">

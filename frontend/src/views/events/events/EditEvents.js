@@ -113,7 +113,7 @@ const EditEvents = () => {
 
   useEffect(() => {
     eventsService.getEvents(params.id).then((result) => {
-      console.log(result.data.event)
+      console.log(result.data.event.event_date)
       if(result.data.event.title) setTitle(result.data.event.title)
       if(result.data.event.classified_slug) setSlug(result.data.event.classified_slug)
       if(result.data.event.telephone) setTelephone(result.data.event.telephone)

@@ -60,8 +60,9 @@ const AddPosts = () => {
       category.push(e.substring(0, e.indexOf(" ")))
     })
     const formData = new FormData();
+    console.log(category)
 		// formData.append('categories', JSON.stringify(category));
-    category.forEach((cate) => formData.append("categories", cate))
+    category.forEach((cate) => formData.append("categories[]", cate))
 		formData.append('banner_image', bannerImage);
 		formData.append('title', title);
 		formData.append('slug', slug);  
@@ -91,7 +92,7 @@ const AddPosts = () => {
     //   icon_of_the_week: iconOfTheWeek,
     //   is_active: isActive,
     // }
-    console.log(formData)
+    console.log(formData.get('categories'))
     watchesService.postWatchPost(formData).then((result) => {
       if(result) navigate("/watches/posts")
     }).catch((err) => alert(err))

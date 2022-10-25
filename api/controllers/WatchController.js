@@ -234,7 +234,7 @@ class WatchController {
             !writter_image
         )
             return { error: 'Please fill out all fields', statusCode: 400 };
-        if (categories && !Array.isArray(categories))
+        if (categories && !Array.isArray(categories)) 
             return {
                 error: 'Please properly choose the categories',
                 statusCode: 400,
@@ -242,6 +242,7 @@ class WatchController {
 
         let post;
         try {
+            console.log(req.body)
             post = await WatchService.createPost(
                 title,
                 description,
@@ -280,6 +281,8 @@ class WatchController {
             }
 
             try {
+            console.log("I am in here 2")
+
                 await WatchService.addCategoriesToPost(formattedCategories);
             } catch (error) {
                 return {

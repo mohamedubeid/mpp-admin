@@ -30,6 +30,7 @@ const EditCategories = () => {
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
   const [isActive, setIsActive] = useState("0")
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
   const params = useParams()
@@ -46,7 +47,7 @@ const EditCategories = () => {
   function handleEditCategory() {
     const data = {
       title: title,
-      url_slug: slug,
+      slug: slug,
       description: description,
       meta_title: metaTitle,
       meta_keywords: metaKeywords,
@@ -81,11 +82,12 @@ const EditCategories = () => {
             <strong>Edit</strong> <small>Category Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
                 <CFormInput
                   type="text"
+                  invalid requried
                   value={title}
                   id="inputTitle"
                   onChange={(e) => setTitle(e.target.value)}
@@ -93,7 +95,7 @@ const EditCategories = () => {
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" value={slug} id="inputSlug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput disabled type="text" value={slug} id="inputSlug" onChange={(e) => setSlug(e.target.value)} />
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -158,6 +160,28 @@ const EditCategories = () => {
                     value="option2"
                     label="Active"
                     onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(2)}
                   />
                 </CCol>
               </fieldset>

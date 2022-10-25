@@ -74,7 +74,7 @@ const EditPosts = () => {
       category.push(id)
     })
     const formData = new FormData();
-    category.forEach((cate) => formData.append("categories", cate))
+    category.forEach((cate) => formData.append("categories[]", cate))
     formData.append("title", title)
     formData.append("slug", slug)
     formData.append("short_description", shortDescription)
@@ -142,6 +142,10 @@ const EditPosts = () => {
         </CCardHeader>
         <CCardBody>
           <CForm validated={true} className="row g-3">
+          <CCol md={12}>
+                <CFormLabel htmlFor="inputEmail4">Categories</CFormLabel>
+                <CFormFeedback>{selectedCategories.map((e) => ("ID: " + e.id + " TITLE: " + e.title + " - "))}</CFormFeedback>
+              </CCol>
             <CCol md={6}>
               <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
               <CFormInput invalid required value={title} type="text" id="title" onChange={(e) => setTitle(e.target.value)} />

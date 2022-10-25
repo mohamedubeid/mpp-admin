@@ -62,7 +62,7 @@ const EditPosts = () => {
       category.push(id)
     })
     const formData = new FormData();
-    category.forEach((cate) => formData.append("categories", cate))
+    category.forEach((cate) => formData.append("categories[]", cate))
     formData.append('banner_image', bannerImage);
 		formData.append('title', title);
 		formData.append('slug', slug);  
