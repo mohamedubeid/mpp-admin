@@ -37,7 +37,7 @@ const getCelebrityImagesList = (id) => {
   return axios.get(API_URL + '/posts/' + id + '/images', { headers: authHeader() })
 }
 const deleteImage = (id) => {
-  return axios.delete(API_URL + '/posts' + '/images' + id, { headers: authHeader() })
+  return axios.delete(API_URL + '/posts' + '/images/' + id, { headers: authHeader() })
 }
 const postImage = (id, data) => {
   return axios.post(API_URL + '/posts/' + id + '/images', data, {

@@ -3,11 +3,14 @@ import authHeader from './auth-header'
 
 const API_URL = '/tvs'
 
-const getAllTvCategories = () => {
-  return axios.get(API_URL + '/categories', { headers: authHeader() })
+const getAllTvCategories = (lang) => {
+  return axios.get(API_URL + `/categories?language_id=${lang}`, { headers: authHeader() })
 }
 const getAllTvVideos = (lang, page) => {
   return axios.get(API_URL + `/videos?language_id=${lang}&page=${page}`, { headers: authHeader() })
+}
+const getTvCategoryList = (id) => {
+  return axios.get(API_URL + '/videos/' + 'categories/' + id, { headers: authHeader() })
 }
 const getTvCategory = (code) => {
   return axios.get(API_URL + '/categories/' + code, { headers: authHeader() })
@@ -15,11 +18,11 @@ const getTvCategory = (code) => {
 const getTvVideo = (code) => {
   return axios.get(API_URL + '/videos/' + code, { headers: authHeader() })
 }
-const postTvCategory = (code) => {
-  return axios.post(API_URL, code, { headers: authHeader() })
+const postTvCategory = (data) => {
+  return axios.post(API_URL +"/categories", data, { headers: authHeader() })
 }
-const postTvPost = (code) => {
-  return axios.post(API_URL, code, { headers: authHeader() })
+const postTvPost = (data) => {
+  return axios.post(API_URL + "/videos", data, { headers: authHeader() })
 }
 const deleteTvCategory = (code) => {
   return axios.delete(API_URL + '/categories/' + code, { headers: authHeader() })
@@ -59,6 +62,7 @@ const tvService = {
   getTvVideo,
   postTvCategory,
   postTvPost,
+  getTvCategoryList,
   deleteTvCategory,
   deleteTvPost,
   editTvCategory,

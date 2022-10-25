@@ -99,6 +99,7 @@ const EditMagazine = () => {
 
   useEffect(() => {
     magazinesService.getMagazines(params.id).then((result) => {
+      console.log(result)
       if(result.data.magazine.title) setTitle(result.data.magazine.title)
       if(result.data.magazine.classified_slug) setSlug(result.data.magazine.classified_slug)
       if(result.data.magazine.description) setDescription(result.data.magazine.description)
@@ -144,7 +145,7 @@ const EditMagazine = () => {
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
                 <CFormInput
-                  type="text"
+                  type="date"
                   id="slug"
                   value={eventDate}
                   onChange={(e) => setEventDate(e.target.value)}

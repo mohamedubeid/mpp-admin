@@ -57,7 +57,7 @@ const AddCelebrity = () => {
       category.push(e.substring(0, e.indexOf(" ")))
     })
     const formData = new FormData();
-    category.forEach((cate) => formData.append("categories", cate))
+    category.forEach((cate) => formData.append("categories[]", cate))
     formData.append("title", title)
     formData.append("slug", slug)
     formData.append("short_description", shortDescription)

@@ -87,6 +87,7 @@ const EditPhotoshoot = () => {
 
   useEffect(() => {
     photoshootService.getPhotoshoots(params.id).then((result) => {
+      console.log(result.data.photoshoot)
       if(result.data.photoshoot.title) setTitle(result.data.photoshoot.title)
       if(result.data.photoshoot.classified_slug) setSlug(result.data.photoshoot.classified_slug)
       if(result.data.photoshoot.description) setDescription(result.data.photoshoot.description)
@@ -131,7 +132,7 @@ const EditPhotoshoot = () => {
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Event Date</CFormLabel>
-                <CFormInput value={eventDate} type="text" id="slug" onChange={(e) => setEventDate(e.target.value)} />
+                <CFormInput value={eventDate} type="date" id="slug" onChange={(e) => setEventDate(e.target.value)} />
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="formFile">Banner Image</CFormLabel>

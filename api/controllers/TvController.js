@@ -238,11 +238,11 @@ class TvController {
             };
         if (!req.files['banner_image'])
             return { error: 'Please upload a banner image', statusCode: 400 };
-        if (!req.files['video'])
+        if (!req.files['video_file'])
             return { error: 'Please upload a video', statusCode: 400 };
 
         let banner_image = req.files['banner_image'][0].filename;
-        let video_file = req.files['video'][0].filename;
+        let video_file = req.files['video_file'][0].filename;
 
         let {
             categories,
@@ -255,7 +255,7 @@ class TvController {
             language_id,
         } = req.body;
 
-        if (!title || !slug || !meta_title || !meta_tags || !language_id)
+        if (!title || !slug || !meta_title || !meta_tags || !language_id) 
             return { error: 'Please fill out all fields', statusCode: 400 };
         if (categories && !Array.isArray(categories))
             return {
@@ -264,7 +264,7 @@ class TvController {
             };
 
         let videoSameSlug = await TvService.getVideoWithSlug(slug);
-        if (videoSameSlug)
+        if (videoSameSlug) 
             return {
                 error: 'Video with that slug already exists, please choose another slug',
                 statusCode: 400,
@@ -296,7 +296,7 @@ class TvController {
             let formattedCategories = [];
             for (let i = 0; i < categories.length; i++) {
                 formattedCategories.push({
-                    video_id: video.id,
+                    post_id: video.id,
                     category_id: categories[i],
                     created_date_time: 0,
                     created_by: user.id,
@@ -373,7 +373,7 @@ class TvController {
         if (categories && categories.length > 0) {
             for (let i = 0; i < categories.length; i++) {
                 formattedCategories.push({
-                    video_id: video.id,
+                    post_id: video.id,
                     category_id: categories[i],
                     created_date_time: 0,
                     created_by: user.id,

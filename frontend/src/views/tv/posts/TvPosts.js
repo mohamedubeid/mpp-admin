@@ -215,7 +215,11 @@ const TvPosts = () => {
                     <CTableDataCell>
                       <CButton
                         onClick={() => {
-                          navigate('/tv/edit-videos/' + tv.id)
+                          if(lang === 'ar'){
+                              navigate('/tv/edit-videos/' + tv.id+"?lang=ar")
+                            } else {
+                              navigate('/tv/edit-videos/' + tv.id)
+                            }
                         }}
                         color={'primary'}
                         className="me-2"

@@ -41,7 +41,8 @@ const EditSetting = () => {
   const navigate = useNavigate()
   const params = useParams()
 
-  function handleEditSetting() {
+  function handleEditSetting(e) {
+    e.preventDefault()
     console.log(lang)
     const data = {
       setting_title: title,
@@ -54,7 +55,7 @@ const EditSetting = () => {
       console.log(result)
       navigate("/settings/setting-list")
       }
-    )
+    ).catch((err) => alert(err+" Please fill out all fields and try again later!"))
   }
 
   useEffect(() => {

@@ -29,7 +29,8 @@ const AddCategories = () => {
   const [metaTitle, setMetaTitle] = useState('')
   const [metaKeywords, setMetaKeywords] = useState('')
   const [metaDescription, setMetaDescription] = useState('')
-  const [isActive, setIsActive] = useState(false)
+  const [isActive, setIsActive] = useState("0")
+  const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
   const navigate = useNavigate()
@@ -42,21 +43,22 @@ const AddCategories = () => {
     }
   }, [quill]);
   
-  function handleAddCategory() {
+  function handleAddCategory(e) {
+    e.preventDefault()
     const data = {
       title: title,
-      url_slug: slug,
+      slug: slug,
       description: description,
       meta_title: metaTitle,
       meta_keywords: metaKeywords,
       meta_description: metaDescription,
-      language_id: 1,
+      language_id: lang,
       is_active: isActive,
     }
 
     tvService.postTvCategory(data).then((result) => {
       if(result) navigate("/tv/categories")
-    })
+    }).catch((err) => alert(err))
   }
 
   return (
@@ -67,18 +69,19 @@ const AddCategories = () => {
             <strong>Add</strong> <small>Category Details</small>
           </CCardHeader>
           <CCardBody>
-            <CForm className="row g-3">
+            <CForm validated={true} className="row g-3">
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
                 <CFormInput
                   type="text"
                   id="inputTitle"
+                  invalid required 
                   onChange={(e) => setTitle(e.target.value)}
                 />
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputPassword4">Slug</CFormLabel>
-                <CFormInput type="text" id="inputSlug" onChange={(e) => setSlug(e.target.value)} />
+                <CFormInput invalid required type="text" id="inputSlug" onChange={(e) => setSlug(e.target.value)} />
               </CCol>
               <div className="mb-3">
                 <CFormLabel htmlFor="exampleFormControlTextarea1">Description</CFormLabel>
@@ -140,6 +143,28 @@ const AddCategories = () => {
                     value="option2"
                     label="Active"
                     onChange={() => setIsActive("1")}
+                  />
+                </CCol>
+              </fieldset>
+              <fieldset className="row mb-3">
+                <legend className="col-form-label col-sm-2 pt-0">Language:</legend>
+                <CCol sm={10}>
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="eng"
+                    label="English"
+                    onChange={() => setLang(1)}
+                    defaultChecked
+                  />
+                  <CFormCheck
+                    type="radio"
+                    name="lang"
+                    id="IsActive"
+                    value="ar"
+                    label="Arabic"
+                    onChange={() => setLang(2)}
                   />
                 </CCol>
               </fieldset>

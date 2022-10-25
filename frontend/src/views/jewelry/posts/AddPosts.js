@@ -58,7 +58,7 @@ const AddPosts = () => {
     })
     const formData = new FormData();
 		// formData.append('categories', JSON.stringify(category));
-    category.forEach((cate) => formData.append("categories", cate))
+    category.forEach((cate) => formData.append("categories[]", cate))
 		formData.append('banner_image', bannerImage);
 		formData.append('title', title);
 		formData.append('slug', slug);  

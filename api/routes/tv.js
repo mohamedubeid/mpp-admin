@@ -32,7 +32,7 @@ router.post(
     authenticate,
     upload.fields([
         { name: 'banner_image', maxCount: 1 },
-        { name: 'video', maxCount: 1 },
+        { name: 'video_file', maxCount: 1 },
     ]),
     async (req, res) => {
         let data = await TvController.createVideo(req, res);
