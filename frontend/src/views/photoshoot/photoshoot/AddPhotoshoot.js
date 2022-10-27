@@ -14,7 +14,8 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
-  CFormFeedback
+  CFormFeedback,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useState } from 'react'
@@ -39,6 +40,8 @@ const AddPhotoshoot = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -51,6 +54,7 @@ const AddPhotoshoot = () => {
 
   function handleAddPhotoshoot(event) {
     event.preventDefault()
+    setLoading(true)
     const formData = new FormData()
     formData.append('banner_image', bannerImage)
     formData.append('title', title)
@@ -66,8 +70,10 @@ const AddPhotoshoot = () => {
      
     photoshootService.postPhotoshoots(formData).then((result) => {
       if(result) navigate("/photoshoot/photoshoot-list")
+    }).catch((err) => { 
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
     })
-    .catch((err) => alert(err + '\n please fill out all fields'))
   }
 
   return (
@@ -201,6 +207,9 @@ const AddPhotoshoot = () => {
                 {' '}
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

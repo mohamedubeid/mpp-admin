@@ -15,6 +15,7 @@ import {
   CFormTextarea,
   CFormFeedback,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 
@@ -35,6 +36,8 @@ const AddCategories = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  const [loading, setLoading] = useState(false)
+
   React.useEffect(() => {
     if (quill) {
       quill.on('text-change', (delta, oldDelta, source) => {
@@ -47,6 +50,7 @@ const AddCategories = () => {
 
   function handleAddCategory(event) {
     event.preventDefault()
+    setLoading(true)
     const data = {
       title: title,
       slug: slug,
@@ -60,7 +64,10 @@ const AddCategories = () => {
     jewelryService.postJewelryCategory(data).then((result) => {
       console.log(result.data)
       if(result) navigate("/jewelry/categories")
-    }).catch((err) => alert(err))
+    }).catch((err) => {
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
 
   return (
@@ -180,6 +187,9 @@ const AddCategories = () => {
               <CButton type="submit" onClick={handleAddCategory}>
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

@@ -15,6 +15,7 @@ import {
   CFormTextarea,
   CFormFeedback,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useState } from 'react'
@@ -39,6 +40,8 @@ const Addmagazine = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill()
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -51,6 +54,7 @@ const Addmagazine = () => {
 
   function handleAddmagazine(event) {
     event.preventDefault()
+    setLoading(true)
     const formData = new FormData()
     formData.append('banner_image', bannerImage)
     formData.append('title', title)
@@ -67,8 +71,10 @@ const Addmagazine = () => {
       .postMagazines(formData)
       .then((result) => {
         if (result) navigate('/magazine/magazine-list')
+      }).catch((err) => { 
+        alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+        setLoading(false)
       })
-      .catch((err) => alert(err + '\n please fill out all fields'))
   }
 
   return (
@@ -231,6 +237,9 @@ const Addmagazine = () => {
                 {' '}
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

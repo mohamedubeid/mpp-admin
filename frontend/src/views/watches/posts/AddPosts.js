@@ -16,6 +16,7 @@ import {
   CFormTextarea,
   CFormFeedback,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import Multiselect from "multiselect-react-dropdown";
@@ -41,6 +42,8 @@ const AddPosts = () => {
   const [isActive, setIsActive] = useState("0")
   const [lang, setLang] = useState(1)
 
+  const [loading, setLoading] = useState(false)
+
   const { quill, quillRef } = useQuill();
 
   const navigate = useNavigate()
@@ -55,6 +58,7 @@ const AddPosts = () => {
    
   function handleAddPost(event) {
     event.preventDefault()
+    setLoading(true)
     let category = []
     categories.map((e) => {
       category.push(e.substring(0, e.indexOf(" ")))
@@ -95,7 +99,10 @@ const AddPosts = () => {
     console.log(formData.get('categories'))
     watchesService.postWatchPost(formData).then((result) => {
       if(result) navigate("/watches/posts")
-    }).catch((err) => alert(err))
+    }).catch((err) => {
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
 
   function updateParentsData() {
@@ -318,6 +325,8 @@ const AddPosts = () => {
               <CButton type="submit" onClick={handleAddPost}>
                 Submit
               </CButton>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

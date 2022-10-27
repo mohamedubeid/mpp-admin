@@ -15,7 +15,8 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
-  CFormFeedback
+  CFormFeedback,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import tvService from 'src/service/tvService'
@@ -34,10 +35,13 @@ const AddPosts = () => {
   const [isActive, setIsActive] = useState("0")
   const [lang, setLang] = useState(1)
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
    
   function handleAddVideo(e) {
     e.preventDefault()
+    setLoading(true)
     let category = []
     categories.map((e) => {
       category.push(e.substring(0, e.indexOf(" ")))
@@ -56,7 +60,10 @@ const AddPosts = () => {
 
     tvService.postTvPost(formData).then((result) => {
       if(result) navigate("/tv/videos")
-    }).catch((err) => alert(err))
+    }).catch((err) => { 
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
 
 
@@ -221,6 +228,9 @@ const AddPosts = () => {
               <CButton type="submit" onClick={handleAddVideo}>
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

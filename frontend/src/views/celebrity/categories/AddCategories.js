@@ -14,7 +14,8 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
-  CFormFeedback
+  CFormFeedback,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useQuill } from 'react-quilljs';
@@ -35,6 +36,8 @@ const AddCategories = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -47,6 +50,7 @@ const AddCategories = () => {
 
   function handleAddCategory(e) {
     e.preventDefault()
+    setLoading(true)
     const data = {
       parent_page: parent,
       title: title,
@@ -60,7 +64,10 @@ const AddCategories = () => {
     }
     celebritiesService.postCelebritiesCategory(data).then((result) => {
       if(result) navigate("/celebrity/categories-list")
-    }).catch((err) => alert(err+"\n please fill out all fields"))
+    }).catch((err) => { 
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
 
   function updateParentsData() {
@@ -202,6 +209,9 @@ const AddCategories = () => {
               <CButton type="submit" onClick={handleAddCategory}>
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

@@ -14,6 +14,7 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useNavigate } from 'react-router-dom'
@@ -33,6 +34,8 @@ const AddCategories = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -45,6 +48,7 @@ const AddCategories = () => {
   
   function handleAddCategory(e) {
     e.preventDefault()
+    setLoading(true)
     const data = {
       title: title,
       slug: slug,
@@ -58,7 +62,10 @@ const AddCategories = () => {
 
     tvService.postTvCategory(data).then((result) => {
       if(result) navigate("/tv/categories")
-    }).catch((err) => alert(err))
+    }).catch((err) => { 
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
 
   return (
@@ -171,6 +178,9 @@ const AddCategories = () => {
               <CButton type="submit" onClick={handleAddCategory}>
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

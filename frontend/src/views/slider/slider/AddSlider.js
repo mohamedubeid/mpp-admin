@@ -15,6 +15,7 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useState } from 'react'
@@ -31,10 +32,13 @@ const AddSlider = () => {
   const [lang, setLang] = useState(1)
   const [isActive, setIsActive] = useState("0")
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   function handleAddSlider(event) {
     event.preventDefault();
+    setLoading(true)
     const formData = new FormData();
 		formData.append('banner_image', bannerImage);
 		formData.append('title', title);
@@ -55,7 +59,10 @@ const AddSlider = () => {
     slidersService.postSliders(formData).then((result) => {
       if(result) navigate("/slider/slider-list")
       console.log(result.data.error)
-    }).catch((err) => alert(err))
+    }).catch((err) => { 
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
 
   return (
@@ -159,6 +166,9 @@ const AddSlider = () => {
                 {' '}
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>
