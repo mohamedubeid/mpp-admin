@@ -27,7 +27,9 @@ const upload = multer({ storage: storage });
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'https://test.globalinx.online'
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get('/api', (req, res) => {
