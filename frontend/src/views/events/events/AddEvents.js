@@ -16,6 +16,7 @@ import {
   CFormTextarea,
   CFormFeedback,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import eventsService from 'src/service/eventsService'
@@ -44,6 +45,8 @@ const AddEvents = () => {
 
   const navigate = useNavigate()
 
+  const [loading, setLoading] = useState(false)
+
   React.useEffect(() => {
     if (quill) {
       quill.on('text-change', (delta, oldDelta, source) => {
@@ -54,6 +57,7 @@ const AddEvents = () => {
    
   function handleAddEvent(event) {
     event.preventDefault()
+    setLoading(true)
     // const data = {
     //   title: title,
     //   slug: slug,
@@ -91,7 +95,10 @@ const AddEvents = () => {
 		formData.append('is_active', isActive);
     eventsService.postEvents(formData).then((result) => {
       if(result) navigate("/events/events-list")
-    }).catch((err) => alert(err))
+    }).catch((err) => {
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
     
   return (
@@ -254,6 +261,9 @@ const AddEvents = () => {
               <CButton type="submit" onClick={handleAddEvent}>
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

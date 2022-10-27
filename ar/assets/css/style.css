@@ -11099,8 +11099,9 @@ Post List Style
 }
 
 .content-block.post-grid .post-grid-content .post-content {
-  background: var(--color-white);
+  background: rgba(255, 255, 255, 0.7);
   padding: 15px 16px;
+  border-style: groove;
 }
 
 @media only screen and (max-width: 575px) {
@@ -11735,8 +11736,10 @@ ul.post-meta-list li {
   color: var(--color-extra01);
   font-size: var(--font-size-b4);
   line-height: 18px;
-  margin: 8px;
+  margin: 3px;
   position: relative;
+  font-weight: bold;
+  margin-top: 25px;
 }
 
 ul.post-meta-list li::after {

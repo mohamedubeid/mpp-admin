@@ -15,6 +15,8 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
+  CFormFeedback,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import cmsService from 'src/service/cmsService'
@@ -40,6 +42,7 @@ const EditCMS = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     if(langURL === 'ar'){
       setLang(2);
@@ -60,7 +63,9 @@ const EditCMS = () => {
     }
   }, [quill]);
 
-  function handleEditCMS() {
+  function handleEditCMS(e) {
+    e.preventDefault()
+    setLoading(true)
     const parent_page = parent.substring(0, parent.indexOf(" "));
     const data = {
       parent_page: parent_page, 
@@ -79,12 +84,15 @@ const EditCMS = () => {
         console.log(result)
         navigate("/cms/cms-list")
       }
-    )
+    ).catch((err) => {
+      alert(err+"\n 1- Please fill out all required fields")
+      setLoading(false)
+    })
   }
 
   useEffect(async () => {
     await cmsService.getCMSPage(params.id).then((result) => {
-      if(result.data.cmspage.parent_id && result.data.cmspage.title) setParent(result.data.cmspage.parent_id + " " + result.data.cmspage.title)
+      if(result.data.cmspage.parent_id && result.data.cmspage.title) setParent("id: "+result.data.cmspage.parent_id + "  title:  " + result.data.cmspage.title)
       if(result.data.cmspage.title) setTitle(result.data.cmspage.title)
       if(result.data.cmspage.cms_slug) setSlug(result.data.cmspage.cms_slug)
       if(result.data.cmspage.small_description) setShortDescription(result.data.cmspage.small_description)
@@ -98,7 +106,7 @@ const EditCMS = () => {
   }, []);
 
   function updateParentsData() {
-    console.log("j")
+    
     cmsService.getAllCMS(lang).then((result) => {
       const listt  = []
       listt.push("0 None")
@@ -123,14 +131,8 @@ const EditCMS = () => {
           </CCardHeader>
           <CCardBody>
             <CForm validated={true} className="row g-3">
-              <CCol md={12}>
-                <CFormLabel htmlFor="inputEmail4">Parent Page</CFormLabel>
-                <CFormSelect 
-                onChange={(e) => setParent(e.target.value)}
-                options={parentList} 
-                aria-label="Default select example"
-                defaultValue={parent}>
-                </CFormSelect>
+            <CCol md={12}>
+                <CFormLabel htmlFor="inputEmail4">Selected Parent Page: {parent}</CFormLabel>
               </CCol>
               <CCol md={6}>
                 <CFormLabel htmlFor="inputEmail4">Title</CFormLabel>
@@ -242,6 +244,8 @@ const EditCMS = () => {
                 {' '}
                 Submit
               </CButton>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

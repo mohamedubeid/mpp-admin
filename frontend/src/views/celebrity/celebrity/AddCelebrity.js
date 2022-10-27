@@ -14,7 +14,8 @@ import {
   CInputGroupText,
   CFormTextarea,
   CRow,
-  CFormFeedback
+  CFormFeedback,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useState, useEffect } from 'react'
@@ -41,6 +42,8 @@ const AddCelebrity = () => {
   const { quill, quillRef } = useQuill();
 
   const navigate = useNavigate()
+
+  const [loading, setLoading] = useState(false)
   
   React.useEffect(() => {
     if (quill) {
@@ -52,6 +55,7 @@ const AddCelebrity = () => {
 
   function handleAddPost(e) {
     e.preventDefault()
+    setLoading(true)
     let category = []
     categories.map((e) => {
       category.push(e.substring(0, e.indexOf(" ")))
@@ -70,7 +74,10 @@ const AddCelebrity = () => {
     formData.append("is_active", isActive)
     celebritiesService.postCelebritiesPost(formData).then((result) => {
       if(result) navigate("/celebrity/celebrities-list")
-    }).catch((err)=>{alert(err)})
+    }).catch((err) => { 
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
 
   function updateParentsData() {
@@ -239,6 +246,9 @@ const AddCelebrity = () => {
                 {' '}
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

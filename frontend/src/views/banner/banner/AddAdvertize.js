@@ -15,6 +15,7 @@ import {
   CFormFeedback,
   CFormTextarea,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useState } from 'react'
@@ -29,10 +30,13 @@ const AddAdvertize = () => {
   const [isActive, setIsActive] = useState("0")
   const [lang, setLang] = useState(1)
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   function handleAddAdvertize(event) {
     event.preventDefault()
+    setLoading(true)
     const formData = new FormData()
     formData.append('banner_image', bannerImage)
     formData.append('title', title)
@@ -44,8 +48,10 @@ const AddAdvertize = () => {
     bannersService.postBanners(formData)
     .then((result) => {
       if (result) navigate('/banners/advertize-list')
+    }).catch((err) => { 
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
     })
-    .catch((err) => alert(err + '\n please fill out all fields'))
   }
   
 
@@ -154,6 +160,9 @@ const AddAdvertize = () => {
                 {' '}
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

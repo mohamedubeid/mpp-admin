@@ -15,6 +15,7 @@ import {
   CFormTextarea,
   CFormFeedback,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import cmsService from 'src/service/cmsService'
@@ -38,6 +39,8 @@ const AddCMS = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -50,7 +53,7 @@ const AddCMS = () => {
 
   function handleAddCMS(event) {
     event.preventDefault();
-   
+    setLoading(true)
     const parent_page = parent.substring(0, parent.indexOf(" "));
     const data = {
       parent_page: parent_page, 
@@ -67,7 +70,10 @@ const AddCMS = () => {
 
     cmsService.postCMS(data).then((result) => {
       if(result) navigate("/cms/cms-list")
-    }).catch((err) => alert(err+"\n please fill out all fields"))
+    }).catch((err) => {
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
   
   function updateParentsData() {
@@ -213,6 +219,9 @@ const AddCMS = () => {
                 {' '}
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

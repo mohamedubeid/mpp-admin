@@ -16,6 +16,7 @@ import {
   CFormTextarea,
   CFormFeedback,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import newsService from 'src/service/newsService'
@@ -41,6 +42,8 @@ const AddPosts = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -53,6 +56,7 @@ const AddPosts = () => {
    
   function handleAddPosts(e) {
     e.preventDefault()
+    setLoading(true)
     let category = []
     categories.map((e) => {
       category.push(e.substring(0, e.indexOf(" ")))
@@ -75,7 +79,10 @@ const AddPosts = () => {
 
     newsService.postNewsPost(formData).then((result) => {
       if(result) navigate("/news/news")
-    }).catch((err)=>{alert(err)})
+    }).catch((err) => {
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
+    })
   }
     
   function updateParentsData() {
@@ -258,6 +265,9 @@ const AddPosts = () => {
               <CButton type="submit" onClick={handleAddPosts}>
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>

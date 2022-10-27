@@ -15,6 +15,7 @@ import {
   CFormTextarea,
   CFormFeedback,
   CRow,
+  CSpinner
 } from '@coreui/react'
 import { DocsExample } from 'src/components'
 import { useState } from 'react'
@@ -36,6 +37,8 @@ const AddLifestyle = () => {
   const [lang, setLang] = useState(1)
   const { quill, quillRef } = useQuill();
 
+  const [loading, setLoading] = useState(false)
+
   const navigate = useNavigate()
 
   React.useEffect(() => {
@@ -48,6 +51,7 @@ const AddLifestyle = () => {
 
   function handleAddLifestyle(event) {
     event.preventDefault()
+    setLoading(true)
     const formData = new FormData();
 		formData.append('banner_image', bannerImage);
 		formData.append('title', title);
@@ -70,6 +74,9 @@ const AddLifestyle = () => {
     // }
     lifestyleService.postLifestyle(formData).then((result) => {
       if(result) navigate("/lifestyle/lifestyle-list")
+    }).catch((err) => {
+      alert(err+"\n 1- Please fill out all required fields \n 2- Make sure that Slug is unique")
+      setLoading(false)
     })
   }
 
@@ -197,6 +204,9 @@ const AddLifestyle = () => {
                 {' '}
                 Submit
               </CButton>
+              <br></br>
+              <br></br>
+              {loading ? <CSpinner color="primary"/> : <></>}
             </CForm>
           </CCardBody>
         </CCard>
