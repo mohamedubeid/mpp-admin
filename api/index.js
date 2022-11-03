@@ -28,7 +28,7 @@ const upload = multer({ storage: storage });
 const app = express();
 
 app.use(cors({
-    origin: 'https://test.globalinx.online'
+    origin: 'https://manager.mpp-me.com/'
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
