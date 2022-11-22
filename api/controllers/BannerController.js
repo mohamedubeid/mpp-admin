@@ -186,7 +186,7 @@ class BannerController {
     async getAllSelectedBanners(req, res) {
         try {
             const language_id = req.query.language_id || 1;
-            const limit = req.query.limit || 1;
+            const limit = req.query.limit || 3;
             const selectedPosts = await BannersService.getSelectedPost(
                 language_id
             );
