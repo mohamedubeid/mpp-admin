@@ -10,6 +10,31 @@
   }
 </script> -->
 
+<style>
+  .mySlides {display: none;}
+  .dot {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.6s ease;
+  }
+  .activeAutoSlider {
+    background-color: #717171;
+  }
+  .fade {
+    animation-name: fade;
+    animation-duration: 2.5s;
+  }
+  
+  @keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+  }
+  </style>
+
 <!-- Start Subscribe Area  -->
 <div class="subscribe-popup" id="subscribe-popup">
   <div class="subscribe-popup-inner">
@@ -46,7 +71,15 @@
 
 <!-- Start Featured Area  -->
 <div class="axil-featured-post axil-section-gap bg-color-grey">
-
+  <div class="container">
+    <div class="row align-items-center mb--30">
+      <div class="col-lg-6 col-md-8 col-sm-8 col-12">
+        <div class="section-title">
+          <h2 class="title">Trending on Arabian Watches & Jewellery</h2>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container">
     <div class="col-lg-12">
       <ul class="axil-tab-button nav nav-tabs mt--20" role="tablist">
@@ -64,7 +97,7 @@
         </li>
         <li class="nav-item" role="presentation">
           <a class="nav-link" id="grid-four" data-bs-toggle="tab" href="#gridfour" role="tab" aria-controls="grid-four"
-            aria-selected="false">PHOTOSHOOT</a>
+            aria-selected="false">Photoshoot</a>
         </li>
       </ul>
       <div class="grid-tab-content tab-content mt--10">
@@ -78,7 +111,7 @@
                     <img src="/uploads/watches/<%= watchPosts[0].banner_image%>" alt="Post Images" />
                   </a>
                 </div>
-                <div class="post-grid-content">
+                <div class="post-grid-content" style="padding: 0 15px">
                   <div class="post-content">
                     <div class="post-cat">
                       <div class="post-cat-list">
@@ -177,7 +210,7 @@
                     <img src="/uploads/jewelry/<%= jewelryPosts[0].banner_image%>" alt="Post Images" />
                   </a>
                 </div>
-                <div class="post-grid-content">
+                <div class="post-grid-content" style="padding: 0 15px">
                   <div class="post-content">
                     <div class="post-cat">
                       <div class="post-cat-list">
@@ -276,7 +309,7 @@
                     <img src="/uploads/celebrity/<%= celebrityPosts[0].banner_image%>" alt="Post Images" />
                   </a>
                 </div>
-                <div class="post-grid-content">
+                <div class="post-grid-content" style="padding: 0 15px">
                   <div class="post-content">
                     <div class="post-cat">
                       <div class="post-cat-list">
@@ -374,7 +407,7 @@
                       <img src="/uploads/photoshoot/<%= photoshootPosts[0].banner_image%>" alt="Post Images" />
                     </a>
                   </div>
-                  <div class="post-grid-content">
+                  <div class="post-grid-content" style="padding: 0 15px">
                     <div class="post-content">
                       <div class="post-cat">
                         <div class="post-cat-list">
@@ -471,24 +504,37 @@
   <!-- End Featured Area  -->
 
   <!-- Start Tab Area  -->
-  <div class="axil-tab-area axil-section-gap bg-color-white">
+  <div class="axil-tab-area axil-section-gap bg-color-white" >
     <div class="wrapper">
       <div class="container">
+        <% for(let ad of banner) { %>
+          <% if(ad.advertize_type !== "SideBar"){ %>
         <div class="row">
           <div class="col-lg-12">
             <div class="axil-banner">
-              <div class="thumbnail">
-                <a href="<%= banner.advertize_url %>">
-                  <img class="w-100" src="/uploads/advertize/<%= banner.image_path %>" alt="Banner Images"
-                    style="border-radius: 15px" />
+              <div class="thumbnail mySlides fade" style="height: 320px">
+                <a href="<%= ad.advertize_url %>">
+                  <img class="w-100" src="/uploads/advertize/<%= ad.image_path %>" alt="Banner Images"
+                    style="border-radius: 15px; max-height: 400px;" />
                 </a>
               </div>
             </div>
           </div>
         </div>
+        <% } %>
+        <% } %>
       </div>
     </div>
   </div>
+
+  <div style="text-align:center">
+    <% for(let ad of banner) { %>
+      <% if(ad.advertize_type !== "SideBar"){ %>
+  <span class="dot"></span> 
+  <% } %>
+  <% } %>
+</div>
+
   <!-- End Tab Area  -->
 
   <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7561453674266968"
@@ -644,7 +690,7 @@
             </li>
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="trend-three" data-bs-toggle="tab" href="#trendthree" role="tab"
-                aria-controls="trend-three" aria-selected="false">Magazine</a>
+                aria-controls="trend-three" aria-selected="false">E-Magazine</a>
             </li>
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="trend-four" data-bs-toggle="tab" href="#trendfour" role="tab"
@@ -1337,3 +1383,27 @@
     </div>
   </div>
   <!-- End Video Area  -->
+
+
+  <script>
+    let slideIndex = 0;
+    showSlides();
+    
+    function showSlides() {
+      let i;
+      let slides = document.getElementsByClassName("mySlides");
+      let dots = document.getElementsByClassName("dot");
+      for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";  
+      }
+      slideIndex++;
+      if (slideIndex > slides.length) {slideIndex = 1}    
+      for (i = 0; i < dots.length; i++) {
+        dots[i].className = dots[i].className.replace(" activeAutoSlider", "");
+      }
+      slides[slideIndex-1].style.display = "block";  
+      dots[slideIndex-1].className += " activeAutoSlider";
+      setTimeout(showSlides, 3500); // Change image every 3.5 seconds
+    }
+    </script>
+  <!-- End OF SLIDESHOW CODE  -->

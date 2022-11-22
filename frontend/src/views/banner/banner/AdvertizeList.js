@@ -62,7 +62,7 @@ const AdvertizeList = () => {
 
   const handleSelectAdvertize = (e, post) => {
     const selected = e.target.checked
-    if (selected && selectedAdvertize.length < 1) {
+    if (selected && selectedAdvertize.length < 3) {
       setSelectedAdvertize([...selectedAdvertize, post])
       let temp = advertizeTable
       temp = temp.map((item) => {
@@ -85,7 +85,7 @@ const AdvertizeList = () => {
       })
       setAdvertizeTable(temp3)
     } else {
-      setErrMsg('You are selected the maximum number of Advertize posts')
+      setErrMsg('You are have selected the maximum number of Advertize posts')
       setDisplayNtf(true)
       const myInterval = setInterval(() => {
         setDisplayNtf(false)

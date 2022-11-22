@@ -60,7 +60,7 @@ class English {
             magazinePosts: magazinePosts.magazines,
             eventPosts: eventPosts.events,
             photoshootPosts: photoshootPosts.photoshoots,
-            banner: banner.banners[0],
+            banner: banner.banners,
             metaData: metaData,
             newsCategories: await utils.getNewsCategories(req, res),
             socialMediaLinks: await utils.getSocialMediaLinks(req, res),
@@ -307,12 +307,15 @@ class English {
             currentPage
         );
 
+        let banner = await BannerController.getAllSelectedBanners(req, res);
+    
         res.render('watches', {
             pageName: 'watches',
             watchPosts: watchPosts.posts,
             pagination: pagination,
             currentPage: currentPage,
             metaData,
+            banner: banner.banners,
             categories: categories.categories,
             firstThreeWatchPosts,
             newsCategories: await utils.getNewsCategories(req, res),
@@ -471,6 +474,8 @@ class English {
             currentPage
         );
 
+        let banner = await BannerController.getAllSelectedBanners(req, res);
+
         res.render('jewelry', {
             pageName: 'jewelry',
             categoryTitle: 'Jewellery',
@@ -479,6 +484,7 @@ class English {
             currentPage,
             categories: categories.categories,
             metaData,
+            banner: banner.banners,
             firstThreeJewelryPosts,
             newsCategories: await utils.getNewsCategories(req, res),
             socialMediaLinks: await utils.getSocialMediaLinks(req, res),
@@ -637,11 +643,14 @@ class English {
             currentPage
         );
 
+        let banner = await BannerController.getAllSelectedBanners(req, res);
+
         res.render('celebrities', {
             pageName: 'celebrities',
             celebrityPosts: celebrityPosts.posts,
             pagination: pagination,
             currentPage,
+            banner: banner.banners,
             categories,
             metaData,
             firstThreeCelebrityPosts,
@@ -781,7 +790,7 @@ class English {
         }
 
         let magazinePosts = await MagazinesController.getAllMagazine(req, res);
-
+        
         if (magazinePosts.pagesAvailable < req.query.page) {
             res.redirect('/magazine');
         }
@@ -888,10 +897,13 @@ class English {
             currentPage
         );
 
+        let banner = await BannerController.getAllSelectedBanners(req, res);
+
         res.render('tv', {
             pageName: 'tv',
             tvPosts: tvPosts.videos,
             pagination: pagination,
+            banner: banner.banners,
             currentPage,
             metaData,
             categories: categories.categories,
@@ -1142,7 +1154,6 @@ class English {
             res.redirect('/news');
         }
 
-        console.log(post.post);
         let metaData = {
             title: `${post.post.meta_title || ''} || MPP ME`,
             description: post.post.meta_desc,

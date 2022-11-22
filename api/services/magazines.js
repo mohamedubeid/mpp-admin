@@ -18,7 +18,6 @@ class MagazinesService {
         user_id
     ) {
         await db('tbl_magazine_directory').insert({
-            target_date: new Date(),
             section_id: 0,
             classifed_modal: '',
             amount: 0,
@@ -91,7 +90,6 @@ class MagazinesService {
             description,
 
             banner_image,
-            target_date: new Date(),
             meta_title,
             meta_keywords: meta_tags,
             meta_desc: meta_description,

@@ -11099,7 +11099,7 @@ Post List Style
 }
 
 .content-block.post-grid .post-grid-content .post-content {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.45);
   padding: 15px 16px;
   border-style: groove;
 }

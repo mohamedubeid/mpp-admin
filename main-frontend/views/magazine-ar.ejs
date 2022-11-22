@@ -2,7 +2,7 @@
 <div class="container mt--30">
   <section class="row">
     <!-- Start Post List  -->
-    <% for(let magazinePost of magazinePosts.slice(1)) { %>
+    <% for(let magazinePost of magazinePosts.slice(0)) { %>
       <div class="content-block post-list-view mt--30">
         <div class="post-thumbnail">
           <a href="/ar/magazine/details/<%= magazinePost.classified_slug %>">

@@ -233,6 +233,16 @@
               </div>
               <!-- End Post List  -->
             </div>
+            <% for(let ad of banner) { %>
+              <% if(ad.advertize_type === "SideBar"){ %>
+              <div class="axil-single-widget widget widget_postlist mb--30">
+                <a href="<%= ad.advertize_url %>">
+                <img class="w-100" src="/uploads/advertize/<%= ad.image_path %>" alt="Banner Images"
+                style="border-radius: 15px" />
+                </a>
+              </div>
+              <% } %>
+              <% } %>
             <!-- End Single Widget  -->
           </div>
           <!-- End Sidebar Area  -->

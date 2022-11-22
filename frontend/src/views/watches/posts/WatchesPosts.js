@@ -86,7 +86,7 @@ const WatchesPosts = () => {
       })
       setWatchesTable(temp3)
     } else {
-      setErrMsg('You are selected the maximum number of watch posts')
+      setErrMsg('You are have selected the maximum number of watch posts')
       setDisplayNtf(true)
       const myInterval = setInterval(() => {
         setDisplayNtf(false)
